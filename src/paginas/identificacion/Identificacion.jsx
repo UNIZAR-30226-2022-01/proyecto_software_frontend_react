@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import "./identificacion.css";
 
 export default class Identificacion extends React.Component {
   render() {
     return (
-    <div>
+    <div className="cen">
       <h1>World domination</h1>
 
       <button>
