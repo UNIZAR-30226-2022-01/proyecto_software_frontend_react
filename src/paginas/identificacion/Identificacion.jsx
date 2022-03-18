@@ -1,6 +1,5 @@
-import Inicio from "./paginas/inicio/Inicio";
-import Registrar from "./paginas/registrar/Registrar";
-import IniciarSesion from "./paginas/iniciarSesion/IniciarSesion";
+import React from 'react';
+import { Link } from "react-router-dom";
 
 export default class Identificacion extends React.Component {
   render() {
@@ -15,6 +14,7 @@ export default class Identificacion extends React.Component {
       <button>
         <Link to="/registrarUsuario">Registrar Usuario</Link>
       </button>
+
     </div>
     );  
   }
