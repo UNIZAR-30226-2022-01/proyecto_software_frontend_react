@@ -40,7 +40,7 @@ export default class Registrar extends React.Component {
 
 		let err;
 		switch (target.name) {
-			case "nombreUsuario": 
+			case "nombreUsuario": // Solo alfanumericos, - y _
 				err = target.value.length < 5
 						? "El nombre de usuario debe contener mínimo 5 caracteres"
 						: "";
