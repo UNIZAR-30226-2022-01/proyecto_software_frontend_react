@@ -13,11 +13,39 @@
       transform: scale(1.003);
   }
   
-  .prueba{
-    background-color: #4682B4;
-    fill: #4682B4;
-  }
-  
   #Lines{
     stroke-dasharray: 5,5;
   }
+
+  .containerJugadores {
+    /*border:2px solid blue;*/
+    width:3%;
+    height: 95px;
+    margin-top: 2%;
+    margin-right: 2.5%;
+    float:right;
+    clear:right;
+  }
+
+  .jugador {
+    width: 425%;
+    height: 105%;
+    margin-top: 45%;
+    float:right;
+    clear:right;
+    border-radius: 25px;
+    border: 1px solid #fafafa;
+    box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
+    background: #c3195d;
+    font-size: 50px;
+  }
+
+  .datosJugadores {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color:#fafafa;
+    font-size: 19px;
+    font-weight: 550;
+    padding: 10px 0;
+  }
+
+  

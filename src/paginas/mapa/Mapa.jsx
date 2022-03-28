@@ -5,13 +5,13 @@ export default class Mapa extends React.Component {
 
   prueba(e) {
     document.getElementById(e.target.id).style.fill = 'red';
+    document.getElementById("fran").style.background = 'red';
   }
 
   render() {
     document.body.style.backgroundColor = "#4682B4"
     return (
-    <div className="cen prueba">
-      <br></br><br></br><br></br>
+    <div className="cen">
       <svg
         width="60%"
         viewBox="0 0 1024 660"
@@ -367,7 +367,50 @@ export default class Mapa extends React.Component {
           </g>
         </g>
       </g>
-  </svg>
+    </svg>
+
+    <div className="containerJugadores">
+      <div id="fran" className="jugador">
+        <div className="datosJugadores">fran101</div>
+        <div className="datosJugadores">
+          <img src="https://img.icons8.com/ios-filled/20/000000/soldier.png"/> 24 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/ios-filled/20/000000/singapore-territory.png"/> 8 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png"/> 4
+        </div>
+      </div>
+      <div className="jugador">
+        <div className="datosJugadores">emiiidk</div>
+        <div className="datosJugadores">
+          <img src="https://img.icons8.com/ios-filled/20/000000/soldier.png"/> 24 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/ios-filled/20/000000/singapore-territory.png"/> 28 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png"/> 12
+        </div>
+      </div>
+      <div className="jugador">
+        <div className="datosJugadores">jorge</div>
+        <div className="datosJugadores">
+          <img src="https://img.icons8.com/ios-filled/20/000000/soldier.png"/> 24 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/ios-filled/20/000000/singapore-territory.png"/> 8 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png"/> 4
+        </div>
+      </div>
+      <div className="jugador">
+        <div className="datosJugadores">laura</div>
+        <div className="datosJugadores">
+          <img src="https://img.icons8.com/ios-filled/20/000000/soldier.png"/> 24 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/ios-filled/20/000000/singapore-territory.png"/> 8 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png"/> 4
+        </div>
+      </div>
+      <div className="jugador">
+        <div className="datosJugadores">mapache</div>
+        <div className="datosJugadores">
+          <img src="https://img.icons8.com/ios-filled/20/000000/soldier.png"/> 24 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/ios-filled/20/000000/singapore-territory.png"/> 8 &nbsp;&nbsp;
+          <img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png"/> 4
+        </div>
+      </div>
+    </div>
 
     </div>
     
