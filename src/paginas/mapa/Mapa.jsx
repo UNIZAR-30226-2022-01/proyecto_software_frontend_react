@@ -1,15 +1,27 @@
 import React from 'react';
+import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import "./mapa.css";
 
 export default class Mapa extends React.Component {
 
   prueba(e) {
     document.getElementById(e.target.id).style.fill = 'red';
-    document.getElementById("fran").style.background = 'red';
+    document.getElementById("0").style.background = 'red';
   }
 
   render() {
-    document.body.style.backgroundColor = "#4682B4"
+    document.body.style.backgroundColor = "#4682B4";
+
+    var jugadores = [];
+    for (var i = 0; i < 5; i++) {
+        jugadores.push(<InfoJugador  
+          id={i}
+          usuario="akiles754"
+          numTropas={25}
+          numTerritorios={10}
+          numCartas={11}/>);
+    }
+
     return (
     <div className="cen">
       <svg
@@ -368,7 +380,12 @@ export default class Mapa extends React.Component {
         </g>
       </g>
     </svg>
+    
+    <div className="containerJugadores">
+      {jugadores}
+    </div>
 
+    {/* HTML plano información jugadores
     <div className="containerJugadores">
       <div id="fran" className="jugador">
         <div className="datosJugadores">fran101</div>
@@ -410,7 +427,7 @@ export default class Mapa extends React.Component {
           <img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png"/> 4
         </div>
       </div>
-    </div>
+    </div>*/}
 
     </div>
     

@@ -2,50 +2,26 @@
     cursor: pointer;
   }
   
-  .special-country{
+.special-country{
+  opacity: 0.8;
+}
+
+.country:hover {
+    fill:#FFFFFF;
     opacity: 0.8;
-  }
-  
-  .country:hover {
-      fill:#FFFFFF;
-      opacity: 0.8;
-      transition: 0.3s;
-      transform: scale(1.003);
-  }
-  
-  #Lines{
-    stroke-dasharray: 5,5;
-  }
+    transition: 0.3s;
+    transform: scale(1.003);
+}
 
-  .containerJugadores {
-    /*border:2px solid blue;*/
-    width:3%;
-    height: 95px;
-    margin-top: 2%;
-    margin-right: 2.5%;
-    float:right;
-    clear:right;
-  }
+#Lines{
+  stroke-dasharray: 5,5;
+}
 
-  .jugador {
-    width: 425%;
-    height: 105%;
-    margin-top: 45%;
-    float:right;
-    clear:right;
-    border-radius: 25px;
-    border: 1px solid #fafafa;
-    box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
-    background: #c3195d;
-    font-size: 50px;
-  }
-
-  .datosJugadores {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    color:#fafafa;
-    font-size: 19px;
-    font-weight: 550;
-    padding: 10px 0;
-  }
-
-  
+.containerJugadores {
+  width:3%;
+  height: 95px;
+  margin-top: 3%;
+  margin-right: 2.5%;
+  float:right;
+  clear:right;
+}

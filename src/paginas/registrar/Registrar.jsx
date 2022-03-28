@@ -2,7 +2,11 @@ import React from 'react';
 import "./registrar.css";
 
 const emailValidoRegex = RegExp(
-	/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/i
+	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+);
+
+const usuarioValidoRegex = RegExp(
+	/^[a-z0-9\-\_]+$/i
 );
 
 const validarFormato = errores => {
@@ -40,10 +44,19 @@ export default class Registrar extends React.Component {
 
 		let err;
 		switch (target.name) {
-			case "nombreUsuario": // Solo alfanumericos, - y _
-				err = target.value.length < 5
-						? "El nombre de usuario debe contener mínimo 5 caracteres"
-						: "";
+			case "nombreUsuario":
+				let errLogitud = target.value.length < 5;
+				let errorChars = !usuarioValidoRegex.test(target.value);
+				err = "";
+
+				if (errLogitud && errorChars) {
+					err = "El usuario debe contener mínimo 5 caracteres y valores alfanuméricos, '-' o '_'";
+				} else if (errLogitud) {
+					err = "El usuario debe contener mínimo 5 caracteres";
+				} else if (errorChars) {
+					err = "El usuario debe contener valores alfanuméricos, '-' o '_'";
+				}
+
 				this.setState({errores: {...this.state.errores, nombreUsuario: err}});
 			break;
 			
@@ -100,10 +113,10 @@ export default class Registrar extends React.Component {
 					placeholder="Introduzca su nombre de usuario..."
 					value={this.state.nombreUsuario}
 					onChange={this.handleInputChange}
-				/> 
+					required/> 
 				<br></br>
 				{(this.state.nombreUsuario.length > 0) && 
-					<span className='error'>{this.state.errores.nombreUsuario}</span>}
+					<span className='errorRegistrar'>{this.state.errores.nombreUsuario}</span>}
 
 				<h2>Correo electrónico</h2>
 				<input
@@ -112,10 +125,11 @@ export default class Registrar extends React.Component {
 					placeholder="Introduzca su correo electrónico..."
 					value={this.state.email}
 					onChange={this.handleInputChange}
+					required
 				/> 
 				<br></br>
 				{(this.state.email.length > 0) && 
-					<span className='error'>{this.state.errores.email}</span>}
+					<span className='errorRegistrar'>{this.state.errores.email}</span>}
 
 				<h2>Contraseña</h2>
 				<input
@@ -124,10 +138,11 @@ export default class Registrar extends React.Component {
 					placeholder="Introduzca su contraseña..."
 					value={this.state.contrasegna}
 					onChange={this.handleInputChange}
+					required
 				/> 
 				<br></br>
 				{(this.state.contrasegna.length > 0) && 
-					<span className='error'>{this.state.errores.contrasegna}</span>}
+					<span className='errorRegistrar'>{this.state.errores.contrasegna}</span>}
 
 				<h2>Repetir contraseña</h2>
 				<input
@@ -136,10 +151,11 @@ export default class Registrar extends React.Component {
 					placeholder="Repita su contraseña..."
 					value={this.state.reContrasegna}
 					onChange={this.handleInputChange}
+					required
 				/> 
 				<br></br>
 				{(this.state.reContrasegna.length > 0) && 
-					<span className='error'>{this.state.errores.reContrasegna}</span>}
+					<span className='errorRegistrar'>{this.state.errores.reContrasegna}</span>}
 
 				<br></br><br></br>
 				<button type="submit">Registrarse</button>
