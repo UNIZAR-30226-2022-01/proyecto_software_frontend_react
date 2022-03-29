@@ -25,3 +25,28 @@
   float:right;
   clear:right;
 }
+
+.buttonsBox {
+  background-color: #45AFCB;
+  padding: 10px;
+  margin: 80px;
+  width: 200px;
+  height: 80px;
+  display: flex;
+  list-style: none;
+}
+
+.buttons{
+  border: 1.5px solid white;
+  border-radius: 20px;
+  background-color: #CCF4FF;
+  height: "60"; 
+  width: "60";
+  padding: .5em;
+}
+
+.buttons:hover {
+  opacity: 0.5;
+  transition: 0.3s;
+  transform: scale(1.003);
+}
