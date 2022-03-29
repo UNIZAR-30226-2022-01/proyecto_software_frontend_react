@@ -1,4 +1,5 @@
 import React from 'react';
+import { Navigate } from 'react-router';
 import "./iniciarSesion.css";
 
 export default class IniciarSesion extends React.Component {
@@ -7,6 +8,7 @@ export default class IniciarSesion extends React.Component {
 		this.state = {
 			nombreUsuario: "",
 			contrasegna: "",
+			irInicio: false,
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -29,10 +31,15 @@ export default class IniciarSesion extends React.Component {
 
 		console.info('Valid Form');
 		// Conectar API
-		window.location.assign("/inicio");
+		//window.location.assign("/inicio");
+		this.setState({irInicio:true});
 	};
 
 	render() {
+		if (this.state.irInicio) {
+			return <Navigate to='/inicio'/>;
+		}
+
 		return (
 			<div className="cen">
 				<h1>Iniciar sesión en World Domination</h1>
