@@ -6,7 +6,7 @@ const emailValidoRegex = RegExp(
 );
 
 const usuarioValidoRegex = RegExp(
-	/^[a-z0-9\-\_]+$/i
+	/^[a-z0-9\-_]+$/i
 );
 
 const validarFormato = errores => {
@@ -94,9 +94,27 @@ export default class Registrar extends React.Component {
 		console.log(this.state.contrasegna);
 		console.log(this.state.reContrasegna);
 
-	if (validarFormato(this.state.errores)) {
-		console.info('Valid Form')
-		// Conectar API
+		if (validarFormato(this.state.errores)) {
+			try {
+				fetch('https://localhost:8090/registro', {
+				  method: 'post',
+				  headers: {'Content-Type':'application/json'},
+				  body: JSON.stringify({
+						nombre: this.state.nombreUsuario,
+						email: this.state.email,
+						password: this.state.contrasegna,
+				   })
+				})
+				  .then(response => response.text())
+				  .then((response) => {
+					console.log(response)
+					//this.setState({ data: json });
+				  })
+			} catch (error) {
+				console.log(error);
+			} finally {
+				this.setState({ isLoading: false });
+			}
 		} 
 	};
 
