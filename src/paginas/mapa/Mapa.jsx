@@ -55,7 +55,7 @@ export default class Mapa extends React.Component {
     <div className="cen">
       <svg
         width="60%"
-        viewBox="0 0 1024 660"
+        viewBox="0 -50 1024 768"
       >
       <g id="map" visibility="visible" fill="none" strokeWidth={2.5}>
         <g id="Seas" fill="none">
@@ -112,8 +112,6 @@ export default class Mapa extends React.Component {
             id="Africa_del_Norte"
             d="M468 473c-1-4-1-6 0-10-7-3-7-3-13-3-2-6-2-6-4-7-5 0-9 1-14 1v3c-16-1-25 7-36-8-6-2-10-16-12-22h-2v-3h-3c-2-9-2-16 1-25 0-9-1-19 2-28 5-1 8-15 10-20 13-6 13-10 17-25 7-4 9-7 14-14h1c7 5 16-1 23-4 7 0 10-1 28-2v4c-1 1-1 1-2 1 2 3 1 6 1 10h-4c0 1 0 1 3 1v3l6 3c-4 0-4 0-8 3 0 3 0 5-1 7 0 1-1 1-2 2 1 10 0 18 1 29 9 8 16 9 28 11 1 2 2 4 2 6 7 2 8 7 15 9-2 13-5 23-4 37-6 4-10 8-17 9 0 2 0 3-1 4-5 2-6 5-10 7 2 7 1 12 0 20-4 0-4 0-13-2v3h-6z"
           />
-            <circle id="xd" cx="440" cy="390" r="15" />
-          
         </g>
         <g id="Asia" stroke="#9CC35A" fill="#BDDB8C" visibility="visible">
           <path
@@ -401,10 +399,194 @@ export default class Mapa extends React.Component {
             d="M 785,426 L 798,440" />
           </g>
         </g>
-      
 
+        <g class="circulos">
+          <g class="cAfrica">
+            <svg id="cAfrica_Oriental">
+                <circle class="circulo ejemplo" cx="565" cy="450" r="13"/>
+                <text x="565" y="450">1</text>
+            </svg>
+            <svg id="cAfrica_del_Norte">
+                <circle class="circulo" cx="448" cy="400" r="13"/>
+                <text x="448" y="400">1</text>
+            </svg>
+            <svg id="cCongo">
+                <circle class="circulo" cx="507" cy="480" r="13"/>
+                <text x="507" y="480">44</text>
+            </svg>
+            <svg id="cEgipto">
+                <circle class="circulo" cx="520" cy="357" r="13"/>
+                <text x="520" y="357">1</text>
+            </svg>
+            <svg id="cSudafrica">
+                <circle class="circulo" cx="508" cy="565" r="13"/>
+                <text x="508" y="565" font-size="18">1</text>
+            </svg>
+            <svg id="Madagascar">
+                <circle class="circulo" cx="589" cy="565" r="13"/>
+                <text x="589" y="565">1</text>
+            </svg>
+          </g>
 
+          <g class="cOceania">
+            <svg id="cIndonesia">
+                <circle class="circulo" cx="817" cy="443" r="13"/>
+                <text x="817" y="443">1</text>
+            </svg>
+            <svg id="cNueva_Guinea">
+                <circle class="circulo" cx="910" cy="460" r="13"/>
+                <text x="910" y="460" font-size="18">1</text>
+            </svg>
+            <svg id="cAustralia_Oriental">
+                <circle class="circulo" cx="895" cy="548" r="13"/>
+                <text x="895" y="548" font-size="18">1</text>
+            </svg>
+            <svg id="cAustralia_Occidental">
+                <circle class="circulo" cx="810" cy="550" r="13"/>
+                <text x="810" y="550">23</text>
+            </svg>
+          </g>
 
+          <g class="cAmericaSur">
+            <svg id="cArgentina">
+                <circle class="circulo" cx="250" cy="550" r="13"/>
+                <text x="250" y="550">2</text>
+            </svg>
+            <svg id="cPeru">
+                <circle class="circulo" cx="230" cy="467" r="13"/>
+                <text x="230" y="467">1</text>
+            </svg>
+            <svg id="cBrasil">
+                <circle class="circulo" cx="303" cy="447" r="13"/>
+                <text x="303" y="447">8</text>
+            </svg>
+            <svg id="cVenezuela">
+                <circle class="circulo" cx="235" cy="382" r="13"/>
+                <text x="235" y="382">1</text>
+            </svg>
+          </g>
+
+          <g class="cAmericaNorte">
+            <svg id="cAmerica_Central">
+                <circle class="circulo" cx="195" cy="325" r="13"/>
+                <text x="195" y="325" font-size="18">2</text>
+            </svg>
+            <svg id="cEstados_Unidos_Occidental">
+                <circle class="circulo" cx="170" cy="240" r="13"/>
+                <text x="170" y="240">1</text>
+            </svg>
+            <svg id="cEste_de_los_Estados_Unidos">
+                <circle class="circulo" cx="240" cy="260" r="13"/>
+                <text x="240" y="260">5</text>
+            </svg>
+            <svg id="cQuebec">
+                <circle class="circulo" cx="315" cy="183" r="13"/>
+                <text x="315" y="183">1</text>
+            </svg>
+            <svg id="cOntario">
+                <circle class="circulo" cx="240" cy="185" r="13"/>
+                <text x="240" y="185">2</text>
+            </svg>
+            <svg id="cAlberta">
+                <circle class="circulo" cx="170" cy="175" r="13"/>
+                <text x="170" y="175">1</text>
+            </svg>
+            <svg id="cTerritorio_del_Noroeste">
+                <circle class="circulo" cx="190" cy="132" r="13"/>
+                <text x="190" y="132">1</text>
+            </svg>
+            <svg id="cGroenlandia">
+                <circle class="circulo" cx="400" cy="80" r="13"/>
+                <text x="400" y="80">1</text>
+            </svg>
+            <svg id="cAlaska">
+                <circle class="circulo" cx="70" cy="120" r="13"/>
+                <text x="70" y="120">1</text>
+            </svg>
+          </g>
+
+          <g class="cEuropa">
+            <svg id="cReino_Unido">
+                <circle class="circulo" cx="430" cy="205" r="13"/>
+                <text x="430" y="205">1</text>
+            </svg>
+            <svg id="cIslandia">
+                <circle class="circulo" cx="433" cy="150" r="13"/>
+                <text x="433" y="150">1</text>
+            </svg>
+            <svg id="cEuropa_Occidental">
+                <circle class="circulo" cx="437" cy="272" r="13"/>
+                <text x="437" y="272">4</text>
+            </svg>
+            <svg id="cEscandinavia">
+                <circle class="circulo" cx="500" cy="124" r="13"/>
+                <text x="500" y="124">1</text>
+            </svg>
+            <svg id="cUcrania">
+                <circle class="circulo" cx="582" cy="182" r="13"/>
+                <text x="582" y="182">2</text>
+            </svg>
+            <svg id="cEuropa_del_Sur">
+                <circle class="circulo" cx="510" cy="265" r="13"/>
+                <text x="510" y="265">1</text>
+            </svg>
+            <svg id="cEuropa_del_Norte">
+                <circle class="circulo" cx="492" cy="222" r="13"/>
+                <text x="492" y="222">3</text>
+            </svg>
+          </g>
+
+          <g class="cAsia">
+            <svg id="cOriente_Medio">
+                <circle class="circulo" cx="590" cy="323" r="13"/>
+                <text x="590" y="323">1</text>
+            </svg>
+            <svg id="cIndia">
+                <circle class="circulo" cx="707" cy="355" r="13"/>
+                <text x="707" y="355">1</text>
+            </svg>
+            <svg id="cAfganistan">
+                <circle class="circulo" cx="658" cy="253" r="13"/>
+                <text x="658" y="253">7</text>
+            </svg>
+            <svg id="cUral">
+                <circle class="circulo" cx="690" cy="180" r="13"/>
+                <text x="690" y="180">1</text>
+            </svg>
+            <svg id="cSiberia">
+                <circle class="circulo" cx="753" cy="165" r="13"/>
+                <text x="753" y="165">1</text>
+            </svg>
+            <svg id="cChina">
+                <circle class="circulo" cx="770" cy="295" r="13"/>
+                <text x="770" y="295">2</text>
+            </svg>
+            <svg id="cSiam">
+                <circle class="circulo" cx="782" cy="368" r="13"/>
+                <text x="782" y="368">1</text>
+            </svg>
+            <svg id="cMongolia">
+                <circle class="circulo" cx="835" cy="240" r="13"/>
+                <text x="835" y="240">10</text>
+            </svg>
+            <svg id="cIrkutsk">
+                <circle class="circulo" cx="817" cy="185" r="13"/>
+                <text x="817" y="185">4</text>
+            </svg>
+            <svg id="cYakutsk">
+                <circle class="circulo" cx="850" cy="125" r="13"/>
+                <text x="850" y="125">1</text>
+            </svg>
+            <svg id="cKamchatka">
+                <circle class="circulo" cx="943" cy="130" r="13"/>
+                <text x="943" y="130">2</text>
+            </svg>
+            <svg id="cJapon">
+                <circle class="circulo" cx="920" cy="260" r="13"/>
+                <text x="920" y="260">1</text>
+            </svg>
+          </g>
+        </g>
       </g>
     </svg>
     
