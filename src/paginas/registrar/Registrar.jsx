@@ -96,7 +96,7 @@ export default class Registrar extends React.Component {
 
 		if (validarFormato(this.state.errores)) {
 			try {
-				fetch('https://localhost:8090/registro', {
+				fetch('http://localhost:8090/registro', {
 				  method: 'post',
 				  headers: {'Content-Type':'application/json'},
 				  body: JSON.stringify({
