@@ -101,6 +101,7 @@
   height: "60"; 
   width: "60";
   padding: .5em;
+  cursor: pointer;
 }
 
 .buttons:hover {
