@@ -27,6 +27,8 @@
 }
 
 .buttonsBox {
+  /* border: 1.5px solid white; */ 
+  transform: translate(-50px, -370px);
   background-color: #45AFCB;
   padding: 10px;
   margin: 80px;
@@ -49,4 +51,15 @@
   opacity: 0.5;
   transition: 0.3s;
   transform: scale(1.003);
+}
+
+.buttonClicked {
+  transform: translate(-50px, -275px);
+  /* border: 1.5px solid yellow; */
+  background-color: #45AFCB;
+  padding: 10px;
+  margin: 80px;
+  width: 80px;
+  height: 200px;
+  visibility: hidden;
 }

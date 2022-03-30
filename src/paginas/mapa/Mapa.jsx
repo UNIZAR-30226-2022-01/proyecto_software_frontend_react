@@ -3,6 +3,33 @@ import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import "./mapa.css";
 
 export default class Mapa extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      enableButton: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(event) {
+		event.preventDefault();
+		
+    /* En caso de pulsar el botón "bar_char_but y !enableButton se mostrarán el resto de botones" 
+       Por otro lado, en caso de pulsar el botón "bar_char_but y !enableButton desapareceran 
+       el resto de botones*/
+    if(event.target.id === 'bar_char_but') {
+      if(this.state.enableButton) {
+        document.getElementById('hidden_buttons').style.visibility = 'hidden'; 
+        this.setState({enableButton:false});
+      }
+      else {
+        document.getElementById('hidden_buttons').style.visibility = 'visible';
+        this.setState({enableButton:true});
+      }
+    }
+	};
+
 
   prueba(e) {
     document.getElementById(e.target.id).style.fill = 'red';
@@ -10,6 +37,8 @@ export default class Mapa extends React.Component {
   }
 
   render() {
+
+
     document.body.style.backgroundColor = "#45AFCB";
 
     var jugadores = [];
@@ -369,15 +398,13 @@ export default class Mapa extends React.Component {
           <path 
             className="sea-line"
             // Siam - Indonesia
-            d="M 785,426 L 798,440" 
-            />
-          </g>
-
-          <g id="numTropas">
-            
-          
+            d="M 785,426 L 798,440" />
           </g>
         </g>
+      
+
+
+
       </g>
     </svg>
     
@@ -429,15 +456,26 @@ export default class Mapa extends React.Component {
         </div>
       </div>*/}
 
-      <div className="buttonsBox">          
+      <div className="buttonClicked" id="hidden_buttons">
         <div className="buttons">
-          <input type="image" src="https://img.icons8.com/material-rounded/48/000000/bar-chart.png" alt='bar-chart' height="60" width="60" />
+          <input type="image" id="user_but" src="https://img.icons8.com/ios/50/000000/user--v1.png" alt='user' height="60" width="60" />
         </div> &nbsp;&nbsp;&nbsp;&nbsp;
         <div className="buttons">
-          <input type="image" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
+          <input type="image" id="world_but" src="https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/64/000000/external-world-business-strategy-kmg-design-detailed-outline-kmg-design.png" alt='world' height="60" width="60"/>
         </div>
       </div>
 
+      <div className="buttonsBox">          
+        <div className="buttons">
+          <input type="image" id="bar_char_but" onClick={this.handleClick} src="https://img.icons8.com/material-rounded/48/000000/bar-chart.png" alt='bar-chart' height="60" width="60" />
+        </div> &nbsp;&nbsp;&nbsp;&nbsp;
+        <div className="buttons">
+          <input type="image" id="cards_but" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
+        </div>
+      </div>
+
+
+      
     </div>
     
     );  
