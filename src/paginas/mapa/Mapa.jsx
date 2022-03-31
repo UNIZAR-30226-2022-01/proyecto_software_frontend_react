@@ -58,6 +58,7 @@ export default class Mapa extends React.Component {
 
   render() {
     document.body.style.backgroundColor = "#45AFCB";
+    //document.body.style.position="hidden"
 
     var jugadores = [];
     for (var i = 0; i < 6; i++) {
@@ -72,8 +73,8 @@ export default class Mapa extends React.Component {
     return (
     <div className="cen">
       <svg
-        width="60%"
-        viewBox="0 -50 1024 768"
+        width="65%"
+        viewBox="0 -50 1024 792"
       >
       <g id="map" visibility="visible" fill="none" strokeWidth={2.5}>
         <g id="Seas" fill="none">
@@ -675,8 +676,6 @@ export default class Mapa extends React.Component {
           <input type="image" id="cards_but" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
         </div>
       </div>
-
-
       
     </div>
     

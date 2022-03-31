@@ -29,6 +29,8 @@ export default class IniciarSesion extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
+		this.setState({irInicio:true});
+
 		fetch('http://localhost:8090/login', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
