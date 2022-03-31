@@ -95,44 +95,38 @@ export default class Registrar extends React.Component {
 		event.preventDefault();
 
 		if (validarFormato(this.state.errores)) {
-			try {
-				
-				fetch('http://localhost:8090/registro', {
-				  method: 'post',
-				  headers: {'Content-Type':'application/x-www-form-urlencoded'},
-				  body: queryString.stringify({
-						nombre: this.state.nombreUsuario,
-						email: this.state.email,
-						password: this.state.contrasegna,
-				   })
-				})
-				.then((response) => {
-					if (response.ok) {
-						return response.text();
-					}
-					throw new Error(response.text());
-				})
-				.then((response) => {
-				var cookie = new Cookie();
-				cookie.set('cookie_user', response, {path: '/'});
-				
+			fetch('http://localhost:8090/registro', {
+			  method: 'post',
+			  headers: {'Content-Type':'application/x-www-form-urlencoded'},
+			  body: queryString.stringify({
+					nombre: this.state.nombreUsuario,
+					email: this.state.email,
+					password: this.state.contrasegna,
+			   })
+			})
+			.then((response) => {
+				if (response.ok) {
+					return response.text();
+				}
+				throw new Error(response.text());
+			})
+			.then(() => {	
 				swal.fire({
 					title: 'Inicio de sesión completado con éxito',
 					icon: 'success',
-					timer: 2000,
+					button: 'Ok',
 					timerProgressBar: true,
 				});
-
 				this.setState({ irIniciarSesion: true });
-				})
-			} catch (error) {
+			})
+			.catch((error) => {
 				swal.fire({
 					title: 'Se ha producido un error al registrarse',
 					text: error.message,
 					icon: 'error',
 					button: 'Ok',
 				});
-			}
+			})
 		} 
 	};
 

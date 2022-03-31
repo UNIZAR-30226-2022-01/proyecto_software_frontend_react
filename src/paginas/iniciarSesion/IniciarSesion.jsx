@@ -29,42 +29,38 @@ export default class IniciarSesion extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		try {
-			fetch('http://localhost:8090/login', {
-				method: 'post',
-				headers: {'Content-Type':'application/x-www-form-urlencoded'},
-				body: queryString.stringify({
-					nombre: this.state.nombreUsuario,
-					password: this.state.contrasegna,
-				 })
-			})
-			.then((response) => {
-				if (response.ok) {
-					return response.text();
-				}
-				throw new Error(response.text());
-			})
-			.then((response) => {
-			var cookie = new Cookie();
-			cookie.set('cookie_user', response, {path: '/'});
-			
+		fetch('http://localhost:8090/login', {
+			method: 'post',
+			headers: {'Content-Type':'application/x-www-form-urlencoded'},
+			body: queryString.stringify({
+				nombre: this.state.nombreUsuario,
+				password: this.state.contrasegna,
+			 })
+		})
+		.then((response) => {
+			if (response.ok) {
+				return response.text();
+			}
+			throw new Error(response.text());
+		})
+		.then((response) => {
+      document.cookie = response;
 			swal.fire({
 				title: 'Inicio de sesión completado con éxito',
 				icon: 'success',
 				timer: 2000,
 				timerProgressBar: true,
 			});
-
 			this.setState({irInicio:true});
-			})
-		} catch (error) {
+		})
+		.catch ((error) => {
 			swal.fire({
 				title: 'Se ha producido un error al iniciar sesión',
 				text: error.message,
 				icon: 'error',
 				button: 'Ok',
 			});
-		}
+		})
 	};
 
 	render() {
