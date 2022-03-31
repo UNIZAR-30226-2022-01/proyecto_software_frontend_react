@@ -112,10 +112,10 @@ export default class Registrar extends React.Component {
 			})
 			.then(() => {	
 				swal.fire({
-					title: 'Inicio de sesión completado con éxito',
+					title: 'Registro completado con éxito',
+					text: "Inicia sesión en tu cuenta para acceder a World Domination",
 					icon: 'success',
 					button: 'Ok',
-					timerProgressBar: true,
 				});
 				this.setState({ irIniciarSesion: true });
 			})
