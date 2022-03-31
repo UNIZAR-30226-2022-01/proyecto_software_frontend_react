@@ -1,5 +1,8 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import queryString from 'query-string';
+import Cookie from 'universal-cookie';
+import swal from 'sweetalert2';
 import "./iniciarSesion.css";
 
 export default class IniciarSesion extends React.Component {
@@ -26,13 +29,42 @@ export default class IniciarSesion extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		console.log(this.state.nombreUsuario);
-		console.log(this.state.contrasegna);
+		try {
+			fetch('http://localhost:8090/login', {
+				method: 'post',
+				headers: {'Content-Type':'application/x-www-form-urlencoded'},
+				body: queryString.stringify({
+					nombre: this.state.nombreUsuario,
+					password: this.state.contrasegna,
+				 })
+			})
+			.then((response) => {
+				if (response.ok) {
+					return response.text();
+				}
+				throw new Error(response.text());
+			})
+			.then((response) => {
+			var cookie = new Cookie();
+			cookie.set('cookie_user', response, {path: '/'});
+			
+			swal.fire({
+				title: 'Inicio de sesión completado con éxito',
+				icon: 'success',
+				timer: 2000,
+				timerProgressBar: true,
+			});
 
-		console.info('Valid Form');
-		// Conectar API
-		//window.location.assign("/inicio");
-		this.setState({irInicio:true});
+			this.setState({irInicio:true});
+			})
+		} catch (error) {
+			swal.fire({
+				title: 'Se ha producido un error al iniciar sesión',
+				text: error.message,
+				icon: 'error',
+				button: 'Ok',
+			});
+		}
 	};
 
 	render() {

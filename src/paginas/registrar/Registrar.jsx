@@ -1,4 +1,8 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
+import queryString from 'query-string';
+import Cookie from 'universal-cookie';
+import swal from 'sweetalert2';
 import "./registrar.css";
 
 const emailValidoRegex = RegExp(
@@ -28,7 +32,8 @@ export default class Registrar extends React.Component {
 				email: "",
 				contrasegna: "",
 				reContrasegna: "",
-			}
+			},
+			irIniciarSesion: false,
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -89,98 +94,115 @@ export default class Registrar extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		console.log(this.state.nombreUsuario);
-		console.log(this.state.email);
-		console.log(this.state.contrasegna);
-		console.log(this.state.reContrasegna);
-
 		if (validarFormato(this.state.errores)) {
 			try {
+				
 				fetch('http://localhost:8090/registro', {
 				  method: 'post',
-				  headers: {'Content-Type':'application/json'},
-				  body: JSON.stringify({
+				  headers: {'Content-Type':'application/x-www-form-urlencoded'},
+				  body: queryString.stringify({
 						nombre: this.state.nombreUsuario,
 						email: this.state.email,
 						password: this.state.contrasegna,
 				   })
 				})
-				  .then(response => response.text())
-				  .then((response) => {
-					console.log(response)
-					//this.setState({ data: json });
-				  })
+				.then((response) => {
+					if (response.ok) {
+						return response.text();
+					}
+					throw new Error(response.text());
+				})
+				.then((response) => {
+				var cookie = new Cookie();
+				cookie.set('cookie_user', response, {path: '/'});
+				
+				swal.fire({
+					title: 'Inicio de sesión completado con éxito',
+					icon: 'success',
+					timer: 2000,
+					timerProgressBar: true,
+				});
+
+				this.setState({ irIniciarSesion: true });
+				})
 			} catch (error) {
-				console.log(error);
-			} finally {
-				this.setState({ isLoading: false });
+				swal.fire({
+					title: 'Se ha producido un error al registrarse',
+					text: error.message,
+					icon: 'error',
+					button: 'Ok',
+				});
 			}
 		} 
 	};
 
 	render() {
-	return (
-		<div className="cen">
-			<h1>Crear cuenta en World Domination</h1>
-			<form onSubmit={this.handleSubmit}>
-				
-				<h2>Nombre de usuario</h2>
-				<input
-					name="nombreUsuario"
-					type="text"
-					placeholder="Introduzca su nombre de usuario..."
-					value={this.state.nombreUsuario}
-					onChange={this.handleInputChange}
-					required/> 
-				<br></br>
-				{(this.state.nombreUsuario.length > 0) && 
-					<span className='errorRegistrar'>{this.state.errores.nombreUsuario}</span>}
+		if (this.state.irIniciarSesion) {
+			return <Navigate to='/iniciarSesion'/>;
+		}
 
-				<h2>Correo electrónico</h2>
-				<input
-					name="email"
-					type="text"
-					placeholder="Introduzca su correo electrónico..."
-					value={this.state.email}
-					onChange={this.handleInputChange}
-					required
-				/> 
-				<br></br>
-				{(this.state.email.length > 0) && 
-					<span className='errorRegistrar'>{this.state.errores.email}</span>}
-
-				<h2>Contraseña</h2>
-				<input
-					name="contrasegna"
-					type="password"
-					placeholder="Introduzca su contraseña..."
-					value={this.state.contrasegna}
-					onChange={this.handleInputChange}
-					required
-				/> 
-				<br></br>
-				{(this.state.contrasegna.length > 0) && 
-					<span className='errorRegistrar'>{this.state.errores.contrasegna}</span>}
-
-				<h2>Repetir contraseña</h2>
-				<input
-					name="reContrasegna"
-					type="password"
-					placeholder="Repita su contraseña..."
-					value={this.state.reContrasegna}
-					onChange={this.handleInputChange}
-					required
-				/> 
-				<br></br>
-				{(this.state.reContrasegna.length > 0) && 
-					<span className='errorRegistrar'>{this.state.errores.reContrasegna}</span>}
-
-				<br></br><br></br>
-				<button type="submit">Registrarse</button>
-				
-			</form>
-		</div>
-	);  
+		return (
+			<div className="cen">
+				<h1>Crear cuenta en World Domination</h1>
+				<form onSubmit={this.handleSubmit}>
+					
+					<h2>Nombre de usuario</h2>
+					<input
+						name="nombreUsuario"
+						type="text"
+						placeholder="Introduzca su nombre de usuario..."
+						value={this.state.nombreUsuario}
+						onChange={this.handleInputChange}
+						required/> 
+					<br></br>
+					{(this.state.nombreUsuario.length > 0) && 
+						<span className='errorRegistrar'>{this.state.errores.nombreUsuario}</span>}
+	
+					<h2>Correo electrónico</h2>
+					<input
+						name="email"
+						type="text"
+						placeholder="Introduzca su correo electrónico..."
+						value={this.state.email}
+						onChange={this.handleInputChange}
+						required
+					/> 
+					<br></br>
+					{(this.state.email.length > 0) && 
+						<span className='errorRegistrar'>{this.state.errores.email}</span>}
+	
+					<h2>Contraseña</h2>
+					<input
+						name="contrasegna"
+						type="password"
+						placeholder="Introduzca su contraseña..."
+						value={this.state.contrasegna}
+						onChange={this.handleInputChange}
+						required
+					/> 
+					<br></br>
+					{(this.state.contrasegna.length > 0) && 
+						<span className='errorRegistrar'>{this.state.errores.contrasegna}</span>}
+	
+					<h2>Repetir contraseña</h2>
+					<input
+						name="reContrasegna"
+						type="password"
+						placeholder="Repita su contraseña..."
+						value={this.state.reContrasegna}
+						onChange={this.handleInputChange}
+						required
+					/> 
+					<br></br>
+					{(this.state.reContrasegna.length > 0) && 
+						<span className='errorRegistrar'>{this.state.errores.reContrasegna}</span>}
+	
+					<br></br><br></br>
+					<button type="submit">Registrarse</button>
+					
+				</form>
+			</div>
+		);  
 	}
 }
  

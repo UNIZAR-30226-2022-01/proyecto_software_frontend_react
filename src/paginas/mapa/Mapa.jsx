@@ -1,6 +1,6 @@
 import React from 'react';
 import InfoJugador from "../../componentes/infoJugador/InfoJugador";
-import BarraSuperior from '../../componentes/barraSuperior/BarraSuperior'
+//import BarraSuperior from '../../componentes/barraSuperior/BarraSuperior'
 import "./mapa.css";
 
 export default class Mapa extends React.Component {
