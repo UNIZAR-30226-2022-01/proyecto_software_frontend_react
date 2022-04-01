@@ -65,6 +65,7 @@ export default class IniciarSesion extends React.Component {
 	};
 
 	render() {
+		document.body.style.backgroundColor = "#FFFFFF";
 		if (this.state.irInicio) {
 			return <Navigate to='/inicio'/>;
 		}

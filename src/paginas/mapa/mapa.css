@@ -22,11 +22,11 @@
   width: "60";
   padding: .5em;
   cursor: pointer;
+  transition: width 0.5s, height 0.5s, transform 0.5s;
 }
 
 .boton:hover {
   opacity: 0.6;
-  transition: 0.3s;
   transform: scale(1.05);
 }
 

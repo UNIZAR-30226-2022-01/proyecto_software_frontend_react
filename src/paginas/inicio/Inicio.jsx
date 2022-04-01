@@ -4,6 +4,7 @@ import "./inicio.css";
 
 export default class Inicio extends React.Component {
   render() {
+    document.body.style.backgroundColor = "#FFFFFF";
     return (
     <div className="cen">
       <h1>World domination</h1>

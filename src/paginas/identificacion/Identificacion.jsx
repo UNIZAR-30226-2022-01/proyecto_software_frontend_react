@@ -4,6 +4,7 @@ import "./identificacion.css";
 
 export default class Identificacion extends React.Component {
   render() {
+    document.body.style.backgroundColor = "#FFFFFF";
     return (
     <div className="cen">
       <h1>World domination</h1>

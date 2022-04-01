@@ -22,8 +22,8 @@ export default class Mapa extends React.Component {
   handleChartButton(event) {
 		event.preventDefault();
 
-    if(event.target.id === 'bar_char_but') {
-      if(this.state.enableButton) {
+    if (event.target.id === 'bar_char_but') {
+      if (this.state.enableButton) {
         document.getElementById('hidden_buttons').style.visibility = 'hidden';
         document.getElementById(event.target.id).src = "https://img.icons8.com/material-rounded/48/000000/bar-chart.png";
         this.setState({enableButton:false});
@@ -76,32 +76,33 @@ export default class Mapa extends React.Component {
 
         <MapaPartida></MapaPartida>
       
-      <div className="containerJugadores">
-        {jugadores}
-      </div>
+        {/* Información de las tropas, territorios y cartas de los jugadores */}
+        <div className="containerJugadores">
+          {jugadores}
+        </div>
 
-      <div className='containerBotones'>
-        {/* Botones desplegables: botón info regiones y botón mapa usuario */}
-        <div className="botonClick" id="hidden_buttons">
-          <div className="boton">
-            <input type="image" id="user_but" onClick={this.handleUserButton} src="https://img.icons8.com/ios/50/000000/user--v1.png" alt='user' height="60" width="60" />
-          </div> &nbsp;&nbsp;&nbsp;&nbsp;
-          <div className="boton">
-           <input type="image" id="world_but" onClick={this.handleWorldButton} src="https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/64/000000/external-world-business-strategy-kmg-design-detailed-outline-kmg-design.png" alt='world' height="60" width="60"/>
+        <div className='containerBotones'>
+          {/* Botones desplegables: botón info regiones y botón mapa usuario */}
+          <div className="botonClick" id="hidden_buttons">
+            <div className="boton">
+              <input type="image" id="user_but" onClick={this.handleUserButton} src="https://img.icons8.com/ios/50/000000/user--v1.png" alt='user' height="60" width="60" />
+            </div> &nbsp;&nbsp;&nbsp;&nbsp;
+            <div className="boton">
+             <input type="image" id="world_but" onClick={this.handleWorldButton} src="https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/64/000000/external-world-business-strategy-kmg-design-detailed-outline-kmg-design.png" alt='world' height="60" width="60"/>
+            </div>
           </div>
-        </div>
-      
-        {/* Botones principales: botón desplegable mapas y botón cartas usuario */}
-        <div className="botonesPrincipales">          
-          <div className="boton">
-            <input type="image" id="bar_char_but" onClick={this.handleChartButton} src="https://img.icons8.com/material-rounded/48/000000/bar-chart.png" alt='bar-chart' height="60" width="60" />
-          </div> &nbsp;&nbsp;&nbsp;&nbsp;
-          <div className="boton">
-            <input type="image" id="cards_but" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
+
+          {/* Botones principales: botón desplegable mapas y botón cartas usuario */}
+          <div className="botonesPrincipales">          
+            <div className="boton">
+              <input type="image" id="bar_char_but" onClick={this.handleChartButton} src="https://img.icons8.com/material-rounded/48/000000/bar-chart.png" alt='bar-chart' height="60" width="60" />
+            </div> &nbsp;&nbsp;&nbsp;&nbsp;
+            <div className="boton">
+              <input type="image" id="cards_but" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     );  
   }
 }

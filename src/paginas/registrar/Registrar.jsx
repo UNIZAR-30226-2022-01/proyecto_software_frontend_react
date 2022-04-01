@@ -130,6 +130,7 @@ export default class Registrar extends React.Component {
 	};
 
 	render() {
+		document.body.style.backgroundColor = "#FFFFFF";
 		if (this.state.irIniciarSesion) {
 			return <Navigate to='/iniciarSesion'/>;
 		}

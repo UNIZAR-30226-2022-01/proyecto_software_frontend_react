@@ -1,5 +1,6 @@
 .country{
     cursor: pointer;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
 }
 
 .country:hover {
