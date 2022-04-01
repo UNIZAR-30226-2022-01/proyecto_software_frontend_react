@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
-import Cookie from 'universal-cookie';
 import swal from 'sweetalert2';
 import "./registrar.css";
 

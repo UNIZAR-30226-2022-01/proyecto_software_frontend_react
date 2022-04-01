@@ -1,101 +1,21 @@
-.country{
-    cursor: pointer;
-  }
-  
-.special-country{
-  opacity: 0.8;
-}
-
-.country:hover {
-    fill:#FFFFFF;
-    opacity: 0.8;
-    transition: 0.3s;
-    transform: scale(1.003);
-}
-
-#Lines{
-  stroke-dasharray: 5,5;
-}
-
-.circulo{
-  stroke: black;
-  stroke-width: 2;
-  -webkit-filter: drop-shadow( 2px 2px 1px rgba(0, 0, 0, .5));
-  filter: drop-shadow( 2px 2px 1px rgba(0, 0, 0, .5));
-  pointer-events: none;
-}
-
-.ejemplo:hover > #Africa_Oriental {
-  fill:#FFFFFF;
-  opacity: 0.8;
-  transition: 0.3s;
-  transform: scale(1.003);
-}
-
-.cAfrica .circulo {
-  fill:#e2bc75;
-}
-
-.cOceania .circulo {
-  fill: #f7aab1;
-}
-
-.cAmericaSur .circulo {
-  fill: #ebad97;
-}
-
-.cAmericaNorte .circulo {
-  fill: #f8e0a2;
-}
-
-.cEuropa .circulo  {
-  fill: #e5dcec;
-}
-
-.cAsia .circulo {
-  fill: #e0f0c6;
-}
-
-.cAsia {
-  fill: #cab8af;
-}
-
-.circulos text{
-    font-family: arial;
-    fill: white;
-    stroke: #000000;
-    stroke-width: 0.7px;
-    font-size: 18px;
-    font-weight: bold;
-    text-anchor: middle;
-    dominant-baseline: central;
-    pointer-events: none;
-    cursor: pointer;
-}
-
 .containerJugadores {
-  width:3%;
+  /* border: 1.5px solid white; */
+  width:17%;
   height: 95px;
-  margin-top: 3%;
-  margin-right: 2.5%;
+  margin-top: 1.5%;
+  margin-right: 4%;
   float:right;
   clear:right;
 }
 
-.buttonsBox {
-  /* border: 1.5px solid white; */ 
-  transform: translate(-50px, -370px);
-  background-color: #45AFCB;
-  padding: 10px;
-  margin: 80px;
-  width: 200px;
-  height: 80px;
+.botonesPrincipales {
+  /* border: 1.5px solid white; */
+  width: 180px;
   display: flex;
-  list-style: none;
 }
 
-.buttons{
-  border: 1.5px solid white;
+.boton {
+  border: 1.5px solid white; 
   border-radius: 20px;
   background-color: #CCF4FF;
   height: "60"; 
@@ -104,19 +24,25 @@
   cursor: pointer;
 }
 
-.buttons:hover {
-  opacity: 0.5;
+.boton:hover {
+  opacity: 0.6;
   transition: 0.3s;
-  transform: scale(1.003);
+  transform: scale(1.05);
 }
 
-.buttonClicked {
-  transform: translate(-50px, -275px);
-  /* border: 1.5px solid yellow; */
-  background-color: #45AFCB;
-  padding: 10px;
-  margin: 80px;
-  width: 80px;
+.botonClick {
+  /*border: 1.5px solid yellow; */
+  width: 79px;
   height: 200px;
   visibility: hidden;
+}
+
+.containerBotones {
+  /* border: 1.5px solid white; */
+  float:left;
+  clear:left;
+  margin-top: 35%;
+  margin-left: 4%;
+  width: 1px;
+  margin-bottom: 2%;
 }
