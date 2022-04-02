@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import BarraSuperior from "../../componentes/barraSuperior/BarraSuperior";
 import "./inicio.css";
 
 export default class Inicio extends React.Component {
@@ -7,6 +8,9 @@ export default class Inicio extends React.Component {
     document.body.style.backgroundColor = "#FFFFFF";
     return (
     <div className="cen">
+
+      <BarraSuperior></BarraSuperior>
+
       <h1>World domination</h1>
 
       <button>
