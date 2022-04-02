@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import swal from 'sweetalert2';
-import BarraSuperior from "../../componentes/barraSuperior/BarraSuperior";
+import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import "./crearPartida.css";
 
 export default class CrearPartida extends React.Component {
@@ -74,7 +74,7 @@ export default class CrearPartida extends React.Component {
 
     return (
     <div className="cen">
-       <BarraSuperior></BarraSuperior>
+       <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
       <form onSubmit={this.handleSubmit}>
         <h1>Crear partida</h1>

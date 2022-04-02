@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import BarraSuperior from "../../componentes/barraSuperior/BarraSuperior";
+import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import "./inicio.css";
 
 export default class Inicio extends React.Component {
@@ -9,7 +9,7 @@ export default class Inicio extends React.Component {
     return (
     <div className="cen">
 
-      <BarraSuperior></BarraSuperior>
+      <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
       <h1>World domination</h1>
 

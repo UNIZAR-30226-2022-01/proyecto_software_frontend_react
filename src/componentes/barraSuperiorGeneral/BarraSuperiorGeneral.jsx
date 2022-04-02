@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import "./barraSuperior.css";
 
-export default class BarraSuperior extends React.Component {
+export default class BarraSuperiorGeneral extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -14,23 +14,24 @@ export default class BarraSuperior extends React.Component {
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
 		this.cerrarSesion = this.cerrarSesion.bind(this);
 	}
-
+ 
 	componentDidMount() {
 		//this.setState({ nombre_usuario: this.getNombreUsuario(document.cookie) });
     this.setState({ ancho: this.state.nombre_usuario.length > 100 ? this.state.nombre_usuario.length: 100 });
 	}
 
   getNombreUsuario(nombre) {
-    nombre = nombre.split('=')[1];
-    nombre = nombre.split('|')[0];
-		console.log(nombre);
+		if (nombre.length > 0) {
+    	nombre = nombre.split('=')[1];
+    	nombre = nombre.split('|')[0];
+		}
     return nombre;
   }
 
   cerrarSesion() {
-    localStorage.clear()
+    document.cookie = "cookie_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 		this.setState({ irIdentificacion: true });
-  }
+  }   
 
 	render() {
     if (this.state.irIdentificacion) {
@@ -55,7 +56,7 @@ export default class BarraSuperior extends React.Component {
             <button class="dropbtn">{this.state.nombre_usuario}</button>
             <div class="dropdown-content">
             <a width ={this.state.ancho}>Perfil</a>
-            <a width ={this.state.ancho}>Log out</a>
+            <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
             </div>
         	</div>
         </div>

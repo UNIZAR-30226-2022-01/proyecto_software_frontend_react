@@ -26,3 +26,4 @@ export default class InfoJugador extends React.Component {
 		);  
   }
 }
+
