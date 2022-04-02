@@ -6,7 +6,7 @@ export default class BarraSuperiorGeneral extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
-			nombre_usuario: "usuario",
+			nombre_usuario: this.getNombreUsuario(document.cookie),
       ancho: 0,
 			irIdentificacion: false,
 		};
@@ -17,7 +17,7 @@ export default class BarraSuperiorGeneral extends React.Component {
  
 	componentDidMount() {
 		//this.setState({ nombre_usuario: this.getNombreUsuario(document.cookie) });
-    this.setState({ ancho: this.state.nombre_usuario.length > 100 ? this.state.nombre_usuario.length: 100 });
+    //this.setState({ ancho: this.state.nombre_usuario.length > 100 ? this.state.nombre_usuario.length: 100 });
 	}
 
   getNombreUsuario(nombre) {

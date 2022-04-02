@@ -28,7 +28,7 @@ export default class IniciarSesion extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		this.setState({irInicio:true});
+		//this.setState({irInicio:true});
 
 		fetch('http://localhost:8090/login', {
 			method: 'post',
@@ -42,10 +42,12 @@ export default class IniciarSesion extends React.Component {
 			if (response.ok) {
 				return response.text();
 			}
-			throw new Error(response.text());
+			throw response.text();
 		})
 		.then((response) => {
       document.cookie = response;
+		})
+		.then(() => {
 			swal.fire({
 				title: 'Inicio de sesión completado con éxito',
 				icon: 'success',
@@ -55,11 +57,13 @@ export default class IniciarSesion extends React.Component {
 			this.setState({irInicio:true});
 		})
 		.catch ((error) => {
-			swal.fire({
-				title: 'Se ha producido un error al iniciar sesión',
-				text: error.message,
-				icon: 'error',
-			});
+			error.then((e) => {
+				swal.fire({
+					title: 'Se ha producido un error al iniciar sesión',
+					text: e,
+					icon: 'error',
+				});
+			})
 		})
 	};
 

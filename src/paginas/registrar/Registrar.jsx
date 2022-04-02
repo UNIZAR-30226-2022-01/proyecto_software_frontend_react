@@ -107,7 +107,7 @@ export default class Registrar extends React.Component {
 				if (response.ok) {
 					return response.text();
 				}
-				throw new Error(response.text());
+				throw response.text();
 			})
 			.then(() => {	
 				swal.fire({
@@ -118,11 +118,13 @@ export default class Registrar extends React.Component {
 				this.setState({ irIniciarSesion: true });
 			})
 			.catch((error) => {
-				swal.fire({
-					title: 'Se ha producido un error al registrarse',
-					text: error.message,
-					icon: 'error',
-				});
+				error.then((e) => {
+					swal.fire({
+						title: 'Se ha producido un error al registrarse',
+						text: e,
+						icon: 'error',
+					});
+				})
 			})
 		} 
 	};
