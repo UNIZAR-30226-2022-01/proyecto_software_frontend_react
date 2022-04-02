@@ -59,7 +59,6 @@ export default class IniciarSesion extends React.Component {
 				title: 'Se ha producido un error al iniciar sesión',
 				text: error.message,
 				icon: 'error',
-				button: 'Ok',
 			});
 		})
 	};

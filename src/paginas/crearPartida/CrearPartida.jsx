@@ -29,14 +29,17 @@ export default class CrearPartida extends React.Component {
   handleSubmit(event) {    
     event.preventDefault();
 
+    document.cookie = this.cookie;
+
     fetch('http://localhost:8090/api/crearPartida', {
-			  method: 'post',
-			  headers: {'Content-Type':'application/x-www-form-urlencoded'},
-			  body: queryString.stringify({
-					maxJugadores: this.state.maxJugadores,
-          tipo: this.state.tipoPartida,
-					password: this.state.contrasegna,
-			   })
+			method: 'post',
+			headers: {'Content-Type':'application/x-www-form-urlencoded'},
+			body: queryString.stringify({
+				maxJugadores: this.state.maxJugadores,
+        tipo: this.state.tipoPartida,
+				password: this.state.contrasegna,
+			}),
+      credentials: 'include'
 		})
 		.then((response) => {
 			if (response.ok) {
@@ -49,7 +52,6 @@ export default class CrearPartida extends React.Component {
 				title: 'Partida creada con éxito',
 				text: "Espera a que el resto de jugadores se unan a la partida",
 				icon: 'success',
-				button: 'Ok',
 			});
 			this.setState({ irPartida: true });
 		})
@@ -58,7 +60,6 @@ export default class CrearPartida extends React.Component {
 				title: 'Se ha producido un error al crear la partida',
 				text: error.message,
 				icon: 'error',
-				button: 'Ok',
 			});
     })
   }

@@ -114,7 +114,6 @@ export default class Registrar extends React.Component {
 					title: 'Registro completado con éxito',
 					text: "Inicia sesión en tu cuenta para acceder a World Domination",
 					icon: 'success',
-					button: 'Ok',
 				});
 				this.setState({ irIniciarSesion: true });
 			})
@@ -123,7 +122,6 @@ export default class Registrar extends React.Component {
 					title: 'Se ha producido un error al registrarse',
 					text: error.message,
 					icon: 'error',
-					button: 'Ok',
 				});
 			})
 		} 
