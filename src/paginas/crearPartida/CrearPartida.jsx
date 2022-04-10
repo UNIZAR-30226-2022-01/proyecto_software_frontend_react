@@ -30,6 +30,8 @@ export default class CrearPartida extends React.Component {
   handleSubmit(event) {    
     event.preventDefault();
 
+    //this.setState({ irPartida: true });
+
     fetch('http://localhost:8090/api/crearPartida', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},

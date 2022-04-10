@@ -41,12 +41,6 @@ export default class BarraSuperiorGeneral extends React.Component {
 		return (
       <div class="topnav">
         <a class="active">World Domination</a>
-       
-        <a>Tienda</a>
-
-        <a>Ranking</a>
-
-        <a>Personalización</a>
 				
         <div class="topnav-right">
         	<a><img class="imagenes" src="https://img.icons8.com/material-rounded/48/000000/add-user-group-man-man.png"/></a>

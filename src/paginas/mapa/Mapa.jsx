@@ -1,6 +1,7 @@
 import React from 'react';
 import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import MapaPartida from "../../componentes/mapaPartida/MapaPartida";
+import MapaInfo from "../../componentes/mapaInfo/MapaInfo";
 import BarraSuperiorJuego from '../../componentes/barraSuperiorJuego/BarraSuperiorJuego'
 import "./mapa.css";
 
@@ -9,11 +10,13 @@ export default class Mapa extends React.Component {
     super(props);
     this.state = {
       enableButton: false,
+      enableMapInfo: false,
     };
 
     this.handleChartButton = this.handleChartButton.bind(this);
     this.handleWorldButton = this.handleWorldButton.bind(this);
     this.handleUserButton = this.handleUserButton.bind(this);
+    this.Greeting = this.Greeting.bind(this);
   }
 
   /* En caso de pulsar el botón "bar_char_but y !enableButton se mostrarán el resto de botones". 
@@ -41,7 +44,7 @@ export default class Mapa extends React.Component {
   handleWorldButton(event) {
     event.preventDefault();
 
-    console.log('World Button');
+    this.setState({enableMapInfo:true});
   };
 
   /* Muestra el mapa con la información de las regiones del mapa, indicando el número de 
@@ -49,12 +52,19 @@ export default class Mapa extends React.Component {
   handleUserButton(event) {
     event.preventDefault();
 
-    console.log('User Button');
+    this.setState({enableMapInfo:false});
   };
 
   prueba(e) {
     document.getElementById(e.target.id).style.fill = 'red';
     document.getElementById("0").style.background = 'red';
+  }
+
+  Greeting() {
+    if (this.state.enableMapInfo) {
+      return <MapaInfo />;
+    }
+    return <MapaPartida />;
   }
 
   render() {
@@ -73,8 +83,8 @@ export default class Mapa extends React.Component {
     return (
       <div className='cen'>
         <BarraSuperiorJuego></BarraSuperiorJuego>
-
-        <MapaPartida></MapaPartida>
+        
+        <this.Greeting></this.Greeting>
       
         {/* Información de las tropas, territorios y cartas de los jugadores */}
         <div className="containerJugadores">
