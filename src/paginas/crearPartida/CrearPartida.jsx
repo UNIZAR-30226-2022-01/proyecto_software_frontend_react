@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
+import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./crearPartida.css";
 
 export default class CrearPartida extends React.Component {
@@ -70,7 +71,7 @@ export default class CrearPartida extends React.Component {
     document.body.style.backgroundColor = "#FFFFFF";
 
     if (this.state.irPartida) {
-      return <Navigate to='/mapa'/>;
+      return <Navigate to='/lobbyPartida'/>;
     }
 
     return (
@@ -115,6 +116,7 @@ export default class CrearPartida extends React.Component {
         <br></br><br></br>
         <button type="submit">Crear Partida</button>
       </form>  
+      <BarraInferior></BarraInferior>
     </div>
     );  
   }

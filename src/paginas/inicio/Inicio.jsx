@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
+import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./inicio.css";
 
 export default class Inicio extends React.Component {
@@ -38,6 +39,7 @@ export default class Inicio extends React.Component {
       </button>
       <br></br><br></br>
 
+      <BarraInferior></BarraInferior>
     </div>
     );  
   }

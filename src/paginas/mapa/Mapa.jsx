@@ -3,6 +3,7 @@ import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import MapaPartida from "../../componentes/mapaPartida/MapaPartida";
 import MapaInfo from "../../componentes/mapaInfo/MapaInfo";
 import BarraSuperiorJuego from '../../componentes/barraSuperiorJuego/BarraSuperiorJuego'
+//zimport BarChart from "../../imagenes/bar-chart.png";
 import "./mapa.css";
 
 export default class Mapa extends React.Component {
@@ -16,11 +17,12 @@ export default class Mapa extends React.Component {
     this.handleChartButton = this.handleChartButton.bind(this);
     this.handleWorldButton = this.handleWorldButton.bind(this);
     this.handleUserButton = this.handleUserButton.bind(this);
-    this.Greeting = this.Greeting.bind(this);
+    this.handleCardButton = this.handleCardButton.bind(this);
+    this.changeMap = this.changeMap.bind(this);
   }
 
-  /* En caso de pulsar el botón "bar_char_but y !enableButton se mostrarán el resto de botones". 
-     Por otro lado, en caso de pulsar el botón "bar_char_but y !enableButton desapareceran 
+  /* En caso de pulsar el botón "bar_char_but" y !enableButton se mostrarán el resto de botones. 
+     Por otro lado, en caso de pulsar el botón "bar_char_but" y !enableButton desapareceran 
      el resto de botones. */
   handleChartButton(event) {
 		event.preventDefault();
@@ -55,12 +57,11 @@ export default class Mapa extends React.Component {
     this.setState({enableMapInfo:false});
   };
 
-  prueba(e) {
-    document.getElementById(e.target.id).style.fill = 'red';
-    document.getElementById("0").style.background = 'red';
-  }
+  handleCardButton() {
+    //document.style.background-blend-mode = "darken";
+  };
 
-  Greeting() {
+  changeMap() {
     if (this.state.enableMapInfo) {
       return <MapaInfo />;
     }
@@ -84,7 +85,7 @@ export default class Mapa extends React.Component {
       <div className='cen'>
         <BarraSuperiorJuego></BarraSuperiorJuego>
         
-        <this.Greeting></this.Greeting>
+        <this.changeMap></this.changeMap>
       
         {/* Información de las tropas, territorios y cartas de los jugadores */}
         <div className="containerJugadores">
@@ -108,7 +109,7 @@ export default class Mapa extends React.Component {
               <input type="image" id="bar_char_but" onClick={this.handleChartButton} src="https://img.icons8.com/material-rounded/48/000000/bar-chart.png" alt='bar-chart' height="60" width="60" />
             </div> &nbsp;&nbsp;&nbsp;&nbsp;
             <div className="boton">
-              <input type="image" id="cards_but" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
+              <input type="image" id="cards_but" onClick={this.handleCardButton} src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/60/000000/external-cards-children-toys-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" alt='cards' height="60" width="60"/>
             </div>
           </div>
         </div>

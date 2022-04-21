@@ -3,7 +3,6 @@ import "./barraSuperiorJuego.css";
 
 export default class BarraSuperiorJuego extends React.Component {
 
-
 	render() {
 		return (
 			<div className="topnav">
