@@ -45,7 +45,7 @@ export default class IniciarSesion extends React.Component {
 			throw response.text();
 		})
 		.then((response) => {
-      document.cookie = response;
+	  	document.cookie = response;
 		})
 		.then(() => {
 			swal.fire({

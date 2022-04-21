@@ -1,8 +1,8 @@
 .participante {
-    width: 450px;
-    height: 60px;
+    width: 35%;
+    height: 70px;
     margin: 0 auto;
-    margin-top: 1%;
+    margin-top: 0.75%;
     border-radius: 15px;
     border: 1px solid #fafafa;
     box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
@@ -26,5 +26,63 @@
     color:#fafafa;
     font-size: 20px;
     font-weight: 550;
-    padding: 15px;
+    padding: 20px;
 }
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 30px;
+  width: 10px;
+  height: 10px;
+  border-radius: 90%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 1s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 1s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 1s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 1s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+  

@@ -5,17 +5,7 @@
     margin-right: 4%;
     margin: auto;
     padding-top: 0.1%;
-    padding-bottom: 2%;
-}
-
-.containerBoton {
-    border: 1.5px solid rgb(41, 136, 85); 
-    float:left;
-    clear:left;
-    width: 50%;
-    height: 50%;
-    left: 0;
-    margin-bottom: 2%;
+    padding-bottom: 3%;
 }
 
 .botonAtrasEspera {
@@ -24,15 +14,27 @@
     background-color: rgb(110, 110, 110);
     width: 20%;
     height: 50%;
-    left: 0;
     vertical-align: middle;
-    padding: .5em;
+    padding: 15px;
     cursor: pointer;
     transition: width 0.5s, height 0.5s, transform 0.5s;
     margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color:#fafafa;
+    font-size: 16px;
+    font-weight: 550;
   }
   
-  .botonAtras:hover {
-    opacity: 0.6;
-    transform: scale(1.05);
-  }
+.botonAtrasEspera:hover {
+    opacity: 0.9;
+    transition: 0.2s;
+    transform: scale(1.01);
+}
+
+h1 {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+}
+
+h2 {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+}
