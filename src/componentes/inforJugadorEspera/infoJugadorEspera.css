@@ -1,0 +1,28 @@
+.participante {
+    width: 95%;
+    height: 100%;
+    margin-top: 6%;
+    margin-bottom: 3%;
+    float:right;
+    clear:right;
+    border-radius: 30px;
+    border: 1px solid #fafafa;
+    box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
+    background: #c3195d;
+    font-size: 50px;   
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+   
+.participante:hover {
+    opacity: 0.9;
+    transition: 0.2s;
+    transform: scale(1.02);
+}
+
+.datosJugadores {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color:#fafafa;
+    font-size: 20px;
+    font-weight: 550;
+    padding: 9px 0;
+}

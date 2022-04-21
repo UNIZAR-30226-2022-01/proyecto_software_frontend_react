@@ -1,0 +1,30 @@
+.participante {
+    width: 450px;
+    height: 60px;
+    margin: 0 auto;
+    margin-top: 1%;
+    border-radius: 15px;
+    border: 1px solid #fafafa;
+    box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
+    background: #c3195d;
+    font-size: 50px;   
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+} 
+
+.jugadorEspera {
+    border-style: dashed solid;
+    /* stroke-dasharray: 5,5; */
+}
+.participante:hover {
+    opacity: 0.9;
+    transition: 0.2s;
+    transform: scale(1.01);
+}
+
+.datosParticipante {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color:#fafafa;
+    font-size: 20px;
+    font-weight: 550;
+    padding: 15px;
+}

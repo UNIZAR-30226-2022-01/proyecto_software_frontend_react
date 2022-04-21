@@ -1,0 +1,38 @@
+.contenedorJugadoresEspera {
+    width: 100%;
+    height: 50%;
+    margin-top: 5%;
+    margin-right: 4%;
+    margin: auto;
+    padding-top: 0.1%;
+    padding-bottom: 2%;
+}
+
+.containerBoton {
+    border: 1.5px solid rgb(41, 136, 85); 
+    float:left;
+    clear:left;
+    width: 50%;
+    height: 50%;
+    left: 0;
+    margin-bottom: 2%;
+}
+
+.botonAtrasEspera {
+    border: 1.5px solid white; 
+    border-radius: 10px;
+    background-color: rgb(110, 110, 110);
+    width: 20%;
+    height: 50%;
+    left: 0;
+    vertical-align: middle;
+    padding: .5em;
+    cursor: pointer;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    margin: auto;
+  }
+  
+  .botonAtras:hover {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }

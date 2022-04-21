@@ -1,7 +1,7 @@
 .jugador {
     width: 95%;
     height: 100%;
-    margin-top: 6%;
+    margin-top: 5.5%;
     margin-bottom: 3%;
     float:right;
     clear:right;
@@ -12,7 +12,7 @@
     font-size: 50px;   
     transition: width 0.5s, height 0.5s, transform 0.5s;
 }
-   
+
 .jugador:hover {
     opacity: 0.9;
     transition: 0.2s;
