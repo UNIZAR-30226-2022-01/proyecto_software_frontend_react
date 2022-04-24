@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate } from "react-router-dom";
-import queryString from 'query-string';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
@@ -11,9 +10,12 @@ export default class LobbyPartida extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jugadores: ["none","none","none","none","none","none"],
+      jugadores: [],
       maxJugadores: 3,
-			irBuscarPartida: false,
+			enCurso: false,
+      irBuscarPartida: false,
+      colores: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
+      val: 0,
 		};
 
     this.handleLeaveButton = this.handleLeaveButton.bind(this);
@@ -62,14 +64,16 @@ export default class LobbyPartida extends React.Component {
 			if (response.ok) {
 				return response.json();
 			}
-      else {
-        throw response.text();
-      }
+      throw response.text();
 		})
 		.then((response) => {	
-      console.log(JSON.stringify(response['MaxJugadores']));
       this.setState({maxJugadores: response['MaxJugadores']});
-
+      this.setState({jugadores: response['NombresJugadores']});
+      this.setState({enCurso: response['EnCurso']});
+      this.setState({val: this.state.val+1});
+      if (this.state.val > 5) {
+        this.setState({jugadores: ["luiiss", "papa"]});
+      }
 		})
 		.catch((error) => {
       error.then((e) => {
@@ -83,7 +87,8 @@ export default class LobbyPartida extends React.Component {
   }
 
   componentDidMount() {
-    //this.interval = setInterval(() => this.comprobarLobby(), 1000);
+    this.comprobarLobby();
+    this.interval = setInterval(() => this.comprobarLobby(), 1000);
   }
 
   componentWillUnmount() {
@@ -92,13 +97,18 @@ export default class LobbyPartida extends React.Component {
 
   render() {
     document.body.style.backgroundColor = "#FFFFFF";
-
+    
     var infoLobby = [];
     for (var i = 0; i < this.state.maxJugadores; i++) {
-        infoLobby.push(<InfoJugadorEspera  
+      infoLobby.push(<InfoJugadorEspera  
         id={i}
-        usuario={this.state.jugadores[i]}/>);
-    }
+        usuario={this.state.jugadores[i]}
+        color={this.state.colores[i]}/>);
+    } 
+
+    if (this.state.enCurso) {
+			return <Navigate to='/mapa'/>;
+		}
 
     if (this.state.irBuscarPartida) {
 			return <Navigate to='/buscarPartida'/>;

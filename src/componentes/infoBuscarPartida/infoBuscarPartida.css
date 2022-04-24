@@ -1,0 +1,25 @@
+.partidaBuscada {
+    width: 50%;
+    height: 80px;
+    margin: 0 auto;
+    margin-top: 0.75%;
+    border-radius: 15px;
+    border: 1px solid #fafafa;
+    box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
+    background: #c3195d;  
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+} 
+
+.partidaBuscada:hover {
+    opacity: 0.9;
+    transition: 0.2s;
+    transform: scale(1.01);
+}
+
+.datosPartidaBuscada {
+    margin-top: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color:#fafafa;
+    font-size: 16px;
+    font-weight: 550;
+}

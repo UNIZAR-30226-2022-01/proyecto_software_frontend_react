@@ -1,5 +1,8 @@
 import React from 'react';
-import "./inforJugador.css";
+import Cartas from "../../imagenes/cartas.png";
+import Territorios from "../../imagenes/territorios.png";
+import Tropas from "../../imagenes/soldier.png";
+import "./infoJugador.css";
 
 export default class InfoJugador extends React.Component {
 	constructor(props) {
@@ -18,9 +21,9 @@ export default class InfoJugador extends React.Component {
 			<div id={this.state.id} className="jugador">
 				<div className="datosJugadores">{this.state.usuario}</div>
 				<div className="datosJugadores">
-					<img src="https://img.icons8.com/ios-filled/20/000000/soldier.png" alt="soldier"/> {this.state.numTropas} &nbsp;&nbsp;
-					<img src="https://img.icons8.com/ios-filled/20/000000/singapore-territory.png" alt="territory"/> {this.state.numTerritorios} &nbsp;&nbsp;
-					<img src="https://img.icons8.com/external-others-zufarizal-robiyanto/23/000000/external-cards-mutuline-ui-essential-others-zufarizal-robiyanto.png" alt="cards"/> {this.state.numCartas}
+					<img src={Tropas} alt="tropas"/> {this.state.numTropas} &nbsp;&nbsp;
+					<img src={Territorios} alt="territorios"/> {this.state.numTerritorios} &nbsp;&nbsp;
+					<img src={Cartas} alt="cartas"/> {this.state.numCartas}
 				</div>
 			</div>
 		);  

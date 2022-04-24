@@ -7,11 +7,25 @@ export default class InfoJugadorEspera extends React.Component {
 		this.state = {
 		  id: props.id,
 		  usuario: props.usuario,
+		  color: props.color,
 		};
+	}
+
+	static getDerivedStateFromProps(newProps) {
+		//document.getElementById(this.state.id).style.background = this.state.color;
+		return {
+			id: newProps.id,
+			usuario: newProps.usuario,
+			color: newProps.color,
+		};
+	}
+
+	componentDidUpdate() {
+		document.getElementById(this.state.id).style.background = this.state.color;
 	}
 	
 	render() {
-		if (this.state.usuario == "none") {
+		if (this.state.usuario == undefined) {
 			return (
 				<div id={this.state.id} className="participante">
 					<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
@@ -26,4 +40,3 @@ export default class InfoJugadorEspera extends React.Component {
 		);  
   }
 }
-
