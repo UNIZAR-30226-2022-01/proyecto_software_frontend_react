@@ -8,7 +8,7 @@ export default class MapaPartida extends React.Component {
       width="65%"
       viewBox="0 -30 1020 720"
       >
-      <g id="map" visibility="visible" fill="none" strokeWidth={2.5}>
+      <g id="map" visibility="visible" fill="none" strokeWidth={1.75}>
         <g id="Seas" fill="none">
           <path
             className="sea"
@@ -31,9 +31,8 @@ export default class MapaPartida extends React.Component {
             d="M241 211c21-8 13 5 29 10 0 2 1 4 1 6-1-1-3-1-4-2-1 5-1 5-3 6v-1h-4c2-4 3-6 0-9-2 1-3 2-4 5h-2c-1 3-1 7-2 10-1 1-3 1-5 2 1-8 3-11 7-17h5v-3c-4-1-4-1-6 0 0-1-1-2-2-3-4 1-8 1-13 2v-3h3v-3z"
           />
         </g>
-        <g id="Africa" stroke="#C68A31" fill="#CEA252" visibility="visible">
+        <g id="Africa" stroke="#000000" fill="#F8DDD7" visibility="visible">
           <path
-            fill="#CEA252"
             className="country"
             id="Africa_Oriental"
             d="M532 514c-1-6-1-12-2-17 5-1 6-8 7-12h4c1-8 11-8 10-19-5-1-10-2-16-2 0-2-1-4-2-6 0 1-1 2-2 3-7-10-12-18-16-29-1-14 2-24 4-37v-4h4c-1-3-1-3 1-9h33c2-3 2-3 5-4 7 11 9 26 14 38 1 1 2 1 3 1 2 5 3 9 5 14h-3c9 6 21 1 30-1 0 0 0 1 1 2-4 12-9 23-16 34-15 12-22 25-33 39 0 7 0 14 1 21-6 1-11 2-16 4-2 6-2 16-2 18-2-1-3-1-5-1v-23c-2-3-5-7-7-10h-2z"
@@ -64,7 +63,7 @@ export default class MapaPartida extends React.Component {
             d="M468 473c-1-4-1-6 0-10-7-3-7-3-13-3-2-6-2-6-4-7-5 0-9 1-14 1v3c-16-1-25 7-36-8-6-2-10-16-12-22h-2v-3h-3c-2-9-2-16 1-25 0-9-1-19 2-28 5-1 8-15 10-20 13-6 13-10 17-25 7-4 9-7 14-14h1c7 5 16-1 23-4 7 0 10-1 28-2v4c-1 1-1 1-2 1 2 3 1 6 1 10h-4c0 1 0 1 3 1v3l6 3c-4 0-4 0-8 3 0 3 0 5-1 7 0 1-1 1-2 2 1 10 0 18 1 29 9 8 16 9 28 11 1 2 2 4 2 6 7 2 8 7 15 9-2 13-5 23-4 37-6 4-10 8-17 9 0 2 0 3-1 4-5 2-6 5-10 7 2 7 1 12 0 20-4 0-4 0-13-2v3h-6z"
           />
         </g>
-        <g id="Asia" stroke="#9CC35A" fill="#BDDB8C" visibility="visible">
+        <g id="Asia" stroke="#000000" fill="#F8DDD7" visibility="visible">
           <path
             className="country"
             id="Afganistan"
@@ -126,7 +125,7 @@ export default class MapaPartida extends React.Component {
             d="M797 166c-1-8-1-18-4-26 1-1 3-2 4-3v-3c-3 0-6-1-8-2v-3c-1 0-2 0-3-1 0-1-1-2-1-3 8-2 15-2 23-2 2-7 3-13 8-19 0-5-1-6-2-12 1 0 2-1 3-2h-4v-3c7 0 19-4 22 4-1 1-2 1-3 1 1 2 1 3 1 4 5 0 8 4 13 4 1-1 2-3 3-5 4 3 8-1 10 2 3 0 5-1 8-1-2-1-3-2-5-2 0-2 0-4-1-5 3 0 6 0 8-1v3c4-2 4-2 12-3v3c-3 0-3 0-3 1 15 2 30 4 44 8l-1 1c1 1 3 1 5 2v3c-1 1-2 3-3 5-7 1-12 5-19 8 0 3-1 7-1 10 2 1 5 1 8 2v8h-4c-1 2-2 4-3 7-2 0-4 1-6 2-1-1-1-2-1-3-2-1-4-1-6-2-1-2-1-4-2-5-3 0-5 1-8 2 0 1-1 2-1 3-2 0-4 1-7 1-2 11-11 13-14 24-5-3-6-3-8-9-3 0-6 0-8-1-1-1-1-2-1-2-19-1-21 1-29 1-2 2-3 5-5 7-4 1-8 2-11 2zm60-79c0-1 1-3 2-4 8 0 8 0 9 1-5 1-6 2-11 3zm0-10c-2 7-11 2-15 0v-3h5c0-1 0-2 1-3 1 1 2 1 3 1 0 1 0 2 1 3s3 1 5 2zm5 0v-4c4 0 4 0 10 4h-10z"
           />
         </g>
-        <g id="Oceania" stroke="#D65163" fill="#E78A94" visibility="visible">
+        <g id="Oceania" stroke="#000000" fill="#F8DDD7" visibility="visible">
         <path
             className="country"
             id="Australia_Oriental"
@@ -148,7 +147,7 @@ export default class MapaPartida extends React.Component {
             d="M838 474s1-1 2-1c3-1 3-1 6 1-3 2-7 4-11 6v-4c1-1 2-1 3-2zm-16 2v1c-2-1-4-1-6-1v2c-10-2-10-2-30-2v-3c-2-1-5-2-7-3v-6h-4c-3-8-6-11-8-18-1 0-2-1-2-1-1-4-1-4-4-10h-3c0-2-1-4-1-6 5 1 5 1 13 4 2 6 5 8 7 13 1 0 2-1 3-1 1 6 2 7 8 8v3c-1 0-2 1-3 1 1 1 1 3 2 4l1-1c2 2 0 4 4 6v3c0 1 1 1 2 1v-2c9-1 16 3 26 5v3h2zm0 0c3-6 13-3 18-3-1 0-2 1-2 1h-4v3c-4-1-8-1-12-1zm-1-11c1-11 4-16 10-24 5 0 10 0 15-2v2c-4 2-8 4-13 3 0 1 0 2-1 3h8c-1 2-1 2-6 2v12h-5v-7h-2c-1 4-1 7-2 11h-4zm-19-5c-2-4-4-5-3-9h-2c-1-5 0-7 2-12 2 0 4-1 7-2v-3c3-1 6-2 8-3 1-3 2-5 3-7h3c0-2 0-3 1-4 4 0 5 0 9 1v3c-1 0-2 0-3 1 1 0 1 1 2 2-3 3-6 8-2 13-7 5-8 10-11 17-3 2-3 2-14 3zm39-2v-2c7-1 11-2 17 2h-17zm8-13v-8c1 1 2 1 3 1 0 3 1 5 1 7h-4zm26-51c0-1 0-1 1-2 0 0 1 0 2-1 0 4 0 4-2 7-1 0-3 1-4 1 1-2 2-4 3-5zm-22 2c1-5 8-10 12-14 0 8-4 13-12 14zm23-4c-1 1-1 1-1 2h-3c0-6-3-8-4-12 4 0 8 4 12 6-2 0-3 1-4 2v2zm5-4c0-2-1-5-1-8h-8c-1-1-1-2-2-3h-2c-2-1-3-1-4-4h4c0-2 0-2-2-2-1-3-1-6-1-9 1 1 2 3 3 4-2-5-2-5-1-11h9c0 2-1 3-1 5 1 0 1 0 2 1 0 2-1 4-2 6l-1-1c0 2 0 4 1 7 2 0 4 1 6 2 2 5 3 7 3 12-1 1-2 1-3 1z"
           />
         </g>
-        <g id="Europa" stroke="#9482AD" fill="#CEBADE" visibility="visible">
+        <g id="Europa" stroke="#000000" fill="#F8DDD7" visibility="visible">
           <path
             className="country"
             id="Reino_Unido"
@@ -186,7 +185,7 @@ export default class MapaPartida extends React.Component {
             d="M428 312c-1-2-3-3-4-5h-9c-3-11-2-19-1-31 0 0 0-1-1-1 3-12 15-7 26-7 5-6 0-16-1-22-4-1-4-1-8-4 3-1 3-1 4-4h3v2c6-2 6-2 7-3 0 0-1 0-2-1v-2h8c1-1 1-1 2-5 3 0 3 0 3-2 3 4 7 6 9 11 3 0 4 1 6 4-6 5-9 22-1 26-1 1-1 2-1 3-4 0-8 0-12 1-6 11-7 12-7 25-1 3-4 5-6 8-6 1-10 2-14 7h-1z"
           />
         </g>
-        <g id="America_del_Norte" stroke="#C99B32" fill="#EFCB73" visibility="visible">
+        <g id="America_del_Norte" stroke="#000000" fill="#F8DDD7" visibility="visible">
           <path
             className="country"
             id="Alaska"
@@ -214,7 +213,7 @@ export default class MapaPartida extends React.Component {
           />
           <path
             className="country"
-            strokeWidth={4.75}
+            strokeWidth={4}
             d="M213 155c-34-2-69-4-103-6h-7v-49c2 2 5 3 7 4 1-1 1-2 1-3 4-1 4-1 10-1 0 0 0 1 1 1-1 0-2 1-3 1 7 2 7 2 9 3 5-3 13-3 18-3l-1-1h6c3-3 4-3 8-3 0 1-1 2-1 3 2 0 4-1 10-2v3h-3v2c9-4 18 2 27 4v3h-2v3c6 0 9-1 15-2v3h3v-3h4c0-1-3-1-3-2 9-1 13 0 22 2-1 15-2 29-3 44-5-1-10-1-15-1zm15 1c1-15 2-29 3-44 2 0 4-1 6-1-1-4-1-4-2-6 3-1 5-1 8-1v4h6v-2h-3c3-17 9-26 26-28-4 6-5 10-12 10-2 10 0 14 3 23 1-1 2-3 2-4 2 1 3 1 4 2 1 2 1 4 1 6h4v-3c1 0 2-1 3-1 0-1 1-3 1-4h8v-1h-8c0-1 0-2-1-3l-1 1c-4-6-3-7-2-15 5-2 8-4 14-4-1 2-3 4-4 6 0 2 1 4 1 5 2-3 3-5 6-7 0-2 1-4 1-6h12c-2 4-3 7-4 11h6c0-6 0-6 1-7 9 5 9 5 10 6 0 1 0 2-1 3 8 1 8 1 9 2 0 1-1 1-1 2h4c0 1-1 2-1 3 2 1 5 3 7 4 0 1-1 2-1 3h-4v2h4v3h5c1 2 2 5 3 8h2c-1 2-2 4-3 5-2 1-3 1-4 1-2-2-2-2-4-7-1 1-1 1-1 7l3 3c-1 3-1 6-1 9-4 0-5 0-8-3 0 2 0 2 2 6-8-1-14-2-16-10-5 0-10 0-15-1 0-1 1-2 1-3 9-3 13-5 18-6 0-1-1-2-1-3-1 0-3 0-4 1 0-2-1-3-1-5-2 0-4 0-7 1 1-1 1-3 1-3 1-1 2-1 3-1v-3h-2c-1-3-1-5-2-8-1 0-1 0-1 3-3 0-5 1-8 2 0-1-1-2-1-2-1 0-3 0-4 1 0 12-4 20-18 19-2 3-2 4-5 5-3-2-4-4-7-4 1 2 3 4 5 6-5 5-13 8-20 12-1 4-3 7-5 11h-10zm36-11c1-5 3-10 6-15 2 1 4 1 5 1v2h3c1 4 2 4 5 6-1 2-1 2-2 5h-3v-4c-6 1-8 4-14 5zm32-21c-1-6-1-6 5-8v6c-2 0-3 1-5 2zm-101-14c-1-3-3-6-4-8-4-1-9-1-13-2-1-2-2-5-2-8 2 0 4-1 6-2-1 0-3 0-4-1 1-1 1-1 9-3-2 0-4-1-5-1-1-1-1-2-1-3 6-1 7-2 14-2 3 4 5 3 9 5-1 1-1 1-2 1 3 1 6 2 8 2 1-2 1-2 3-3 2 3 2 4 5 5 1-4 3-8 4-12 3 6 3 10 2 17 3 1 5 2 8 3v2c-1 1-2 1-3 1 1 0 1 1 2 1-2 1-3 1-4 2 0 1 1 2 1 3-4 0-5 0-9-2-8 2-16 3-24 5zm40-15c-1-3-2-6-2-9 0-1 1-2 2-3 1 1 1 2 1 3 1-2 2-3 3-4l1 1c0-1 1-2 1-2h4c-1 1-1 3-2 5 3-1 6-2 8-2-3 5-3 5-6 6v2c-4 1-7 2-10 3zm-75-7c0-2-1-4-1-6 2-1 3-1 5-1v-4c6-1 6-1 10-3v-3h5c1 2 1 3 1 5 3-1 5-1 7-1 0 1-1 2-1 3-4 2-8 3-12 5 0 1-1 2-1 3-9 0-9 0-13 2zm92-9v-8c1 1 2 1 3 1 1 3 1 5 1 7h-4zm-53-1c-2-1-3-1-4-2 0-1 1-1 1-1-2-1-3-1-5-1v-3c1 0 3-1 4-2-1 0-1-1-1-1-3 1-6 2-8 3-1-1-1-2-1-2h-4c2-8 15-7 21-7v3c-3 0-3 0-5 2h8c1 1 2 2 2 3 2-1 4-1 6-1-1-1-1-2-1-3 4-3 8-1 14-1v4c-3 0-3 0-3 1h4c-1 1-1 3-1 4-11 1-16 1-27 4zm41-3c-3-2-6-2-9-2 0-3 1-7 1-10h4c0 2 1 3 2 4v-2c3-1 6-2 8-3 1 2 2 4 2 6-5 3-5 3-8 7zm28-1c-5-2-8-3-11-8h-5v-8c-5-1-5-7-6-12h3v3c4 2 5 2 7 6h3c1 4 3 7 5 10 8 0 16 1 24 1 0 2 0 5-1 7-6 0-13 1-19 1zm22-9c-2-1-4-1-6-2v-2c-1-1-2-1-2-1-1 1-1 1-1 2-3 0-5-1-7-1 0-1-1-2-1-3h-4c-1-1-1-2-1-3-4 1-5 1-8-1-1-1-1-2-1-3h9c1-1 1-2 2-3h3c0 1 1 2 1 3h3v-3c-4-1-7-2-10-2 1-2 1-2 9-3 0-1 0-1 1-2-3 0-7-1-10-1v-3c11-7 25-5 38-6-13-5-27 1-40 1-1-1-2-1-2-2 1-1 3-2 5-2 0-2 1-5 1-7 3 0 5 1 8 1 1-1 1-2 2-3 10 0 20-1 30-2v3c18-1 18-1 27-3 0 2 0 4 1 5 4 1 18-1 13 7-1 1-4 1-10 4v3c-4 0-6-1-8 0 0 1 1 1 1 2-1 1-19 6-21 8 0 1 0 2 1 3-7 2-7 2-10 5v3c-5 0-6-1-10-4 0 5 1 6 3 10-2 1-4 1-6 2zm-66-8v-5h4v4c-1 0-2 0-4 1zm17 0c-4-6-9-5-6-13 5 3 5 3 7 4 1 4 1 5-1 9z"
           />
           <path
@@ -239,7 +238,7 @@ export default class MapaPartida extends React.Component {
             d="M319 229v-13c-4 0-4 0-9 2-1 1-1 3-1 5-10 2-10 2-17 2-4-4-6-4-11-4v2h-4c0-8 1-17 1-25h3c2-5 2-11 2-17 5-1 7-3 11-6 0-7-1-9-3-15 8-2 7-8 8-16 5 3 10 2 15 2 0 1 1 2 1 3h4c3 6 3 6 4 9h-3c1 3 3 5 4 7 2 1 3 1 5 1v-2l6-3c0-1 0-3 1-5 1-1 3-2 5-2 3 7 4 17 6 24 2 2 5 4 8 6-4 2-4 2-4 4h9c0 3 1 6 1 9-9 2-9 2-15 4-7 7-18 1-22 6 2 1 5 2 7 3 0 1 0 2 1 4-2 0-3 0-4 1 2 1 2 1 2 7h10v3c-9 3-13 9-21 10v-3c2-1 3-2 5-3-1-1-1-1-5 0zm38-10c0-1-1-2-2-4-1 1-2 2-4 3v-3c-2 0-5 0-7-1 0-2 1-3 2-5h3c1-6 9-10 15-11-1 2-1 4-1 5h-4c0 1 0 2 1 3 1-1 2-1 3-1 0 1 1 3 2 4-1 0-2 1-2 1v3c1 0 2 1 3 1 0 1 0 2-1 3-2 1-5 1-8 2z"
           />
         </g>
-        <g id="America_del_Sur" stroke="#DE7952" fill="#E79273" visibility="visible">
+        <g id="America_del_Sur" stroke="#000000" fill="#F8DDD7" visibility="visible">
           <path
             className="country"
             id="Argentina"
@@ -352,181 +351,181 @@ export default class MapaPartida extends React.Component {
           <g class="cAfrica">
             <svg id="cAfrica_Oriental">
                 <circle class="circulo ejemplo" cx="565" cy="450" r="13"/>
-                <text x="565" y="450">1</text>
+                <text x="565" y="450">0</text>
             </svg>
             <svg id="cAfrica_del_Norte">
                 <circle class="circulo" cx="448" cy="400" r="13"/>
-                <text x="448" y="400">1</text>
+                <text x="448" y="400">0</text>
             </svg>
             <svg id="cCongo">
                 <circle class="circulo" cx="507" cy="480" r="13"/>
-                <text x="507" y="480">44</text>
+                <text x="507" y="480">0</text>
             </svg>
             <svg id="cEgipto">
                 <circle class="circulo" cx="520" cy="357" r="13"/>
-                <text x="520" y="357">1</text>
+                <text x="520" y="357">0</text>
             </svg>
             <svg id="cSudafrica">
                 <circle class="circulo" cx="508" cy="565" r="13"/>
-                <text x="508" y="565" font-size="18">1</text>
+                <text x="508" y="565">0</text>
             </svg>
             <svg id="Madagascar">
                 <circle class="circulo" cx="589" cy="565" r="13"/>
-                <text x="589" y="565">1</text>
+                <text x="589" y="565">0</text>
             </svg>
           </g>
           <g class="cOceania">
             <svg id="cIndonesia">
                 <circle class="circulo" cx="817" cy="443" r="13"/>
-                <text x="817" y="443">1</text>
+                <text x="817" y="443">0</text>
             </svg>
             <svg id="cNueva_Guinea">
                 <circle class="circulo" cx="910" cy="460" r="13"/>
-                <text x="910" y="460" font-size="18">1</text>
+                <text x="910" y="460">0</text>
             </svg>
             <svg id="cAustralia_Oriental">
                 <circle class="circulo" cx="895" cy="548" r="13"/>
-                <text x="895" y="548" font-size="18">1</text>
+                <text x="895" y="548">0</text>
             </svg>
             <svg id="cAustralia_Occidental">
                 <circle class="circulo" cx="810" cy="550" r="13"/>
-                <text x="810" y="550">23</text>
+                <text x="810" y="550">0</text>
             </svg>
           </g>
           <g class="cAmericaSur">
             <svg id="cArgentina">
                 <circle class="circulo" cx="250" cy="550" r="13"/>
-                <text x="250" y="550">2</text>
+                <text x="250" y="550">0</text>
             </svg>
             <svg id="cPeru">
                 <circle class="circulo" cx="230" cy="467" r="13"/>
-                <text x="230" y="467">1</text>
+                <text x="230" y="467">0</text>
             </svg>
             <svg id="cBrasil">
                 <circle class="circulo" cx="303" cy="447" r="13"/>
-                <text x="303" y="447">8</text>
+                <text x="303" y="447">0</text>
             </svg>
             <svg id="cVenezuela">
                 <circle class="circulo" cx="235" cy="382" r="13"/>
-                <text x="235" y="382">1</text>
+                <text x="235" y="382">0</text>
             </svg>
           </g>
           <g class="cAmericaNorte">
             <svg id="cAmerica_Central">
                 <circle class="circulo" cx="195" cy="325" r="13"/>
-                <text x="195" y="325" font-size="18">2</text>
+                <text x="195" y="325">0</text>
             </svg>
             <svg id="cEstados_Unidos_Occidental">
                 <circle class="circulo" cx="170" cy="240" r="13"/>
-                <text x="170" y="240">1</text>
+                <text x="170" y="240">0</text>
             </svg>
             <svg id="cEste_de_los_Estados_Unidos">
                 <circle class="circulo" cx="240" cy="260" r="13"/>
-                <text x="240" y="260">5</text>
+                <text x="240" y="260">0</text>
             </svg>
             <svg id="cQuebec">
                 <circle class="circulo" cx="315" cy="183" r="13"/>
-                <text x="315" y="183">1</text>
+                <text x="315" y="183">0</text>
             </svg>
             <svg id="cOntario">
                 <circle class="circulo" cx="240" cy="185" r="13"/>
-                <text x="240" y="185">2</text>
+                <text x="240" y="185">0</text>
             </svg>
             <svg id="cAlberta">
                 <circle class="circulo" cx="170" cy="175" r="13"/>
-                <text x="170" y="175">1</text>
+                <text x="170" y="175">0</text>
             </svg>
             <svg id="cTerritorio_del_Noroeste">
                 <circle class="circulo" cx="190" cy="132" r="13"/>
-                <text x="190" y="132">1</text>
+                <text x="190" y="132">0</text>
             </svg>
             <svg id="cGroenlandia">
                 <circle class="circulo" cx="400" cy="80" r="13"/>
-                <text x="400" y="80">1</text>
+                <text x="400" y="80">0</text>
             </svg>
             <svg id="cAlaska">
                 <circle class="circulo" cx="70" cy="120" r="13"/>
-                <text x="70" y="120">1</text>
+                <text x="70" y="120">0</text>
             </svg>
           </g>
           <g class="cEuropa">
             <svg id="cReino_Unido">
                 <circle class="circulo" cx="430" cy="205" r="13"/>
-                <text x="430" y="205">1</text>
+                <text x="430" y="205">0</text>
             </svg>
             <svg id="cIslandia">
                 <circle class="circulo" cx="433" cy="150" r="13"/>
-                <text x="433" y="150">1</text>
+                <text x="433" y="150">0</text>
             </svg>
             <svg id="cEuropa_Occidental">
                 <circle class="circulo" cx="437" cy="272" r="13"/>
-                <text x="437" y="272">4</text>
+                <text x="437" y="272">0</text>
             </svg>
             <svg id="cEscandinavia">
                 <circle class="circulo" cx="500" cy="124" r="13"/>
-                <text x="500" y="124">1</text>
+                <text x="500" y="124">0</text>
             </svg>
             <svg id="cUcrania">
                 <circle class="circulo" cx="582" cy="182" r="13"/>
-                <text x="582" y="182">2</text>
+                <text x="582" y="182">0</text>
             </svg>
             <svg id="cEuropa_del_Sur">
                 <circle class="circulo" cx="510" cy="265" r="13"/>
-                <text x="510" y="265">1</text>
+                <text x="510" y="265">0</text>
             </svg>
             <svg id="cEuropa_del_Norte">
                 <circle class="circulo" cx="492" cy="222" r="13"/>
-                <text x="492" y="222">3</text>
+                <text x="492" y="222">0</text>
             </svg>
           </g>
           <g class="cAsia">
             <svg id="cOriente_Medio">
                 <circle class="circulo" cx="590" cy="323" r="13"/>
-                <text x="590" y="323">1</text>
+                <text x="590" y="323">0</text>
             </svg>
             <svg id="cIndia">
                 <circle class="circulo" cx="707" cy="355" r="13"/>
-                <text x="707" y="355">1</text>
+                <text x="707" y="355">0</text>
             </svg>
             <svg id="cAfganistan">
                 <circle class="circulo" cx="658" cy="253" r="13"/>
-                <text x="658" y="253">7</text>
+                <text x="658" y="253">0</text>
             </svg>
             <svg id="cUral">
                 <circle class="circulo" cx="690" cy="180" r="13"/>
-                <text x="690" y="180">1</text>
+                <text x="690" y="180">0</text>
             </svg>
             <svg id="cSiberia">
                 <circle class="circulo" cx="753" cy="165" r="13"/>
-                <text x="753" y="165">1</text>
+                <text x="753" y="165">0</text>
             </svg>
             <svg id="cChina">
                 <circle class="circulo" cx="770" cy="295" r="13"/>
-                <text x="770" y="295">2</text>
+                <text x="770" y="295">0</text>
             </svg>
             <svg id="cSiam">
                 <circle class="circulo" cx="782" cy="368" r="13"/>
-                <text x="782" y="368">1</text>
+                <text x="782" y="368">0</text>
             </svg>
             <svg id="cMongolia">
                 <circle class="circulo" cx="835" cy="240" r="13"/>
-                <text x="835" y="240">10</text>
+                <text x="835" y="240">0</text>
             </svg>
             <svg id="cIrkutsk">
                 <circle class="circulo" cx="817" cy="185" r="13"/>
-                <text x="817" y="185">4</text>
+                <text x="817" y="185">0</text>
             </svg>
             <svg id="cYakutsk">
                 <circle class="circulo" cx="850" cy="125" r="13"/>
-                <text x="850" y="125">1</text>
+                <text x="850" y="125">0</text>
             </svg>
             <svg id="cKamchatka">
                 <circle class="circulo" cx="943" cy="130" r="13"/>
-                <text x="943" y="130">2</text>
+                <text x="943" y="130">0</text>
             </svg>
             <svg id="cJapon">
                 <circle class="circulo" cx="920" cy="260" r="13"/>
-                <text x="920" y="260">1</text>
+                <text x="920" y="260">0</text>
             </svg>
           </g>
         </g>

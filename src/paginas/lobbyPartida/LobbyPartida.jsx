@@ -15,7 +15,6 @@ export default class LobbyPartida extends React.Component {
 			enCurso: false,
       irBuscarPartida: false,
       colores: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
-      val: 0,
 		};
 
     this.handleLeaveButton = this.handleLeaveButton.bind(this);
@@ -32,7 +31,7 @@ export default class LobbyPartida extends React.Component {
 		})
 		.then((response) => {
 			if (!response.ok) {
-				throw response.text();
+				return response.text().then(text => {throw new Error(text)});
 			}
 		})
 		.then(() => {
@@ -44,14 +43,12 @@ export default class LobbyPartida extends React.Component {
 			});
 			this.setState({irBuscarPartida:true});
 		})
-		.catch ((error) => {
-			error.then((e) => {
-				swal.fire({
-					title: 'Se ha producido un error al abandonar el Lobby',
-					text: e,
-					icon: 'error',
-				});
-			})
+		.catch ((e) => {
+      swal.fire({
+        title: 'Se ha producido un error al abandonar el Lobby',
+        text: e,
+        icon: 'error',
+      });
 		})
   };
 
@@ -61,28 +58,22 @@ export default class LobbyPartida extends React.Component {
       credentials: 'include'
 		})
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
+			if (!response.ok) {
+				return response.text().then(text => {throw new Error(text)});
 			}
-      throw response.text();
+      return response.json();
 		})
 		.then((response) => {	
       this.setState({maxJugadores: response['MaxJugadores']});
       this.setState({jugadores: response['NombresJugadores']});
       this.setState({enCurso: response['EnCurso']});
-      this.setState({val: this.state.val+1});
-      if (this.state.val > 5) {
-        this.setState({jugadores: ["luiiss", "papa"]});
-      }
 		})
-		.catch((error) => {
-      error.then((e) => {
-        swal.fire({
-          title: 'Se ha producido un error al comprobar el estado del Lobby',
-          text: e,
-          icon: 'error',
-        });
-      })
+		.catch((e) => {
+      swal.fire({
+        title: 'Se ha producido un error al comprobar el estado del Lobby',
+        text: e,
+        icon: 'error',
+      });
     })
   }
 

@@ -43,7 +43,7 @@ export default class CrearPartida extends React.Component {
 		})
 		.then((response) => {
 			if (!response.ok) {
-				throw response.text();
+				return response.text().then(text => {throw new Error(text)});
 			}
 		})
 		.then(() => {	
@@ -54,14 +54,12 @@ export default class CrearPartida extends React.Component {
 			});
 			this.setState({ irPartida: true });
 		})
-		.catch((error) => {
-      error.then((e) => {
-        swal.fire({
-          title: 'Se ha producido un error al crear la partida',
-          text: e,
-          icon: 'error',
-        });
-      })
+		.catch((e) => {
+      swal.fire({
+        title: 'Se ha producido un error al crear la partida',
+        text: e,
+        icon: 'error',
+      });
     })
   }
   

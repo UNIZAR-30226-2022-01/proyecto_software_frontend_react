@@ -13,9 +13,25 @@ export default class InfoJugador extends React.Component {
 			numTropas: props.numTropas,
 			numTerritorios: props.numTerritorios,
 			numCartas: props.numCartas,
+			color: props.color,
 		};
 	}
 	
+  static getDerivedStateFromProps(newProps) {
+		return {
+			id: newProps.id,
+			usuario: newProps.usuario,
+      numTropas: newProps.numTropas,
+      numTerritorios: newProps.numTerritorios,
+      numCartas: newProps.numCartas,
+			color: newProps.color,
+		};
+	}
+
+	componentDidUpdate() {
+		document.getElementById(this.state.id).style.background = this.state.color;
+	}
+
 	render() {
 		return (
 			<div id={this.state.id} className="jugador">

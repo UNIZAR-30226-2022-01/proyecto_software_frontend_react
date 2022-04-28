@@ -7,7 +7,7 @@
     fill:#FFFFFF;
     opacity: 0.8;
     transition: 0.3s;
-    transform: scale(1.003);
+    transform: scale(1.002);
 }
 
 #Lines {
@@ -23,31 +23,31 @@
 }
 
 .cAfrica .circulo {
-  fill:#e2bc75;
+  fill:#F8DDD7;
 }
 
 .cOceania .circulo {
-  fill: #f7aab1;
+  fill: #F8DDD7;
 }
 
 .cAmericaSur .circulo {
-  fill: #ebad97;
+  fill: #F8DDD7;
 }
 
 .cAmericaNorte .circulo {
-  fill: #f8e0a2;
+  fill: #F8DDD7;
 }
 
 .cEuropa .circulo  {
-  fill: #e5dcec;
+  fill: #F8DDD7;
 }
 
 .cAsia .circulo {
-  fill: #e0f0c6;
+  fill: #F8DDD7;
 }
 
 .cAsia {
-  fill: #cab8af;
+  fill: #F8DDD7;
 }
 
 .circulos text{

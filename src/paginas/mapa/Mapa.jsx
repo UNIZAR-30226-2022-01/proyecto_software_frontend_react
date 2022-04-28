@@ -14,6 +14,8 @@ export default class Mapa extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      jugadores: [],
+      maxJugadores: 0,
       enableButton: false,
       enableMapInfo: false,
     };
@@ -34,12 +36,10 @@ export default class Mapa extends React.Component {
     if (event.target.id === 'bar_char_but') {
       if (this.state.enableButton) {
         document.getElementById('hidden_buttons').style.visibility = 'hidden';
-        document.getElementById(event.target.id).src = "https://img.icons8.com/material-rounded/48/000000/bar-chart.png";
         this.setState({enableButton:false});
       }
       else {
         document.getElementById('hidden_buttons').style.visibility = 'visible';
-        document.getElementById(event.target.id).src = "https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/000000/external-cross-100-most-used-icons-flaticons-lineal-color-flat-icons.png";
         this.setState({enableButton:true});
       }
     }
@@ -77,12 +77,12 @@ export default class Mapa extends React.Component {
 
     var jugadores = [];
     for (var i = 0; i < 6; i++) {
-        jugadores.push(<InfoJugador  
-          id={i}
-          usuario="akiles754"
-          numTropas={25}
-          numTerritorios={10}
-          numCartas={11}/>);
+      jugadores.push(<InfoJugador  
+        id={"jugador-" + i}
+        usuario="akiles754"
+        numTropas={25}
+        numTerritorios={10}
+        numCartas={11}/>);
     }
 
     return (

@@ -392,7 +392,7 @@ export default class MpaInfo extends React.Component {
             </svg>
             <g class="text_info">
               <svg id="circulo_4">
-                  <rect class="rectanguloInfo" x="800" y="530" rx="20" ry="20" width="100" height="40"/> 
+                  <rect class="rectanguloInfo" x="805" y="530" rx="20" ry="20" width="100" height="40"/> 
                   <text x="855" y="550">Oceanía</text>                
               </svg>
             </g>

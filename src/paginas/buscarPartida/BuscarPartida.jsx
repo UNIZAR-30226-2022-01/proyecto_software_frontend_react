@@ -1,6 +1,6 @@
 import React from 'react';
 import swal from 'sweetalert2';
-import {Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import InfoBuscarPartida from "../../componentes/infoBuscarPartida/InfoBuscarPartida";
@@ -16,7 +16,7 @@ export default class BuscarPartida extends React.Component {
       maxJugadores: [],
       amigosPresentes: [],
       numAmigosPresentes: [],
-      numPatidas: 0,
+      numPartidas: 0,
       irLobby: false
 		};
 
@@ -29,10 +29,10 @@ export default class BuscarPartida extends React.Component {
       credentials: 'include'
 		})
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
+			if (!response.ok) {
+				return response.text().then(text => {throw new Error(text)});
 			}
-      throw response.text();
+      return response.json();
 		})
 		.then((response) => {
       var idPartidaArr = [];
@@ -41,9 +41,8 @@ export default class BuscarPartida extends React.Component {
       var maxJugadoresArr = [];
       var amigosPresentesArr = [];
       var numAmigosPresentesArr = [];
-
-      console.log("p -> " + Object.keys(response).length)
-      this.setState({numPatidas: Object.keys(response).length});
+      
+      this.setState({numPartidas: Object.keys(response).length});
       for (var i = 0; i < Object.keys(response).length; i++) {
         idPartidaArr.push(response[i]['IdPartida']);
         esPublicaArr.push(response[i]['EsPublica']);
@@ -60,28 +59,19 @@ export default class BuscarPartida extends React.Component {
         this.setState({amigosPresentes: amigosPresentesArr});
       }
       this.setState({numAmigosPresentes: numAmigosPresentesArr});
-
-      console.log(this.state.idPartida);
-      console.log(this.state.esPublica);
-      console.log(this.state.numJugadores);
-      console.log(this.state.maxJugadores);
-      console.log(this.state.amigosPresentes);
-      console.log(this.state.numAmigosPresentes);
 		})
-		.catch((error) => {
-      error.then((e) => {
-        swal.fire({
-          title: 'Se ha producido un error al obtener las partidas actuales',
-          text: e,
-          icon: 'error',
-        });
-      })
+		.catch((e) => {
+      swal.fire({
+        title: 'Se ha producido un error al obtener las partidas actuales',
+        text: e,
+        icon: 'error',
+      });
     })
   }
 
   componentDidMount() {
     this.comprobarPartidas();
-    this.interval = setInterval(() => this.comprobarPartidas(), 5000);
+    this.interval = setInterval(() => this.comprobarPartidas(), 3000);
   }
 
   componentWillUnmount() {
@@ -92,7 +82,7 @@ export default class BuscarPartida extends React.Component {
     document.body.style.backgroundColor = "#FFFFFF";
 
     var infoPartidas = [];
-    for (var i = 0; i < this.state.numPatidas; i++) {
+    for (var i = 0; i < this.state.numPartidas; i++) {
       infoPartidas.push(<InfoBuscarPartida  
         idPartida={this.state.idPartida[i]}
         esPublica={this.state.esPublica[i]}
