@@ -21,9 +21,9 @@ export default class InfoJugador extends React.Component {
 		return {
 			id: newProps.id,
 			usuario: newProps.usuario,
-      numTropas: newProps.numTropas,
-      numTerritorios: newProps.numTerritorios,
-      numCartas: newProps.numCartas,
+	  	numTropas: newProps.numTropas,
+	  	numTerritorios: newProps.numTerritorios,
+	  	numCartas: newProps.numCartas,
 			color: newProps.color,
 		};
 	}
