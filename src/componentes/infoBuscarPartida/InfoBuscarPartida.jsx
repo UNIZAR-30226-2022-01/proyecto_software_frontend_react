@@ -25,7 +25,7 @@ export default class InfoBuscarPartida extends React.Component {
 			idPartida: newProps.idPartida,
 			esPublica: newProps.esPublica,
 			numJugadores: newProps.numJugadores,
-    	maxJugadores: newProps.maxJugadores,
+    		maxJugadores: newProps.maxJugadores,
 			amigosPresentes: newProps.amigosPresentes,
 			numAmigosPresentes: newProps.numAmigosPresentes,
 		};

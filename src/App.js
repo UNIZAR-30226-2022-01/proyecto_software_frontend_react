@@ -12,6 +12,7 @@ import Tienda from "./paginas/tienda/Tienda";
 import Personalizacion from "./paginas/personalizacion/Personalizacion";
 import Perfil from './paginas/perfil/Perfil';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
+import Notificaciones from './paginas/notificaciones/Notificaciones';
 
 export default class App extends React.Component {
   render() {
@@ -30,6 +31,7 @@ export default class App extends React.Component {
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/personalizacion" element={<Personalizacion />} />
           <Route path="/perfil" element={<Perfil/>}/>
+          <Route path="/notificaciones" element={<Notificaciones/>}/>
         </Routes>
       </BrowserRouter>
     );  

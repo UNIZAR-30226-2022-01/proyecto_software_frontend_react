@@ -18,11 +18,13 @@ export default class BarraSuperiorGeneral extends React.Component {
       ancho: 0,
 			irIdentificacion: false,
       irPerfil: false,
+      irNotificaciones: false,
 		};
       
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
 		this.cerrarSesion = this.cerrarSesion.bind(this);
     this.navegarPerfil = this.navegarPerfil.bind(this);
+    this.navegarNotificaciones = this.navegarNotificaciones.bind(this);
 	}
  
 	componentDidMount() {
@@ -49,6 +51,10 @@ export default class BarraSuperiorGeneral extends React.Component {
     //IrPerfil(this.state.nombre_usuario);
   }
 
+  navegarNotificaciones() {
+    this.setState({ irNotificaciones: true});
+  }
+
 	render() {
     if (this.state.irIdentificacion) {
       return <Navigate to='/'/>;
@@ -58,13 +64,17 @@ export default class BarraSuperiorGeneral extends React.Component {
       return <Navigate to={`/perfil`}/>;
     }
 
+    if (this.state.irNotificaciones) {
+      return <Navigate to='/notificaciones'/>;
+    }
+
 		return (
       <div class="topnav">
         <a class="active">World Domination</a>
 				
         <div class="topnav-right">
         	<a><img class="imagenes" src="https://img.icons8.com/material-rounded/48/000000/add-user-group-man-man.png"/></a>
-        	<a><img class="imagenes" src="https://img.icons8.com/material-sharp/50/000000/mail.png" /></a>
+        	<a onClick={this.navegarNotificaciones}><img class="imagenes" src="https://img.icons8.com/material-sharp/50/000000/mail.png" /></a>
         
         	<div class="dropdown"> 
             <button class="dropbtn">{this.state.nombre_usuario}</button>
