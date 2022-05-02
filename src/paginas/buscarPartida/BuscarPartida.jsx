@@ -35,30 +35,32 @@ export default class BuscarPartida extends React.Component {
       return response.json();
 		})
 		.then((response) => {
-      var idPartidaArr = [];
-      var esPublicaArr = [];
-      var numJugadoresArr = [];
-      var maxJugadoresArr = [];
-      var amigosPresentesArr = [];
-      var numAmigosPresentesArr = [];
-      
-      this.setState({numPartidas: Object.keys(response).length});
-      for (var i = 0; i < Object.keys(response).length; i++) {
-        idPartidaArr.push(response[i]['IdPartida']);
-        esPublicaArr.push(response[i]['EsPublica']);
-        numJugadoresArr.push(response[i]['NumeroJugadores']);
-        maxJugadoresArr.push(response[i]['MaxNumeroJugadores']);
-        amigosPresentesArr.push(response[i]['AmigosPresentes']);
-        numAmigosPresentesArr.push(response[i]['NumAmigosPresentes']);
+      if (response != null) {
+        var idPartidaArr = [];
+        var esPublicaArr = [];
+        var numJugadoresArr = [];
+        var maxJugadoresArr = [];
+        var amigosPresentesArr = [];
+        var numAmigosPresentesArr = [];
+        
+        this.setState({numPartidas: Object.keys(response).length});
+        for (var i = 0; i < Object.keys(response).length; i++) {
+          idPartidaArr.push(response[i]['IdPartida']);
+          esPublicaArr.push(response[i]['EsPublica']);
+          numJugadoresArr.push(response[i]['NumeroJugadores']);
+          maxJugadoresArr.push(response[i]['MaxNumeroJugadores']);
+          amigosPresentesArr.push(response[i]['AmigosPresentes']);
+          numAmigosPresentesArr.push(response[i]['NumAmigosPresentes']);
+        }
+        this.setState({idPartida: idPartidaArr});
+        this.setState({esPublica: esPublicaArr});
+        this.setState({numJugadores: numJugadoresArr});
+        this.setState({maxJugadores: maxJugadoresArr});
+        if (amigosPresentesArr.length > 0) {
+          this.setState({amigosPresentes: amigosPresentesArr});
+        }
+        this.setState({numAmigosPresentes: numAmigosPresentesArr});
       }
-      this.setState({idPartida: idPartidaArr});
-      this.setState({esPublica: esPublicaArr});
-      this.setState({numJugadores: numJugadoresArr});
-      this.setState({maxJugadores: maxJugadoresArr});
-      if (amigosPresentesArr.length > 0) {
-        this.setState({amigosPresentes: amigosPresentesArr});
-      }
-      this.setState({numAmigosPresentes: numAmigosPresentesArr});
 		})
 		.catch((e) => {
       swal.fire({
