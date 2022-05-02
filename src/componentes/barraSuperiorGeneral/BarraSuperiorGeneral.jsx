@@ -1,6 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./barraSuperior.css";
+
+function IrPerfil(usuario) {
+  let navigate = useNavigate();
+  console.log('holaaaaa');
+  navigate(`/perfil/${this.state.nombre_usuario}`);
+}
 
 export default class BarraSuperiorGeneral extends React.Component {
   constructor(props) {
@@ -9,10 +16,12 @@ export default class BarraSuperiorGeneral extends React.Component {
 			nombre_usuario: this.getNombreUsuario(document.cookie),
       ancho: 0,
 			irIdentificacion: false,
+      irPerfil: false,
 		};
       
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
 		this.cerrarSesion = this.cerrarSesion.bind(this);
+    this.navegarPerfil = this.navegarPerfil.bind(this);
 	}
  
 	componentDidMount() {
@@ -33,11 +42,20 @@ export default class BarraSuperiorGeneral extends React.Component {
 		this.setState({ irIdentificacion: true });
   }   
 
+  navegarPerfil() {
+    this.setState({ irPerfil: true});
+    //IrPerfil(this.state.nombre_usuario);
+  }
+
 	render() {
     if (this.state.irIdentificacion) {
       return <Navigate to='/'/>;
     }
     
+    if (this.state.irPerfil) {
+      return <Navigate to={`/perfil/${this.state.nombre_usuario}`}/>;
+    }
+
 		return (
       <div class="topnav">
         <a class="active">World Domination</a>
@@ -49,7 +67,7 @@ export default class BarraSuperiorGeneral extends React.Component {
         	<div class="dropdown"> 
             <button class="dropbtn">{this.state.nombre_usuario}</button>
             <div class="dropdown-content">
-            <a width ={this.state.ancho}>Perfil</a>
+            <a width ={this.state.ancho} onClick={this.navegarPerfil}>Perfil</a>
             <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
             </div>
         	</div>

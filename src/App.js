@@ -10,6 +10,7 @@ import Mapa from "./paginas/mapa/Mapa";
 import Ranking from "./paginas/ranking/Ranking";
 import Tienda from "./paginas/tienda/Tienda";
 import Personalizacion from "./paginas/personalizacion/Personalizacion";
+import Perfil from './paginas/perfil/Perfil';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 export default class App extends React.Component {
@@ -28,6 +29,7 @@ export default class App extends React.Component {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/personalizacion" element={<Personalizacion />} />
+          <Route path="/perfil/:usuario" element={<Perfil/>}/>
         </Routes>
       </BrowserRouter>
     );  
