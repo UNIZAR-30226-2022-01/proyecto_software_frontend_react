@@ -29,7 +29,7 @@ export default class App extends React.Component {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/personalizacion" element={<Personalizacion />} />
-          <Route path="/perfil/:usuario" element={<Perfil/>}/>
+          <Route path="/perfil" element={<Perfil/>}/>
         </Routes>
       </BrowserRouter>
     );  

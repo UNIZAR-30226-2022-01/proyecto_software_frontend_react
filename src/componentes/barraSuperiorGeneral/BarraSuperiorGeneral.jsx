@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./barraSuperior.css";
 
@@ -43,6 +44,7 @@ export default class BarraSuperiorGeneral extends React.Component {
   }   
 
   navegarPerfil() {
+    localStorage.setItem('nombre_usuario', this.state.nombre_usuario)
     this.setState({ irPerfil: true});
     //IrPerfil(this.state.nombre_usuario);
   }
@@ -53,7 +55,7 @@ export default class BarraSuperiorGeneral extends React.Component {
     }
     
     if (this.state.irPerfil) {
-      return <Navigate to={`/perfil/${this.state.nombre_usuario}`}/>;
+      return <Navigate to={`/perfil`}/>;
     }
 
 		return (
