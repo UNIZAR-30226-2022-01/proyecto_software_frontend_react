@@ -34,7 +34,7 @@ export default class InfoBuscarPartida extends React.Component {
 	entrarPartida(e) {
 		e.preventDefault();
 
-		if (this.state.esPublica == true) {
+		if (this.state.esPublica === true) {
       swal.fire({
         title: '¿Seguro que quieres unirte a esta partida?',
         showCancelButton: true,
@@ -131,12 +131,12 @@ export default class InfoBuscarPartida extends React.Component {
 	}
 
 	render() {
-		if (this.state.irLobby == true) {
+		if (this.state.irLobby === true) {
       return <Navigate to='/lobbyPartida'/>;
 		}
 
 		var tipoPartida = "Partida privada";
-		if (this.state.esPublica == true) {
+		if (this.state.esPublica === true) {
 			tipoPartida = "Partida pública";
 		}
 

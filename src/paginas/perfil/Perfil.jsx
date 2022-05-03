@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate } from "react-router-dom";
-import { useParams} from 'react-router-dom';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";

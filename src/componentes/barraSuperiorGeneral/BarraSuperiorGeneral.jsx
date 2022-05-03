@@ -1,14 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import "./barraSuperior.css";
-
-function IrPerfil(usuario) {
-  let navigate = useNavigate();
-  console.log('holaaaaa');
-  navigate(`/perfil/${this.state.nombre_usuario}`);
-}
 
 export default class BarraSuperiorGeneral extends React.Component {
   constructor(props) {

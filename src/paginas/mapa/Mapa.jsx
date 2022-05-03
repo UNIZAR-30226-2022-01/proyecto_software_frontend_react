@@ -4,7 +4,7 @@ import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import MapaPartida from "../../componentes/mapaPartida/MapaPartida";
 import MapaInfo from "../../componentes/mapaInfo/MapaInfo";
 import BarraSuperiorJuego from '../../componentes/barraSuperiorJuego/BarraSuperiorJuego'
-import FuncionesAuxiliares from '../../paginas/mapa/auxiliaresMapa'
+//import FuncionesAuxiliares from '../../paginas/mapa/auxiliaresMapa'
 import BarChart from "../../imagenes/bar-chart.png";
 import Cards from "../../imagenes/cards.png";
 import User from "../../imagenes/user.png";
@@ -38,7 +38,11 @@ export default class Mapa extends React.Component {
       coloresJugadores: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
       coloresCirculos: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
       accionesIniciales: [],
-      indexAccionesIniciales: 0
+      indexAccionesIniciales: 0,
+
+      territorioSeleccionado: "",
+      habilitarSeleccionar: true,
+      mapa: React.createRef()
     };
 
     this.handleChartButton = this.handleChartButton.bind(this);
@@ -48,6 +52,9 @@ export default class Mapa extends React.Component {
     this.changeMap = this.changeMap.bind(this);
     this.comprobarAcciones = this.comprobarAcciones.bind(this);
     this.rellenarTerritorios = this.rellenarTerritorios.bind(this);
+    this.habilitarSeleccionar = this.habilitarSeleccionar.bind(this);
+    this.deshabilitarSeleccionar = this.deshabilitarSeleccionar.bind(this);
+    this.obtenerTerritorio = this.obtenerTerritorio.bind(this);
   }
 
   /* En caso de pulsar el botón "bar_char_but" y !enableButton se mostrarán el resto de botones. 
@@ -59,11 +66,11 @@ export default class Mapa extends React.Component {
     if (event.target.id === 'bar_char_but') {
       if (this.state.enableButton) {
         document.getElementById('hidden_buttons').style.visibility = 'hidden';
-        this.setState({enableButton:false});
+        this.setState({enableButton: false});
       }
       else {
         document.getElementById('hidden_buttons').style.visibility = 'visible';
-        this.setState({enableButton:true});
+        this.setState({enableButton: true});
       }
     }
 	};
@@ -72,26 +79,44 @@ export default class Mapa extends React.Component {
      y mostrando el dueño de cada territorio */
   handleWorldButton(event) {
     event.preventDefault();
-    this.setState({enableMapInfo:true});
+    this.setState({enableMapInfo: true});
   };
 
   /* Muestra el mapa con la información de las regiones del mapa, indicando el número de 
      tropas extras recibidas por controlar al completo una región */
   handleUserButton(event) {
     event.preventDefault();
-
-    this.setState({enableMapInfo:false});
+    this.setState({enableMapInfo: false});
   };
 
   handleCardButton() {
     //document.style.background-blend-mode = "darken";
   };
 
+  habilitarSeleccionar(event) {
+    event.preventDefault();
+    this.setState({habilitarSeleccionar: true});
+    this.setState({territorioSeleccionado: ""});
+  }
+
+  deshabilitarSeleccionar(event) {
+    event.preventDefault();
+    this.setState({habilitarSeleccionar: false});
+  }
+
+  obtenerTerritorio(pais) {
+
+    //if(this.state.habilitarSeleccionar) {
+      this.setState({territorioSeleccionado: pais});
+      console.log(this.mapa);
+    //}    
+  }
+
   changeMap() {
     if (this.state.enableMapInfo) {
       return <MapaInfo />;
     }
-    return <MapaPartida />;
+    return <MapaPartida mapa/>;
   }
 
   obtenerNombreJugadores() {
@@ -124,7 +149,7 @@ export default class Mapa extends React.Component {
   }
 
   rellenarTerritorios() {
-    if (this.state.indexAccionesIniciales == 42) {
+    if (this.state.indexAccionesIniciales === 42) {
       clearInterval(this.interval);
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
     } 
@@ -176,11 +201,14 @@ export default class Mapa extends React.Component {
             jAux.push(accion);
             this.setState({accionesIniciales: jAux});
             
-            if (accion.Region == 41) {
+            if (accion.Region === 41) {
               clearInterval(this.interval);
               this.interval = setInterval(() => this.rellenarTerritorios(), 150);
             }
+            break;
           }
+          default: 
+            break;
         }
       }
     })
@@ -194,8 +222,10 @@ export default class Mapa extends React.Component {
   }
 
   componentDidMount() {
-    this.obtenerNombreJugadores();
-    this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    //this.interval = setInterval(() => this.obtenerTerritorio(), 500);
+    //this.obtenerTerritorio();
+    //this.obtenerNombreJugadores();
+    //this.interval = setInterval(() => this.comprobarAcciones(), 500);
   }
 
   componentWillUnmount() {

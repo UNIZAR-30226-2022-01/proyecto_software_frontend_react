@@ -1,7 +1,28 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 import "./mapaPartida.css";
 
 export default class MapaPartida extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nombreTerritorio: ""
+    };
+
+    this.obtenerNombre = this.obtenerNombre.bind(this);
+  };
+
+  static propTypes = {
+    mapa: Proptypes.shape({value: Proptypes.instanceOf(HTMLDataElement)})
+  };
+
+  obtenerNombre(event) {
+    event.preventDefault();
+
+    this.setState({nombreTerritorio: event.target.id});
+    //console.log(this.state.nombreTerritorio);
+  }
+
 	render() {
 		return (
 			<svg
@@ -33,8 +54,7 @@ export default class MapaPartida extends React.Component {
         </g>
         <g id="Africa" stroke="#000000" fill="#F8DDD7" visibility="visible">
           <path
-            className="country"
-            id="Africa_Oriental"
+            className="country" id="Africa_Oriental" onClick={this.obtenerNombre} ref={this.props.mapa}
             d="M532 514c-1-6-1-12-2-17 5-1 6-8 7-12h4c1-8 11-8 10-19-5-1-10-2-16-2 0-2-1-4-2-6 0 1-1 2-2 3-7-10-12-18-16-29-1-14 2-24 4-37v-4h4c-1-3-1-3 1-9h33c2-3 2-3 5-4 7 11 9 26 14 38 1 1 2 1 3 1 2 5 3 9 5 14h-3c9 6 21 1 30-1 0 0 0 1 1 2-4 12-9 23-16 34-15 12-22 25-33 39 0 7 0 14 1 21-6 1-11 2-16 4-2 6-2 16-2 18-2-1-3-1-5-1v-23c-2-3-5-7-7-10h-2z"
           />
           <path
