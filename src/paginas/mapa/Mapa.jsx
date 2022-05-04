@@ -28,6 +28,7 @@ export default class Mapa extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      nombrePropioJugador: this.getNombreUsuario(document.cookie),
       nombreJugadores: [],
       tropasJugadores: [0,0,0,0,0,0],
       regionesJugadores: [0,0,0,0,0,0],
@@ -39,12 +40,18 @@ export default class Mapa extends React.Component {
       coloresCirculos: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
       accionesIniciales: [],
       indexAccionesIniciales: 0,
-
       territorioSeleccionado: "",
-      habilitarSeleccionar: true,
-      mapa: React.createRef()
+      habilitarSeleccionar: false,
+      habilitarCartas: false,
+      fase: 0,
+      accionesRestantes: [],
+      indiceAccionesRestantes: 0,
+      numTropasReforzar: 0
     };
 
+    this.getNombreUsuario = this.getNombreUsuario.bind(this);
+    this.mostrarAlertaInformativaAsincrona = this.mostrarAlertaInformativaAsincrona.bind(this);
+    this.mostrarAlertaRangoAsincrona = this.mostrarAlertaRangoAsincrona.bind(this);
     this.handleChartButton = this.handleChartButton.bind(this);
     this.handleWorldButton = this.handleWorldButton.bind(this);
     this.handleUserButton = this.handleUserButton.bind(this);
@@ -55,6 +62,57 @@ export default class Mapa extends React.Component {
     this.habilitarSeleccionar = this.habilitarSeleccionar.bind(this);
     this.deshabilitarSeleccionar = this.deshabilitarSeleccionar.bind(this);
     this.obtenerTerritorio = this.obtenerTerritorio.bind(this);
+    this.habilitarCartas = this.habilitarCartas.bind(this);
+    this.deshabilitarCartas = this.deshabilitarCartas.bind(this);
+    this.actualizarTerritorio = this.actualizarTerritorio.bind(this);
+  }
+
+  getNombreUsuario(nombre) {
+		if (nombre.length > 0) {
+    	nombre = nombre.split('=')[1];
+    	nombre = nombre.split('|')[0];
+		}
+    return nombre;
+  }
+
+  mostrarAlertaInformativaAsincrona(titulo, texto) {
+    clearInterval(this.interval);
+    swal.fire({
+      title: titulo,
+      text: texto,
+      icon: 'info',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#3085d6',
+		}).then(() => {
+      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    })
+  }
+
+  mostrarAlertaRangoAsincrona(titulo, minn, maxx) {
+    swal.fire({
+      title: titulo,
+      icon: 'question',
+      input: 'range',
+      inputLabel: 'Tropas',
+      inputAttributes: {
+        min: minn,
+        max: maxx,
+        step: 1
+      },
+      inputValue: minn,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        return result.value;
+      } else {
+        return 0;
+      }
+    });
   }
 
   /* En caso de pulsar el botón "bar_char_but" y !enableButton se mostrarán el resto de botones. 
@@ -77,15 +135,13 @@ export default class Mapa extends React.Component {
 
   /* Muestra el mapa de la partida normal, indicando el número de tropas de cada casilla
      y mostrando el dueño de cada territorio */
-  handleWorldButton(event) {
-    event.preventDefault();
+  handleWorldButton() {
     this.setState({enableMapInfo: true});
   };
 
   /* Muestra el mapa con la información de las regiones del mapa, indicando el número de 
      tropas extras recibidas por controlar al completo una región */
-  handleUserButton(event) {
-    event.preventDefault();
+  handleUserButton() {
     this.setState({enableMapInfo: false});
   };
 
@@ -93,30 +149,78 @@ export default class Mapa extends React.Component {
     //document.style.background-blend-mode = "darken";
   };
 
-  habilitarSeleccionar(event) {
-    event.preventDefault();
+  habilitarSeleccionar() {
     this.setState({habilitarSeleccionar: true});
     this.setState({territorioSeleccionado: ""});
   }
 
-  deshabilitarSeleccionar(event) {
-    event.preventDefault();
+  deshabilitarSeleccionar() {
     this.setState({habilitarSeleccionar: false});
   }
 
-  obtenerTerritorio(pais) {
+  actualizarTerritorio(id, numero, indexJugador) {
+    document.getElementById("t" + territorios[id]).textContent=numero;
+    document.getElementById(territorios[id]).style.fill = this.state.coloresJugadores[indexJugador];
+    document.getElementById(circulosTerritorios[id]).style.fill = this.state.coloresCirculos[indexJugador];
+  }
 
-    //if(this.state.habilitarSeleccionar) {
-      this.setState({territorioSeleccionado: pais});
-      console.log(this.mapa);
-    //}    
+  obtenerTerritorio(pais) {
+    if (this.state.habilitarSeleccionar) {
+      clearInterval(this.interval);
+      var idTerritorio = territorios.indexOf(pais);
+
+      switch (this.state.fase) {
+        case 0:   // Fase refuerzo especial
+        case 1:   // Fase refuerzo normal
+          var nT = this.mostrarAlertaRangoAsincrona("Número de tropas a reforzar", 1, this.state.numTropasReforzar);
+          console.log("nT:" + nT);
+          console.log("pais:" + pais);
+          if (nT > 0) {
+            fetch(`http://localhost:8090/api/reforzarTerritorio/${idTerritorio}/${nT}`, {
+              method: 'post',
+              credentials: 'include'
+            })
+            .then((response) => {
+              if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+              }
+            })
+            .then(() => {
+              var num = parseInt(document.getElementById("t" + territorios[idTerritorio]).textContent);
+              var indexJugador = this.state.nombreJugadores.indexOf(this.state.nombrePropioJugador);
+              this.setState({numTropasReforzar: this.state.numTropasReforzar - nT});
+              this.setState({tropasJugadores: this.state.tropasJugadores + nT});
+              
+              this.actualizarTerritorio(idTerritorio, num + nT, indexJugador);
+            })
+            .catch ((e) => {
+              swal.fire({
+                title: 'Se ha producido un error al reforzar el territorio',
+                text: e,
+                icon: 'error',
+              });
+            })
+          }
+          break;
+      }
+      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    }  
+  }
+
+  habilitarCartas() {
+    this.setState({habilitarCartas: true});
+  }
+
+  deshabilitarCartas() {
+    this.setState({habilitarCartas: false});
   }
 
   changeMap() {
     if (this.state.enableMapInfo) {
       return <MapaInfo />;
     }
-    return <MapaPartida mapa/>;
+    return <MapaPartida 
+              onClick={(pais) => this.obtenerTerritorio(pais)}/>;
   }
 
   obtenerNombreJugadores() {
@@ -150,6 +254,7 @@ export default class Mapa extends React.Component {
 
   rellenarTerritorios() {
     if (this.state.indexAccionesIniciales === 42) {
+      console.log("dale")
       clearInterval(this.interval);
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
     } 
@@ -165,14 +270,12 @@ export default class Mapa extends React.Component {
 
       document.getElementById("t" + territorios[this.state.indexAccionesIniciales]).textContent="1";
 
-      const tropas = this.state.accionesIniciales[this.state.indexAccionesIniciales].TropasRestantes;
       const tropasArr = this.state.tropasJugadores;
-      tropasArr[index] = tropas;
+      tropasArr[index]++;
       this.setState({tropasJugadores: tropasArr});
 
-      const regiones = this.state.accionesIniciales[this.state.indexAccionesIniciales].TerritoriosRestantes;
       const regionesArr = this.state.regionesJugadores;
-      regionesArr[index] = 42 - regiones;
+      regionesArr[index]++;
       this.setState({regionesJugadores: regionesArr});
 
       this.setState({indexAccionesIniciales: this.state.indexAccionesIniciales + 1});
@@ -180,6 +283,7 @@ export default class Mapa extends React.Component {
   }
 
   comprobarAcciones() {
+    console.log("loop")
     fetch('http://localhost:8090/api/obtenerEstadoPartidaCompleto', {
       method: 'get',
       credentials: 'include'
@@ -191,22 +295,80 @@ export default class Mapa extends React.Component {
       return response.json();
     })
     .then((response) => {
-      for (var i = 0; i < Object.keys(response).length; i++) {
-        var accion = response[i];
+      var fin = false;
+      var acciones = this.state.accionesRestantes.concat(response);
+      for (var i = this.state.indiceAccionesRestantes; i < Object.keys(acciones).length && !fin; i++) {
+        var accion = acciones[i];
+        console.log(accion.IDAccion)
 
         switch (accion.IDAccion) {
           // IDAccionRecibirRegion
-          case 0: {
+          case 0: 
             const jAux = this.state.accionesIniciales;
             jAux.push(accion);
             this.setState({accionesIniciales: jAux});
             
             if (accion.Region === 41) {
               clearInterval(this.interval);
-              this.interval = setInterval(() => this.rellenarTerritorios(), 150);
+              this.interval = setInterval(() => this.rellenarTerritorios(), 50);
+              this.setState({numTropasReforzar: accion.TropasRestantes});
+              this.setState({accionesRestantes: response});
+              this.setState({indiceAccionesRestantes: ++i});
+              fin = true;
             }
             break;
-          }
+          
+          // IDAccionCambioFase
+          case 1: 
+            clearInterval(this.interval);
+            this.setState({accionesRestantes: []});
+            this.setState({indiceAccionesRestantes: 0});
+            this.setState({fase: accion.Fase});
+            
+            if (this.state.fase === 0 && accion.Jugador === this.state.nombrePropioJugador) {
+              this.habilitarSeleccionar();
+              
+            }
+            // Fase de refuerzo
+            else if (this.state.fase === 1 && accion.Jugador === this.state.nombrePropioJugador) {
+              this.habilitarSeleccionar();
+              this.habilitarCartas();
+            } // Fase de ataque 
+            else if (this.state.fase === 2 && accion.Jugador === this.state.nombrePropioJugador) {
+              this.deshabilitarCartas();
+            } // Fase de fortificar 
+            else if (this.state.fase === 3 && accion.Jugador === this.state.nombrePropioJugador) {
+
+            } // No es tu turno
+            else {
+              this.deshabilitarSeleccionar();
+              this.deshabilitarCartas();
+            }
+            //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+            break;
+          
+          // IDAccionInicioTurno
+          case 2: 
+            console.log("info")
+            if (this.state.nombrePropioJugador === accion.Jugador) {
+              //this.mostrarAlertaInformativaAsincrona("Fase de refuerzo", "Has obtenido " + accion.TropasObtenidas + 
+              //" tropas debido a que controlas " + accion.RazonNumeroTerritorios + " territorios y " + 
+              //accion.RazonContinentesOcupados + " continentes.");
+            }
+            else {
+              this.mostrarAlertaInformativaAsincrona("Fase de refuerzo", "Turno de " + accion.Jugador);
+            }
+            break;
+          
+          // IDAccionCambioCartas
+          case 3: 
+
+            break;
+          
+          // IDAccionReforzar
+          case 4: 
+
+            break;
           default: 
             break;
         }
@@ -222,10 +384,8 @@ export default class Mapa extends React.Component {
   }
 
   componentDidMount() {
-    //this.interval = setInterval(() => this.obtenerTerritorio(), 500);
-    //this.obtenerTerritorio();
-    //this.obtenerNombreJugadores();
-    //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    this.obtenerNombreJugadores();
+    this.interval = setInterval(() => this.comprobarAcciones(), 500);
   }
 
   componentWillUnmount() {
