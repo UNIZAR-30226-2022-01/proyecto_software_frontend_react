@@ -4,11 +4,11 @@ import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import MapaPartida from "../../componentes/mapaPartida/MapaPartida";
 import MapaInfo from "../../componentes/mapaInfo/MapaInfo";
 import BarraSuperiorJuego from '../../componentes/barraSuperiorJuego/BarraSuperiorJuego'
-//import FuncionesAuxiliares from '../../paginas/mapa/auxiliaresMapa'
 import BarChart from "../../imagenes/bar-chart.png";
 import Cards from "../../imagenes/cards.png";
 import User from "../../imagenes/user.png";
 import World from "../../imagenes/world.png";
+import Fase from "../../imagenes/fase.png";
 import "./mapa.css";
 
 const territorios = ["Australia_Oriental", "Indonesia", "Nueva_Guinea", "Alaska", "Ontario", "Territorio_del_Noroeste", "Venezuela", 
@@ -46,7 +46,9 @@ export default class Mapa extends React.Component {
       fase: 0,
       accionesRestantes: [],
       indiceAccionesRestantes: 0,
-      numTropasReforzar: 0
+      numTropasReforzar: 0,
+      resultadoAlerta: null,
+      turno: null
     };
 
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
@@ -56,6 +58,7 @@ export default class Mapa extends React.Component {
     this.handleWorldButton = this.handleWorldButton.bind(this);
     this.handleUserButton = this.handleUserButton.bind(this);
     this.handleCardButton = this.handleCardButton.bind(this);
+    this.handleFase = this.handleFase.bind(this);
     this.changeMap = this.changeMap.bind(this);
     this.comprobarAcciones = this.comprobarAcciones.bind(this);
     this.rellenarTerritorios = this.rellenarTerritorios.bind(this);
@@ -65,6 +68,8 @@ export default class Mapa extends React.Component {
     this.habilitarCartas = this.habilitarCartas.bind(this);
     this.deshabilitarCartas = this.deshabilitarCartas.bind(this);
     this.actualizarTerritorio = this.actualizarTerritorio.bind(this);
+    this.actualizarInfoJugadores = this.actualizarInfoJugadores.bind(this);
+    this.obtenerNombreFase = this.obtenerNombreFase.bind(this);
   }
 
   getNombreUsuario(nombre) {
@@ -108,9 +113,10 @@ export default class Mapa extends React.Component {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        return result.value;
+        console.log("confir")
+        this.setState({resultadoAlerta: result.value});
       } else {
-        return 0;
+        this.setState({resultadoAlerta: 0});
       }
     });
   }
@@ -149,6 +155,25 @@ export default class Mapa extends React.Component {
     //document.style.background-blend-mode = "darken";
   };
 
+  handleFase() {
+    fetch('http://localhost:8090/api/pasarDeFase', {
+      method: 'post',
+      credentials: 'include'
+    })
+    .then((response) => {
+      if (!response.ok) {
+        return response.text().then(text => {throw new Error(text)});
+      }
+    })
+    .catch ((e) => {
+      swal.fire({
+        title: 'Se ha producido un error al cambiar de fase',
+        text: e,
+        icon: 'error',
+      });
+    })
+  }
+
   habilitarSeleccionar() {
     this.setState({habilitarSeleccionar: true});
     this.setState({territorioSeleccionado: ""});
@@ -164,46 +189,80 @@ export default class Mapa extends React.Component {
     document.getElementById(circulosTerritorios[id]).style.fill = this.state.coloresCirculos[indexJugador];
   }
 
-  obtenerTerritorio(pais) {
-    if (this.state.habilitarSeleccionar) {
-      clearInterval(this.interval);
-      var idTerritorio = territorios.indexOf(pais);
+  actualizarInfoJugadores(jugador, numTropas = 0, numTerritorios = 0, numCartas = 0) {
+    var indexJugador = this.state.nombreJugadores.indexOf(jugador);
+    /* Actualizar valor tropas */
+    const tJ = this.state.tropasJugadores;
+    tJ[indexJugador] = tJ[indexJugador] + numTropas;
+    this.setState({tropasJugadores: tJ});
+    
+    /* Actualizar valor territorios */
+    const tT = this.state.regionesJugadores;
+    tT[indexJugador] = tT[indexJugador] + numTerritorios;
+    this.setState({regionesJugadores: tT});
 
+    /* Actualizar valor cartas */
+    const tC = this.state.cartasJugadores;
+    tC[indexJugador] = tC[indexJugador] + numCartas;
+    this.setState({cartasJugadores: tC});
+  }
+
+  comprobarTerritorio(idTerritorio) {
+    var colorTerritorio = document.getElementById(territorios[idTerritorio]).style.fill;
+    var indexJugador = this.state.nombreJugadores.indexOf(this.state.nombrePropioJugador);
+    if (this.state.coloresJugadores[indexJugador] === colorTerritorio) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  obtenerTerritorio(pais) {
+    var idTerritorio = territorios.indexOf(pais);
+    if (this.state.habilitarSeleccionar && this.comprobarTerritorio(idTerritorio)) {
+      clearInterval(this.interval);
+      
       switch (this.state.fase) {
         case 0:   // Fase refuerzo especial
         case 1:   // Fase refuerzo normal
-          var nT = this.mostrarAlertaRangoAsincrona("Número de tropas a reforzar", 1, this.state.numTropasReforzar);
-          console.log("nT:" + nT);
-          console.log("pais:" + pais);
-          if (nT > 0) {
-            fetch(`http://localhost:8090/api/reforzarTerritorio/${idTerritorio}/${nT}`, {
-              method: 'post',
-              credentials: 'include'
-            })
-            .then((response) => {
-              if (!response.ok) {
-                return response.text().then(text => {throw new Error(text)});
-              }
-            })
-            .then(() => {
-              var num = parseInt(document.getElementById("t" + territorios[idTerritorio]).textContent);
-              var indexJugador = this.state.nombreJugadores.indexOf(this.state.nombrePropioJugador);
-              this.setState({numTropasReforzar: this.state.numTropasReforzar - nT});
-              this.setState({tropasJugadores: this.state.tropasJugadores + nT});
+          this.mostrarAlertaRangoAsincrona("Número de tropas a reforzar", 0, this.state.numTropasReforzar);
+          this.interval = setInterval(() => {
+            if (this.state.resultadoAlerta > 0) {
+              fetch(`http://localhost:8090/api/reforzarTerritorio/${idTerritorio}/${this.state.resultadoAlerta}`, {
+                method: 'post',
+                credentials: 'include'
+              })
+              .then((response) => {
+                if (!response.ok) {
+                  return response.text().then(text => {throw new Error(text)});
+                }
+              })
+              .then(() => {
+                this.setState({numTropasReforzar: this.state.numTropasReforzar - this.state.resultadoAlerta});
+                this.setState({resultadoAlerta: null});
+                clearInterval(this.interval);
+                this.interval = setInterval(() => this.comprobarAcciones(), 500);
+              })
+              .catch ((e) => {
+                swal.fire({
+                  title: 'Se ha producido un error al reforzar el territorio',
+                  text: e,
+                  icon: 'error',
+                });
+                this.setState({resultadoAlerta: null});
+                clearInterval(this.interval);
+                this.interval = setInterval(() => this.comprobarAcciones(), 500);
+              })
               
-              this.actualizarTerritorio(idTerritorio, num + nT, indexJugador);
-            })
-            .catch ((e) => {
-              swal.fire({
-                title: 'Se ha producido un error al reforzar el territorio',
-                text: e,
-                icon: 'error',
-              });
-            })
-          }
+            } else if (this.state.resultadoAlerta == 0) {
+              this.setState({resultadoAlerta: null});
+              clearInterval(this.interval);
+              this.interval = setInterval(() => this.comprobarAcciones(), 500);
+            }
+          }, 500);
           break;
       }
-      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+      
     }  
   }
 
@@ -284,7 +343,7 @@ export default class Mapa extends React.Component {
 
   comprobarAcciones() {
     console.log("loop")
-    fetch('http://localhost:8090/api/obtenerEstadoPartidaCompleto', {
+    fetch('http://localhost:8090/api/obtenerEstadoPartida', {
       method: 'get',
       credentials: 'include'
     })
@@ -333,7 +392,7 @@ export default class Mapa extends React.Component {
             else if (this.state.fase === 1 && accion.Jugador === this.state.nombrePropioJugador) {
               this.habilitarSeleccionar();
               this.habilitarCartas();
-            } // Fase de ataque 
+            } // Fase de ataque
             else if (this.state.fase === 2 && accion.Jugador === this.state.nombrePropioJugador) {
               this.deshabilitarCartas();
             } // Fase de fortificar 
@@ -348,12 +407,13 @@ export default class Mapa extends React.Component {
             break;
           
           // IDAccionInicioTurno
-          case 2: 
-            console.log("info")
+          case 2:
+            clearInterval(this.interval);
+            this.setState({turno: accion.Jugador});
             if (this.state.nombrePropioJugador === accion.Jugador) {
-              //this.mostrarAlertaInformativaAsincrona("Fase de refuerzo", "Has obtenido " + accion.TropasObtenidas + 
-              //" tropas debido a que controlas " + accion.RazonNumeroTerritorios + " territorios y " + 
-              //accion.RazonContinentesOcupados + " continentes.");
+              this.mostrarAlertaInformativaAsincrona("Tu turno: Fase de refuerzo", "Has obtenido " + 
+              accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
+              " territorios y " + accion.RazonContinentesOcupados + " continentes.");
             }
             else {
               this.mostrarAlertaInformativaAsincrona("Fase de refuerzo", "Turno de " + accion.Jugador);
@@ -362,13 +422,29 @@ export default class Mapa extends React.Component {
           
           // IDAccionCambioCartas
           case 3: 
-
+            
             break;
           
           // IDAccionReforzar
           case 4: 
+            var indexJugador = this.state.nombreJugadores.indexOf(accion.Jugador);
+            var num = parseInt(document.getElementById("t" + territorios[accion.TerritorioReforzado]).textContent);
+            this.actualizarTerritorio(accion.TerritorioReforzado, num + accion.TropasRefuerzo, indexJugador);
+            this.actualizarInfoJugadores(accion.Jugador, accion.TropasRefuerzo);
+            break;
+          
+          // IDAccionAtaque
+          case 5: { 
+
+           break;
+          }
+
+          // IDAccionOcupar
+          case 6: { 
 
             break;
+          }
+
           default: 
             break;
         }
@@ -381,6 +457,18 @@ export default class Mapa extends React.Component {
         icon: 'error',
       });
     })
+  }
+
+  obtenerNombreFase() {
+    switch(this.state.fase) {
+      case 0:
+      case 1:
+        return("Refuerzo");
+      case 2:
+        return("Ataque");
+      case 3:
+        return("Fortificación");
+    }
   }
 
   componentDidMount() {
@@ -422,21 +510,30 @@ export default class Mapa extends React.Component {
           {/* Botones desplegables: botón info regiones y botón mapa usuario */}
           <div className="botonClick" id="hidden_buttons">
             <div className="boton">
-              <input type="image" id="user_but" onClick={this.handleUserButton} src={User} alt='user' height="60" width="60" />
+              <input type="image" id="user_but" onClick={this.handleUserButton} src={User} alt='user' height="70" width="70" />
             </div> &nbsp;&nbsp;&nbsp;&nbsp;
             <div className="boton">
-             <input type="image" id="world_but" onClick={this.handleWorldButton} src={World} alt='world' height="60" width="60"/>
+             <input type="image" id="world_but" onClick={this.handleWorldButton} src={World} alt='world' height="70" width="70"/>
             </div>
           </div>
 
           {/* Botones principales: botón desplegable mapas y botón cartas usuario */}
           <div className="botonesPrincipales">          
             <div className="boton">
-              <input type="image" id="bar_char_but" onClick={this.handleChartButton} src={BarChart} alt='bar-chart' height="60" width="60" />
+              <input type="image" id="bar_char_but" onClick={this.handleChartButton} src={BarChart} alt='bar-chart' height="70" width="70" />
             </div> &nbsp;&nbsp;&nbsp;&nbsp;
             <div className="boton">
-              <input type="image" id="cards_but" onClick={this.handleCardButton} src={Cards} alt='cards' height="60" width="60"/>
+              <input type="image" id="cards_but" onClick={this.handleCardButton} src={Cards} alt='cards' height="70" width="70"/>
             </div>
+            <div className="botonFase">
+              <input type="image" id="fase_but" onClick={this.handleFase} src={Fase} alt='cambioFase' height="70" width="70"/>
+            </div>
+            <div className="botonInfo">
+              <text className="textoInfo"> Fase: {this.obtenerNombreFase()}</text> <br></br>
+              <text className="textoInfo"> Turno: {this.state.turno}</text> <br></br>
+              <text className="textoInfo"> Refuerzos: {this.state.numTropasReforzar}</text>
+            </div>
+            
           </div>
         </div>
       </div>
