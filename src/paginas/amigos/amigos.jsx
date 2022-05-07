@@ -12,12 +12,15 @@ export default class Amigos extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            amigos: []
+            amigos: [],
+            usuarios: []
         };
 
         this.recuperarAmigos = this.recuperarAmigos.bind(this);
         this.eliminarAmigo = this.eliminarAmigo.bind(this);
         this.buscarUsuarios = this.buscarUsuarios.bind(this);
+        this.actualizarBoton = this.actualizarBoton.bind(this);
+        this.enviarSolicitudAmistad = this.enviarSolicitudAmistad.bind(this);
     }
 
     componentDidMount() {
@@ -108,16 +111,49 @@ export default class Amigos extends React.Component {
         })
         .catch((e) => {
             swal.fire({
-                title: 'Se ha producido un error al recuperar las notificaciones',
+                title: 'Se ha producido un error al recuperar la lista de amigos',
                 text: e,
                 icon: 'error',
             });
         })
     }
 
-    buscarUsuarios(e) {
-        console.log("Buscar:" + e.target.value);
-        fetch(`http://localhost:8090/api/obtenerUsuariosSimilares/${e.target.value}`, {
+    enviarSolicitudAmistad(e) {
+        let nombre = e.currentTarget.id;
+        console.log("Enviando solicitud de amistad a:" + nombre)
+        fetch(`http://localhost:8090/api/enviarSolicitudAmistad/${nombre}`, {
+            method: 'post',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+        })
+        .then(() => {
+            swal.fire({
+                title: `Has enviado una solicitud de amistad a ${nombre}`,
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al recuperar el perfil',
+                text: e,
+                icon: 'error',
+            });
+        })
+    }
+
+    buscarUsuarios() {
+        console.log("Inicio buscar usuarios")
+        let patron = document.getElementById("busqueda").value;
+        console.log("Buscar:" + patron);
+        fetch(`http://localhost:8090/api/obtenerUsuariosSimilares/${patron}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -131,21 +167,38 @@ export default class Amigos extends React.Component {
         })
         .then((response) => {
             if (response.localeCompare("null\n") == 0) {
-                console.log("No hay coincidencias")
-                this.setState({amigos: <h3>Aún no tienes amigos registrados</h3>})
+                console.log("No hay coincidencias");
+                this.setState({usuarios: <h3>No se ha encontrado ningún usuario</h3>});
             }
             else {
+                let usuariosArr = [];
                 response = JSON.parse(response);
-                console.log("Users recuperados: " + response)
+                for (var i=0; i < response.length; i++) {
+                    usuariosArr.push(<div className='infoUsuario' key={i}>
+                        <h3>{response[i]["Nombre"]}</h3> 
+                        <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
+                        <button id={response[i].Nombre} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Enviar solicitud de amistad</button>
+                        </div>);
+                }
+
+                this.setState({usuarios: usuariosArr});
             }
         })
         .catch((e) => {
             swal.fire({
-                title: 'Se ha producido un error al recuperar los usuarios',
+                title: 'Se ha producido un error al buscar usuarios',
                 text: e,
                 icon: 'error',
             });
         })
+    }
+
+    actualizarBoton() {
+        if (document.getElementById("busqueda").value === "") {
+            document.getElementById("botonBuscar").disabled = true;
+        } else {
+            document.getElementById("botonBuscar").disabled = false;
+        }
     }
 
     render() {
@@ -156,7 +209,10 @@ export default class Amigos extends React.Component {
             <h2>Lista de amigos</h2>
             {this.state.amigos}
             <h2>Buscar usuarios</h2>
-            <input type="text" id="bio" name="bio" placeholder="Busca un usuario" onChange={(e) => this.buscarUsuarios(e)}></input>
+           
+            <input type="text" id="busqueda" name="busqueda" placeholder="Busca un usuario" onChange={this.actualizarBoton}></input>
+            <button id="botonBuscar" value="Buscar" onClick={this.buscarUsuarios} disabled>Buscar</button>
+            {this.state.usuarios}
             <BarraInferior/>
             </div>
         );
