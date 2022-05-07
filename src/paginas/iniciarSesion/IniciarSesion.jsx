@@ -36,7 +36,7 @@ export default class IniciarSesion extends React.Component {
 			body: queryString.stringify({
 				nombre: this.state.nombreUsuario,
 				password: this.state.contrasegna,
-			 })
+			})
 		})
 		.then((response) => {
 			if (!response.ok) {

@@ -10,7 +10,7 @@
 
 .botonesPrincipales {
   /* border: 1.5px solid white; */
-  width: 180px;
+  width: 600px;
   display: flex;
 }
 
@@ -18,7 +18,7 @@
   border: 1.5px solid white; 
   border-radius: 20px;
   background-color: #CCF4FF;
-  height: "60"; 
+  height: "80"; 
   width: "60";
   padding: .5em;
   cursor: pointer;
@@ -30,10 +30,46 @@
   transform: scale(1.05);
 }
 
+.botonInfo {
+  border: 1.5px solid white; 
+  border-radius: 20px;
+  background-color: #CCF4FF;
+  height: 75px; 
+  width: 180px;
+  padding: .5em;
+  margin-left: 20px;
+  transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.textoInfo {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color:#000000;
+  font-size: 17px;
+  font-weight: 550;
+}
+
+.botonFase {
+  border: 1.5px solid white; 
+  border-radius: 25px;
+  background-color: #CCF4FF;
+  height: "80"; 
+  width: "60";
+  padding: .5em;
+  cursor: pointer;
+  transition: width 0.5s, height 0.5s, transform 0.5s;
+  margin-left: 20px;
+}
+
+.botonFase:hover {
+  opacity: 0.6;
+  transform: scale(1.05);
+}
+
 .botonClick {
   /*border: 1.5px solid yellow; */
-  width: 79px;
+  width: 85px;
   height: 205px;
+  margin-bottom: 30px;
   visibility: hidden;
 }
 
@@ -41,8 +77,9 @@
   /* border: 1.5px solid white; */
   float:left;
   clear:left;
-  margin-top: 35%;
+  margin-top: 33%;
   margin-left: 4%;
   width: 1px;
   margin-bottom: 2%;
 }
+

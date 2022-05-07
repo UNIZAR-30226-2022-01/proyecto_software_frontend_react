@@ -25,7 +25,7 @@ export default class InfoJugadorEspera extends React.Component {
 	}
 	
 	render() {
-		if (this.state.usuario == undefined) {
+		if (this.state.usuario === undefined) {
 			return (
 				<div id={this.state.id} className="participante">
 					<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>

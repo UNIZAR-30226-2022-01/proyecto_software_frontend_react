@@ -5,8 +5,6 @@ import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./perfil.css";
 import queryString from 'query-string';
 
-
-
 export default class Perfil extends React.Component {
     constructor(props) {
         const usuario = localStorage.getItem('nombre_usuario');
@@ -168,7 +166,6 @@ export default class Perfil extends React.Component {
             <h3>Partidas totales: {this.state.partidas_totales}</h3>
             {solicitudAmistad}
             
-
             <BarraInferior></BarraInferior>
             </div>
         );
