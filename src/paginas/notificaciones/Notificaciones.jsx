@@ -10,6 +10,7 @@ export default class Notificaciones extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            hayNotificaciones: false,
             notificacionesPrueba: '[{"IDNotificacion": 0, "Jugador": "mapachin"},{"IDNotificacion": 1, "JugadorPrevio": "mapachon"},'+
             '{"IDNotificacion": 2, "Puntos": 20, "PartidaGanada": true}, {"IDNotificacion": 2, "Puntos": 5, "PartidaGanada": false}, {"IDNotificacion": 3}]',
             numNotificaciones: 0,
@@ -25,6 +26,11 @@ export default class Notificaciones extends React.Component {
 
     componentDidMount() {
         this.recuperarNotificaciones();
+        this.interval = setInterval(() => this.recuperarNotificaciones(), 3000);
+    }
+  
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
     
     recuperarNotificaciones() {
@@ -38,33 +44,40 @@ export default class Notificaciones extends React.Component {
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
-            return response.json();
+            return response.text();
         })
         .then((response) => {
             // Notificaciones de prueba
-            response = JSON.parse(this.state.notificacionesPrueba);
+            //response = JSON.parse(this.state.notificacionesPrueba);
+            if (response.localeCompare("null\n") == 0) {
+                console.log("No hay notificaciones");
+                this.setState({hayNotificaciones: false});
+            } 
+            else {
+                response = JSON.parse(response);
+                var idsArr = [];
+                var jugadoresArr = [];
+                var jugadoresPreviosArr = [];
+                var puntosArr = [];
+                var ganadaArr = [];
 
-            var idsArr = [];
-            var jugadoresArr = [];
-            var jugadoresPreviosArr = [];
-            var puntosArr = [];
-            var ganadaArr = [];
+                this.setState({numNotificaciones: Object.keys(response).length});
+                for (var i = 0; i < Object.keys(response).length; i++) {
+                    console.log(response[i]);
+                    idsArr.push(response[i]['IDNotificacion']);
+                    jugadoresArr.push(response[i]['Jugador']);
+                    jugadoresPreviosArr.push(response[i]['JugadorPrevio']);
+                    puntosArr.push(response[i]['Puntos']);
+                    ganadaArr.push(response[i]['PartidaGanada']);
+                }
 
-            this.setState({numNotificaciones: Object.keys(response).length});
-            for (var i = 0; i < Object.keys(response).length; i++) {
-                console.log(response[i]);
-                idsArr.push(response[i]['IDNotificacion']);
-                jugadoresArr.push(response[i]['Jugador']);
-                jugadoresPreviosArr.push(response[i]['JugadorPrevio']);
-                puntosArr.push(response[i]['Puntos']);
-                ganadaArr.push(response[i]['PartidaGanada']);
+                this.setState({idNotificaciones: idsArr});
+                this.setState({jugadores: jugadoresArr});
+                this.setState({jugadoresPrevios: jugadoresPreviosArr});
+                this.setState({puntos: puntosArr});
+                this.setState({partidasSonGanadas: ganadaArr});
+                this.setState({hayNotificaciones: true});
             }
-
-            this.setState({idNotificaciones: idsArr});
-            this.setState({jugadores: jugadoresArr});
-            this.setState({jugadoresPrevios: jugadoresPreviosArr});
-            this.setState({puntos: puntosArr});
-            this.setState({partidasSonGanadas: ganadaArr});
         })
         .catch((e) => {
             swal.fire({
@@ -79,20 +92,28 @@ export default class Notificaciones extends React.Component {
     render() {
         // TODO mensaje de no tienes notificaciones si está vacío
         var notificaciones = [];
-        for (var i = 0; i < this.state.numNotificaciones; i++) {
-            notificaciones.push(<InfoNotificacion
-                idNotificacion = {this.state.idNotificaciones[i]}
-                jugador = {this.state.jugadores[i]}
-                jugadorPrevio = {this.state.jugadoresPrevios[i]}
-                puntos = {this.state.puntos[i]}
-                partidaGanada= {this.state.partidasSonGanadas[i]}/>)
+        var mensajeSinNotificaciones = null;
+        if (this.state.hayNotificaciones) {
+            for (var i = 0; i < this.state.numNotificaciones; i++) {
+                notificaciones.push(<InfoNotificacion
+                    idNotificacion = {this.state.idNotificaciones[i]}
+                    jugador = {this.state.jugadores[i]}
+                    jugadorPrevio = {this.state.jugadoresPrevios[i]}
+                    puntos = {this.state.puntos[i]}
+                    partidaGanada= {this.state.partidasSonGanadas[i]}/>)
+            }
         }
+        else {
+            mensajeSinNotificaciones = <h3>No tienes notificaciones</h3>
+        }
+        
 
         return (
             <div className="cen">
 
             <BarraSuperiorGeneral></BarraSuperiorGeneral>
             <h1>Notificaciones</h1>
+            {mensajeSinNotificaciones}
             {notificaciones}
             <BarraInferior></BarraInferior>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import "./barraSuperior.css";
 
 export default class BarraSuperiorGeneral extends React.Component {
@@ -48,10 +48,9 @@ export default class BarraSuperiorGeneral extends React.Component {
       return <Navigate to={`/perfil`}/>;
     }
 
-    // TODO no cambia al perfil del usuario si estamos viendo el perfil de otro jugador
 		return (
       <div class="topnav">
-        <a class="active">World Domination</a>
+        <a class="active" href="/inicio">World Domination</a>
 				
         <div class="topnav-right">
         <Link to='/amigos'><img class="imagenes" src="https://img.icons8.com/material-rounded/48/000000/add-user-group-man-man.png"/></Link>

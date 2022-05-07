@@ -77,7 +77,7 @@ export default class Perfil extends React.Component {
 
     enviarSolicitudAmistad() {
         fetch(`http://localhost:8090/api/enviarSolicitudAmistad/${this.state.nombre_usuario}`, {
-            method: 'get',
+            method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
         })
@@ -86,9 +86,8 @@ export default class Perfil extends React.Component {
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
-            return response.json();
         })
-        .then((response) => {
+        .then(() => {
             swal.fire({
                 title: `Has enviado una solicitud de amistad a ${this.state.nombre_usuario}`,
                 icon: 'success',
@@ -98,7 +97,7 @@ export default class Perfil extends React.Component {
         })
         .catch((e) => {
             swal.fire({
-                title: 'Se ha producido un error al recuperar el perfil',
+                title: 'Se ha producido un error al enviar la solicitud',
                 text: e,
                 icon: 'error',
             });
