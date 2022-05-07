@@ -1,5 +1,4 @@
 import React from 'react';
-import Proptypes from 'prop-types';
 import "./mapaPartida.css";
 
 export default class MapaPartida extends React.Component {

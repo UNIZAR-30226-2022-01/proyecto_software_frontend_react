@@ -254,12 +254,15 @@ export default class Mapa extends React.Component {
                 this.interval = setInterval(() => this.comprobarAcciones(), 500);
               })
               
-            } else if (this.state.resultadoAlerta == 0) {
+            } else if (this.state.resultadoAlerta === 0) {
               this.setState({resultadoAlerta: null});
               clearInterval(this.interval);
               this.interval = setInterval(() => this.comprobarAcciones(), 500);
             }
           }, 500);
+          break;
+
+        default: 
           break;
       }
       
@@ -445,6 +448,36 @@ export default class Mapa extends React.Component {
             break;
           }
 
+          // IDAccionFortificar
+          case 7: { 
+
+            break;
+          }
+
+          // IDAccionObtenerCarta
+          case 8: { 
+
+            break;
+          }
+
+          // IDAccionJugadorEliminado
+          case 9: { 
+
+            break;
+          }
+
+          // IDAccionJugadorExpulsado
+          case 10: { 
+
+            break;
+          }
+
+          // IDAccionPartidaFinalizada
+          case 11: { 
+
+            break;
+          }
+
           default: 
             break;
         }
@@ -468,12 +501,14 @@ export default class Mapa extends React.Component {
         return("Ataque");
       case 3:
         return("Fortificación");
+      default: 
+        break;
     }
   }
 
   componentDidMount() {
-    this.obtenerNombreJugadores();
-    this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    //this.obtenerNombreJugadores();
+    //this.interval = setInterval(() => this.comprobarAcciones(), 500);
   }
 
   componentWillUnmount() {

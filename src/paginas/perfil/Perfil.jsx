@@ -1,11 +1,8 @@
 import React from 'react';
-import { Navigate } from "react-router-dom";
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./perfil.css";
-
-
 
 export default class Perfil extends React.Component {
     constructor(props) {
@@ -73,7 +70,6 @@ export default class Perfil extends React.Component {
             });
         })
     }
-        
     
     render() {
         let solicitudAmistad = null;
@@ -94,7 +90,6 @@ export default class Perfil extends React.Component {
             <h3>Partidas totales: {this.state.partidas_totales}</h3>
             {solicitudAmistad}
             
-
             <BarraInferior></BarraInferior>
             </div>
         );
