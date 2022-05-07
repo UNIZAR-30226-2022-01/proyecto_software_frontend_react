@@ -1,5 +1,6 @@
 import React from 'react';
 import swal from 'sweetalert2';
+import { Navigate } from 'react-router-dom';
 import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import MapaPartida from "../../componentes/mapaPartida/MapaPartida";
 import MapaInfo from "../../componentes/mapaInfo/MapaInfo";
@@ -48,12 +49,16 @@ export default class Mapa extends React.Component {
       indiceAccionesRestantes: 0,
       numTropasReforzar: 0,
       resultadoAlerta: null,
-      turno: null
+      turno: null,
+      territorioOrigenFortificar: null,
+      finPartida: false,
+      obtenerInfoPartida: localStorage.getItem("volver_partida")
     };
 
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
     this.mostrarAlertaInformativaAsincrona = this.mostrarAlertaInformativaAsincrona.bind(this);
     this.mostrarAlertaRangoAsincrona = this.mostrarAlertaRangoAsincrona.bind(this);
+    this.mostrarAlertaFin = this.mostrarAlertaFin.bind(this);
     this.handleChartButton = this.handleChartButton.bind(this);
     this.handleWorldButton = this.handleWorldButton.bind(this);
     this.handleUserButton = this.handleUserButton.bind(this);
@@ -69,7 +74,11 @@ export default class Mapa extends React.Component {
     this.deshabilitarCartas = this.deshabilitarCartas.bind(this);
     this.actualizarTerritorio = this.actualizarTerritorio.bind(this);
     this.actualizarInfoJugadores = this.actualizarInfoJugadores.bind(this);
+    this.actualizarValorTerritorio = this.actualizarValorTerritorio.bind(this);
+    this.sumarRestarValorTerritorio = this.sumarRestarValorTerritorio.bind(this);
     this.obtenerNombreFase = this.obtenerNombreFase.bind(this);
+    this.jugadorEliminado = this.jugadorEliminado.bind(this);
+    this.obtenerEstadoActualPartida = this.obtenerEstadoActualPartida.bind(this);
   }
 
   getNombreUsuario(nombre) {
@@ -88,6 +97,7 @@ export default class Mapa extends React.Component {
       icon: 'info',
       confirmButtonText: 'OK',
       confirmButtonColor: '#3085d6',
+      timer: 3000,
 		}).then(() => {
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
     })
@@ -118,6 +128,14 @@ export default class Mapa extends React.Component {
       } else {
         this.setState({resultadoAlerta: 0});
       }
+    });
+  }
+
+  mostrarAlertaFin(titulo, texto) {
+    swal.fire({
+      title: titulo,
+      text: texto,
+      icon: 'warning',
     });
   }
 
@@ -183,27 +201,56 @@ export default class Mapa extends React.Component {
     this.setState({habilitarSeleccionar: false});
   }
 
-  actualizarTerritorio(id, numero, indexJugador) {
+  actualizarTerritorio(id, numero, jugador) {
+    var indexJugador = this.state.nombreJugadores.indexOf(jugador);
+
     document.getElementById("t" + territorios[id]).textContent=numero;
     document.getElementById(territorios[id]).style.fill = this.state.coloresJugadores[indexJugador];
     document.getElementById(circulosTerritorios[id]).style.fill = this.state.coloresCirculos[indexJugador];
   }
 
-  actualizarInfoJugadores(jugador, numTropas = 0, numTerritorios = 0, numCartas = 0) {
+  actualizarValorTerritorio(id, numero) {
+    document.getElementById("t" + territorios[id]).textContent=numero;
+  }
+
+  sumarRestarValorTerritorio(id, numero, sumar = true) {
+    var tropas = parseInt(document.getElementById("t" + territorios[id]).textContent);
+    if (sumar) {
+      tropas += numero;
+    } else {
+      tropas -= numero;
+    }
+    document.getElementById("t" + territorios[id]).textContent = tropas;
+  }
+
+  actualizarInfoJugadores(jugador, numTropas = 0, numTerritorios = 0, numCartas = 0, sumar = true) {
     var indexJugador = this.state.nombreJugadores.indexOf(jugador);
     /* Actualizar valor tropas */
     const tJ = this.state.tropasJugadores;
-    tJ[indexJugador] = tJ[indexJugador] + numTropas;
+    if (sumar) {
+      tJ[indexJugador] = tJ[indexJugador] + parseInt(numTropas);
+    }  else {
+      tJ[indexJugador] = tJ[indexJugador] - parseInt(numTropas);
+    }
+    console.log(tJ)
     this.setState({tropasJugadores: tJ});
     
     /* Actualizar valor territorios */
     const tT = this.state.regionesJugadores;
-    tT[indexJugador] = tT[indexJugador] + numTerritorios;
+    if (sumar) {
+      tT[indexJugador] = tT[indexJugador] + parseInt(numTerritorios);
+    } else {
+      tT[indexJugador] = tT[indexJugador] - parseInt(numTerritorios);
+    }
     this.setState({regionesJugadores: tT});
 
     /* Actualizar valor cartas */
     const tC = this.state.cartasJugadores;
-    tC[indexJugador] = tC[indexJugador] + numCartas;
+    if (sumar) {
+      tC[indexJugador] = tC[indexJugador] + parseInt(numCartas);
+    } else {
+      tC[indexJugador] = tC[indexJugador] - parseInt(numCartas);
+    }
     this.setState({cartasJugadores: tC});
   }
 
@@ -238,6 +285,10 @@ export default class Mapa extends React.Component {
                 }
               })
               .then(() => {
+                var num = parseInt(document.getElementById("t" + territorios[idTerritorio]).textContent);
+                this.actualizarValorTerritorio(idTerritorio, num + parseInt(this.state.resultadoAlerta));
+                this.actualizarInfoJugadores(this.state.nombrePropioJugador, this.state.resultadoAlerta);
+
                 this.setState({numTropasReforzar: this.state.numTropasReforzar - this.state.resultadoAlerta});
                 this.setState({resultadoAlerta: null});
                 clearInterval(this.interval);
@@ -262,10 +313,66 @@ export default class Mapa extends React.Component {
           }, 500);
           break;
 
+        case 2: // Fase de ataque
+          
+          
+          break;
+        
+        case 3: // Fase de fortificación
+          if (this.state.territorioOrigenFortificar === null) {
+            this.setState({territorioOrigenFortificar: idTerritorio});
+          } else if (this.state.territorioOrigenFortificar === idTerritorio) {
+            this.mostrarAlertaInformativaAsincrona("Seleccione otro territorio destino", 
+              "Los territorios origen y destino a fortificar no pueden ser los mismos");
+          } else {
+            var tropasFortificar = parseInt(document.getElementById("t" + territorios[this.state.territorioOrigenFortificar]).textContent); 
+            this.mostrarAlertaRangoAsincrona("Número de tropas a fortificar", 0, tropasFortificar - 1);
+            this.interval = setInterval(() => {
+              if (this.state.resultadoAlerta > 0) {
+                fetch("http://localhost:8090/api/fortificar/" + this.state.territorioOrigenFortificar + "/" + idTerritorio + "/" + this.state.resultadoAlerta, {
+                method: 'post',
+                credentials: 'include'
+                })
+                .then((response) => {
+                  if (!response.ok) {
+                    return response.text().then(text => {throw new Error(text)});
+                  }
+                })
+                .then(() => {
+                  var tropasOr = parseInt(document.getElementById("t" + territorios[this.state.territorioOrigenFortificar]).textContent);
+                  var tropasDes = parseInt(document.getElementById("t" + territorios[idTerritorio]).textContent); 
+                  this.actualizarValorTerritorio(this.state.territorioOrigenFortificar, tropasOr - this.state.resultadoAlerta);
+                  this.actualizarValorTerritorio(idTerritorio, tropasDes + parseInt(this.state.resultadoAlerta));
+                  this.setState({territorioOrigenFortificar: null});
+                  this.setState({resultadoAlerta: null});
+                  this.deshabilitarSeleccionar();
+                  clearInterval(this.interval);
+                  this.interval = setInterval(() => this.comprobarAcciones(), 500);
+                })
+                .catch ((e) => {
+                  swal.fire({
+                    title: 'Se ha producido un error al fortificar el territorio',
+                    text: e,
+                    icon: 'error',
+                  });
+                  this.setState({territorioOrigenFortificar: null});
+                  this.setState({resultadoAlerta: null});
+                  clearInterval(this.interval);
+                  this.interval = setInterval(() => this.comprobarAcciones(), 500);
+                })
+              } else if (this.state.resultadoAlerta === 0) {
+                this.setState({territorioOrigenFortificar: null});
+                this.setState({resultadoAlerta: null});
+                clearInterval(this.interval);
+                this.interval = setInterval(() => this.comprobarAcciones(), 500);
+              }
+            }, 500);
+          }
+          break;
+
         default: 
           break;
       }
-      
     }  
   }
 
@@ -277,12 +384,18 @@ export default class Mapa extends React.Component {
     this.setState({habilitarCartas: false});
   }
 
+  jugadorEliminado(jugador) {
+    var indexJugador = this.state.nombreJugadores.indexOf(jugador);
+    const vC = this.state.coloresJugadores;
+    vC[indexJugador] = "#000000";
+    this.setState({coloresJugadores: vC}); 
+  }
+
   changeMap() {
     if (this.state.enableMapInfo) {
       return <MapaInfo />;
     }
-    return <MapaPartida 
-              onClick={(pais) => this.obtenerTerritorio(pais)}/>;
+    return <MapaPartida onClick={(pais) => this.obtenerTerritorio(pais)}/>;
   }
 
   obtenerNombreJugadores() {
@@ -344,6 +457,66 @@ export default class Mapa extends React.Component {
     }
   }
 
+  obtenerEstadoActualPartida() {
+    fetch('http://localhost:8090/api/resumirPartida', {
+      method: 'get',
+      credentials: 'include'
+    })
+    .then((response) => {
+      if (!response.ok) {
+        return response.text().then(text => {throw new Error(text)});
+      }
+      return response.json();
+    })
+    .then((response) => {
+      if (response.Terminada) {
+        this.mostrarAlertaFin("Fin de la partida", 
+          "La partida en la que te encontrabas ha terminado.");
+        this.setState({finPartida: true});
+      } else {
+        if (response.TurnoJugador === this.state.nombrePropioJugador) {
+          this.habilitarSeleccionar();
+          if (response.Fase === 1) {
+            this.habilitarCartas();
+          }
+        }
+        this.setState({turno: response.TurnoJugador});
+        this.setState({fase: response.Fase});
+
+        // Tropas y cartas
+        console.log(Object.keys(response.EstadosJugadores).length)
+        for (var i = 0; i < Object.keys(response.EstadosJugadores).length; i++) {
+          var jugador = this.state.nombreJugadores[i];
+          var estadoJugador = response.EstadosJugadores[jugador];
+          
+          if (jugador === this.state.nombrePropioJugador) {
+            this.setState({numTropasReforzar: estadoJugador.Tropas});
+          } 
+          this.actualizarInfoJugadores(jugador, 0, 0, estadoJugador.NumCartas);
+          
+          
+          if (estadoJugador.Expulsado || estadoJugador.Eliminado) {
+            this.jugadorEliminado(jugador);
+          }
+        }
+
+        // Territorios
+        for (var i = 0; i < Object.keys(response.Mapa).length; i++) {
+          this.actualizarInfoJugadores(response.Mapa[i].Ocupante, response.Mapa[i].NumTropas, 1);
+          this.actualizarTerritorio(i, response.Mapa[i].NumTropas, response.Mapa[i].Ocupante);
+        }
+        this.interval = setInterval(() => this.comprobarAcciones(), 500);
+      }
+    })
+    .catch ((e) => {
+      swal.fire({
+        title: 'Se ha producido un error al obtener la información sobre la partida',
+        text: e,
+        icon: 'error',
+      });
+    })
+  }
+
   comprobarAcciones() {
     console.log("loop")
     fetch('http://localhost:8090/api/obtenerEstadoPartida', {
@@ -389,7 +562,6 @@ export default class Mapa extends React.Component {
             
             if (this.state.fase === 0 && accion.Jugador === this.state.nombrePropioJugador) {
               this.habilitarSeleccionar();
-              
             }
             // Fase de refuerzo
             else if (this.state.fase === 1 && accion.Jugador === this.state.nombrePropioJugador) {
@@ -397,10 +569,22 @@ export default class Mapa extends React.Component {
               this.habilitarCartas();
             } // Fase de ataque
             else if (this.state.fase === 2 && accion.Jugador === this.state.nombrePropioJugador) {
-              this.deshabilitarCartas();
-            } // Fase de fortificar 
+              if (this.state.nombrePropioJugador === accion.Jugador) {
+                this.mostrarAlertaInformativaAsincrona("Fase de ataque", 
+                  "Selecciona un territorio desde el que lanzar un ataque.");
+              }
+              else {
+                this.mostrarAlertaInformativaAsincrona("Fase de ataque", "Turno de " + accion.Jugador);
+              }
+            } // Fase de fortificar
             else if (this.state.fase === 3 && accion.Jugador === this.state.nombrePropioJugador) {
-
+              if (this.state.nombrePropioJugador === accion.Jugador) {
+                this.mostrarAlertaInformativaAsincrona("Fase de fortificación", 
+                  "Selecciona el territorio origen de la fortificaión.");
+              }
+              else {
+                this.mostrarAlertaInformativaAsincrona("Fase de fortificación", "Turno de " + accion.Jugador);
+              }
             } // No es tu turno
             else {
               this.deshabilitarSeleccionar();
@@ -430,27 +614,41 @@ export default class Mapa extends React.Component {
           
           // IDAccionReforzar
           case 4: 
-            var indexJugador = this.state.nombreJugadores.indexOf(accion.Jugador);
-            var num = parseInt(document.getElementById("t" + territorios[accion.TerritorioReforzado]).textContent);
-            this.actualizarTerritorio(accion.TerritorioReforzado, num + accion.TropasRefuerzo, indexJugador);
-            this.actualizarInfoJugadores(accion.Jugador, accion.TropasRefuerzo);
+            if (accion.Jugador !== this.state.nombrePropioJugador) {
+              var num = parseInt(document.getElementById("t" + territorios[accion.TerritorioReforzado]).textContent);
+              this.actualizarValorTerritorio(accion.TerritorioReforzado, num + accion.TropasRefuerzo);
+              this.actualizarInfoJugadores(accion.Jugador, accion.TropasRefuerzo);
+            }
             break;
           
           // IDAccionAtaque
-          case 5: { 
-
+          case 5: {
+            if (accion.JugadorAtacante !== this.state.nombrePropioJugador) {
+              this.actualizarInfoJugadores(accion.JugadorAtacante, accion.TropasPerdidasAtacante, 0, 0, false);
+              this.actualizarInfoJugadores(accion.JugadorDefensor, accion.TropasPerdidasDefensor, 0, 0, false);
+              this.sumarRestarValorTerritorio(accion.Origen, accion.TropasPerdidasAtacante, false);
+              this.sumarRestarValorTerritorio(accion.Destino, accion.TropasPerdidasDefensor, false);
+            }
            break;
           }
 
           // IDAccionOcupar
-          case 6: { 
-
+          case 6: {
+            if (accion.JugadorAtacante !== this.state.nombrePropioJugador) {
+              this.actualizarValorTerritorio(accion.Origen, accion.TropasOrigen);
+              this.actualizarTerritorio(accion.Destino, accion.TropasDestino, accion.JugadorAtacante);
+              this.actualizarInfoJugadores(accion.JugadorAtacante, 0, 1, 0);
+              this.actualizarInfoJugadores(accion.JugadorDefensor, 0, 1, 0, false);
+            }
             break;
           }
 
           // IDAccionFortificar
-          case 7: { 
-
+          case 7: {
+            if (accion.Jugador !== this.state.nombrePropioJugador) {
+              this.actualizarValorTerritorio(accion.Origen, accion.TropasOrigen);
+              this.actualizarValorTerritorio(accion.Destino, accion.TropasDestino);
+            }
             break;
           }
 
@@ -462,19 +660,53 @@ export default class Mapa extends React.Component {
 
           // IDAccionJugadorEliminado
           case 9: { 
-
+            if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
+              this.mostrarAlertaFin("Fin de la partida", 
+                "El jugador " + accion.JugadorEliminador + " te ha eliminado.");
+              this.setState({finPartida: true});
+            } else if (accion.JugadorEliminador === this.state.nombrePropioJugador) {
+              this.mostrarAlertaFin("Has eliminado a un jugador", 
+                "Has obtenido " + accion.CartasRecibidas + " cartas de " + accion.JugadorEliminado + ".");
+            } else {
+              this.mostrarAlertaFin("Jugador eliminado", 
+                "El jugador " + accion.JugadorEliminador + " ha eliminado a " + accion.JugadorEliminado + ".");
+            }
+            this.actualizarInfoJugadores(accion.JugadorEliminado, 0, 0, accion.CartasRecibidas, false);
+            this.actualizarInfoJugadores(accion.JugadorEliminador, 0, 0, accion.CartasRecibidas);
+            this.jugadorEliminado(accion.JugadorEliminado);
             break;
           }
 
           // IDAccionJugadorExpulsado
           case 10: { 
-
+            if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
+              this.mostrarAlertaFin("Fin de la partida", 
+                "Has sido expulsado por inactividad");
+              this.setState({finPartida: true});
+            } else {
+              this.mostrarAlertaFin("Jugador eliminado", 
+                "El jugador " + accion.JugadorEliminado + " ha sido desconectado de la partida por inactividad." +
+                "Sus territorios pueden ser conquistados sin restricciones.");
+            }
+            this.jugadorEliminado(accion.JugadorEliminado);
             break;
           }
 
           // IDAccionPartidaFinalizada
-          case 11: { 
-
+          case 11: {
+            if (accion.JugadorGanador === this.state.nombrePropioJugador) {
+              swal.fire({
+                title: "Fin de la partida",
+                text: "Enhorabuena. Has ganado al resto de jugadores.",
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6',
+              });
+            } else {
+              this.mostrarAlertaFin("Fin de la partida", 
+                "El jugador " + accion.JugadorGanador + " es el ganador.");
+            }
+            this.setState({finPartida: true});
             break;
           }
 
@@ -507,8 +739,13 @@ export default class Mapa extends React.Component {
   }
 
   componentDidMount() {
-    //this.obtenerNombreJugadores();
-    //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    this.obtenerNombreJugadores();
+    if (this.state.obtenerInfoPartida) {
+      localStorage.removeItem("volver_partida")
+      this.obtenerEstadoActualPartida();
+    } else {
+      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    }
   }
 
   componentWillUnmount() {
@@ -517,6 +754,10 @@ export default class Mapa extends React.Component {
 
   render() {
     document.body.style.backgroundColor = "#45AFCB";
+
+    if (this.state.finPartida) {
+      return <Navigate to='/inicio'/>;
+    }
 
     var jugadores = [];
     for (var i = 0; i < this.state.numJugadores; i++) {
