@@ -234,7 +234,7 @@ export default class Amigos extends React.Component {
             <h2>Buscar usuarios</h2>
            
             <input type="text" id="busqueda" name="busqueda" placeholder="Busca un usuario" onChange={this.actualizarBoton}></input>
-            <button id="botonBuscar" value="Buscar" onClick={this.buscarUsuarios} disabled>Buscar</button>
+            <button id="botonBuscar" onClick={this.buscarUsuarios}>Buscar</button>
             {this.state.usuarios}
             <BarraInferior/>
             </div>
