@@ -21,10 +21,24 @@ export default class Amigos extends React.Component {
         this.buscarUsuarios = this.buscarUsuarios.bind(this);
         this.actualizarBoton = this.actualizarBoton.bind(this);
         this.enviarSolicitudAmistad = this.enviarSolicitudAmistad.bind(this);
+        this.getNombreUsuario = this.getNombreUsuario.bind(this);
+    }
+
+    getNombreUsuario(nombre) {
+		if (nombre.length > 0) {
+    	nombre = nombre.split('=')[1];
+    	nombre = nombre.split('|')[0];
+		}
+        return nombre;
     }
 
     componentDidMount() {
         this.recuperarAmigos();
+        this.interval = setInterval(() => this.recuperarAmigos(), 10000);
+    }
+  
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     verPerfil(e) {
@@ -172,13 +186,22 @@ export default class Amigos extends React.Component {
             }
             else {
                 let usuariosArr = [];
+                let nombreUsuario = this.getNombreUsuario(document.cookie);
                 response = JSON.parse(response);
                 for (var i=0; i < response.length; i++) {
-                    usuariosArr.push(<div className='infoUsuario' key={i}>
-                        <h3>{response[i]["Nombre"]}</h3> 
-                        <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
-                        <button id={response[i].Nombre} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Enviar solicitud de amistad</button>
-                        </div>);
+                    if (!response[i]["EsAmigo"] && nombreUsuario != response[i]["Nombre"]){
+                        usuariosArr.push(<div className='infoUsuario' key={i}>
+                            <h3>{response[i]["Nombre"]}</h3> 
+                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
+                            <button id={response[i].Nombre} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Enviar solicitud de amistad</button>
+                            </div>);
+                    }
+                    else {
+                        usuariosArr.push(<div className='infoUsuario' key={i}>
+                            <h3>{response[i]["Nombre"]}</h3> 
+                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
+                            </div>);
+                    }
                 }
 
                 this.setState({usuarios: usuariosArr});
