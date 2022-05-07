@@ -5,6 +5,7 @@ import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./notificaciones.css";
 import InfoNotificacion from "../../componentes/infoNotificacion/infoNotificacion.jsx";
 
+// TODO poder hacer scroll en las notificaciones si ocupan más pantalla de la disponible
 export default class Notificaciones extends React.Component {
     constructor(props) {
         super(props);
@@ -76,6 +77,7 @@ export default class Notificaciones extends React.Component {
         
     
     render() {
+        // TODO mensaje de no tienes notificaciones si está vacío
         var notificaciones = [];
         for (var i = 0; i < this.state.numNotificaciones; i++) {
             notificaciones.push(<InfoNotificacion

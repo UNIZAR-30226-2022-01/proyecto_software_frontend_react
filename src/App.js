@@ -13,6 +13,7 @@ import Personalizacion from "./paginas/personalizacion/Personalizacion";
 import Perfil from './paginas/perfil/Perfil';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import Notificaciones from './paginas/notificaciones/Notificaciones';
+import Amigos from './paginas/amigos/amigos'
 
 export default class App extends React.Component {
   render() {
@@ -32,6 +33,7 @@ export default class App extends React.Component {
           <Route path="/personalizacion" element={<Personalizacion />} />
           <Route path="/perfil" element={<Perfil/>}/>
           <Route path="/notificaciones" element={<Notificaciones/>}/>
+          <Route path="/amigos" element={<Amigos/>}/>
         </Routes>
       </BrowserRouter>
     );  

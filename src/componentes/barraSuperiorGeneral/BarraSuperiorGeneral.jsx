@@ -4,12 +4,6 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./barraSuperior.css";
 
-function IrPerfil(usuario) {
-  let navigate = useNavigate();
-  console.log('holaaaaa');
-  navigate(`/perfil/${this.state.nombre_usuario}`);
-}
-
 export default class BarraSuperiorGeneral extends React.Component {
   constructor(props) {
 		super(props);
@@ -17,14 +11,11 @@ export default class BarraSuperiorGeneral extends React.Component {
 			nombre_usuario: this.getNombreUsuario(document.cookie),
       ancho: 0,
 			irIdentificacion: false,
-      irPerfil: false,
-      irNotificaciones: false,
 		};
       
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
 		this.cerrarSesion = this.cerrarSesion.bind(this);
     this.navegarPerfil = this.navegarPerfil.bind(this);
-    this.navegarNotificaciones = this.navegarNotificaciones.bind(this);
 	}
  
 	componentDidMount() {
@@ -47,12 +38,6 @@ export default class BarraSuperiorGeneral extends React.Component {
 
   navegarPerfil() {
     localStorage.setItem('nombre_usuario', this.state.nombre_usuario)
-    this.setState({ irPerfil: true});
-    //IrPerfil(this.state.nombre_usuario);
-  }
-
-  navegarNotificaciones() {
-    this.setState({ irNotificaciones: true});
   }
 
 	render() {
@@ -64,22 +49,19 @@ export default class BarraSuperiorGeneral extends React.Component {
       return <Navigate to={`/perfil`}/>;
     }
 
-    if (this.state.irNotificaciones) {
-      return <Navigate to='/notificaciones'/>;
-    }
-
+    // TODO no cambia al perfil del usuario si estamos viendo el perfil de otro jugador
 		return (
       <div class="topnav">
         <a class="active">World Domination</a>
 				
         <div class="topnav-right">
-        	<a><img class="imagenes" src="https://img.icons8.com/material-rounded/48/000000/add-user-group-man-man.png"/></a>
-        	<a onClick={this.navegarNotificaciones}><img class="imagenes" src="https://img.icons8.com/material-sharp/50/000000/mail.png" /></a>
+        <Link to='/amigos'><img class="imagenes" src="https://img.icons8.com/material-rounded/48/000000/add-user-group-man-man.png"/></Link>
+        	<Link to='/notificaciones'><img class="imagenes" src="https://img.icons8.com/material-sharp/50/000000/mail.png" /></Link>
         
         	<div class="dropdown"> 
             <button class="dropbtn">{this.state.nombre_usuario}</button>
             <div class="dropdown-content">
-            <a width ={this.state.ancho} onClick={this.navegarPerfil}>Perfil</a>
+            <Link to='/perfil' onClick={this.navegarPerfil}>Perfil</Link>
             <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
             </div>
         	</div>
