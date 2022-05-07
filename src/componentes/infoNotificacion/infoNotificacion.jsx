@@ -1,4 +1,5 @@
 import React from 'react';
+import swal from 'sweetalert2';
 //import "./infoNotificacion.css";
 
 export default class InfoNotificacion extends React.Component {
@@ -24,6 +25,67 @@ export default class InfoNotificacion extends React.Component {
 		};
 	}
 
+    aceptarSolicitudAmistad(e) {
+        let nombre = e.currentTarget.id;
+        console.log("Aceptando la solicitud de amistad de:" + nombre)
+        fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${nombre}`, {
+            method: 'post',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+        })
+        .then(() => {
+            swal.fire({
+                title: `Eres amigo de ${nombre}`,
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al aceptar la solicitud de amistad',
+                text: e,
+                icon: 'error',
+            });
+        })
+    }
+    rechazarSolicitudAmistad(e) {
+        let nombre = e.currentTarget.id;
+        console.log("Rechazando la solicitud de amistad de:" + nombre)
+        fetch(`http://localhost:8090/api/rechazarSolicitudAmistad/${nombre}`, {
+            method: 'post',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+        })
+        .then(() => {
+            swal.fire({
+                title: `Has rechazado la solicitud de amistad de ${nombre}`,
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al rechazar la solicitud de amistad',
+                text: e,
+                icon: 'error',
+            });
+        })
+    }
+
     render() {
         switch (this.state.idNotificacion) {
             case 0:
@@ -31,8 +93,8 @@ export default class InfoNotificacion extends React.Component {
                 return (
                     <div class="notificacion">
                         <h3>Solicitud de amistad de {this.state.jugador} recibida.</h3>
-                        <button>Aceptar</button>
-                        <button>Rechazar</button>
+                        <button id={this.state.jugador} onClick={(e) => this.aceptarSolicitudAmistad(e)}>Aceptar</button>
+                        <button id={this.state.jugador} onClick={(e) => this.rechazarSolicitudAmistad(e)}>Rechazar</button>
                     </div>
                 );
             case 1:
