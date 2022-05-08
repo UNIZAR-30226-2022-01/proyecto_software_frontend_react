@@ -184,19 +184,24 @@ export default class IniciarSesion extends React.Component {
 					{this.state.mostrarSolicitud &&
 					<div className="solicitudToken">
 						<h4>Introduce tu nombre de usuario y te enviaremos un token para reestablecer tu contraseña</h4>
-							<input text id="usuarioSolicitante" placeholder="Nombre de usuario"></input>
-							<button onClick={this.solicitarToken} id="botonToken">Solicitar Token</button>
+							<iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+							<form onSubmit={this.solicitarToken} target="frameAux">
+								<input type="text" id="usuarioSolicitante" placeholder="Nombre de usuario" required></input>
+								<button type="submit" id="botonToken">Solicitar Token</button>
+							</form>
 					</div>}
 
 					<br></br><br></br>
 					{this.state.mostrarFormularioToken && 
 					<div className="formularioToken">
-						<h4>Introduce el token recibido y tu nueva contraseña</h4>
-						<input text id="token" placeholder="Token"></input>
-						<br></br><br></br>
-						<input type="password" text id="password" placeholder="Nueva contraseña"></input>
-						<br></br><br></br>
-						<button onClick={this.cambiarPassword}>Cambiar Contraseña</button>
+						<form onSubmit={this.cambiarPassword} target="frameAux">
+							<h4>Introduce el token recibido y tu nueva contraseña</h4>
+							<input type="text" id="token" placeholder="Token" required></input>
+							<br></br><br></br>
+							<input type="password" id="password" placeholder="Nueva contraseña" required></input>
+							<br></br><br></br>
+							<button type="submit">Cambiar Contraseña</button>
+						</form>
 					</div>}
 			</div>
 		);  
