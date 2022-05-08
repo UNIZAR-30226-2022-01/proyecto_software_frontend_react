@@ -225,6 +225,10 @@ export default class Amigos extends React.Component {
     }
 
     render() {
+        if (document.getElementById("busqueda").value === "") {
+            document.getElementById("botonBuscar").disabled = true;
+        }
+
         return (
             <div className='cen'>
             <BarraSuperiorGeneral/>

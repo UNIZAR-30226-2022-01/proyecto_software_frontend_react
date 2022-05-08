@@ -139,6 +139,7 @@ export default class Perfil extends React.Component {
     render() {
         let solicitudAmistad = null;
         let modBio = null;
+        let resetPassword = null;
        
         if (!this.state.es_usuario && !this.state.es_amigo) {
             // Si no es amigo aparece un botón para solicitar amistad
@@ -146,7 +147,7 @@ export default class Perfil extends React.Component {
         }
 
         if (this.state.es_usuario) {
-            // Si es el usuario aparece un botón para cambiar la biografía
+            // Si es el usuario aparece un botón para cambiar la biografía y para resetear la contraseña
             modBio = <button onClick={this.modificarBiografia}>Modificar biografía</button>
             document.getElementById("bio").disabled = false;
         }

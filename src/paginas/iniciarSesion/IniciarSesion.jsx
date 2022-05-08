@@ -11,10 +11,15 @@ export default class IniciarSesion extends React.Component {
 			nombreUsuario: "",
 			contrasegna: "",
 			irInicio: false,
+			mostrarSolicitud: false,
+			mostrarFormularioToken: false,
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.mostrarSolicitudToken = this.mostrarSolicitudToken.bind(this);
+		this.solicitarToken = this.solicitarToken.bind(this);
+		this.cambiarPassword = this.cambiarPassword.bind(this);
 	}
 
 	handleInputChange(event) {
@@ -65,6 +70,79 @@ export default class IniciarSesion extends React.Component {
 		})
 	};
 
+	mostrarSolicitudToken() {
+		this.setState({mostrarSolicitud: true})
+	}
+
+	solicitarToken() {
+		let usuario = document.getElementById("usuarioSolicitante").value;
+		console.log("Solicitando token para el cambio de la contraseña del usuario: "+usuario)
+		 
+		fetch('http://localhost:8090/obtenerTokenResetPassword', {
+			method: 'post',
+			headers: {'Content-Type':'application/x-www-form-urlencoded'},
+			body: queryString.stringify({
+				usuario: usuario,
+			})
+		})
+		.then((response) => {
+			if (!response.ok) {
+				return response.text().then(text => {throw new Error(text)});
+			}
+		})
+		.then(() => {
+			swal.fire({
+				title: 'Token enviado con éxito, comprueba tu bandeja de entrada',
+				icon: 'success',
+				timer: 2000,
+				timerProgressBar: true,
+			});
+			this.setState({mostrarFormularioToken: true})
+		})
+		.catch((e) => {
+			swal.fire({
+				title: 'Se ha producido un error al solicitar el token, inténtalo de nuevo',
+				text: e,
+				icon: 'error',
+			});
+		})
+	}
+
+	cambiarPassword() {
+		let password = document.getElementById("password").value;
+		let token = document.getElementById("token").value;
+		console.log("Solicitando cambio de contraseña")
+		 
+		fetch('http://localhost:8090/resetearPassword', {
+			method: 'post',
+			headers: {'Content-Type':'application/x-www-form-urlencoded'},
+			body: queryString.stringify({
+				password: password,
+				token: token,
+			})
+		})
+		.then((response) => {
+			if (!response.ok) {
+				return response.text().then(text => {throw new Error(text)});
+			}
+		})
+		.then(() => {
+			swal.fire({
+				title: 'Contraseña cambiada con éxito, intenta iniciar sesión',
+				icon: 'success',
+				timer: 2000,
+				timerProgressBar: true,
+			});
+		})
+		.catch((e) => {
+			swal.fire({
+				title: 'Se ha producido un error al cambiar la contraseña, inténtalo de nuevo',
+				text: e,
+				icon: 'error',
+			});
+		})
+	}
+
 	render() {
 		document.body.style.backgroundColor = "#FFFFFF";
 		if (this.state.irInicio) {
@@ -81,6 +159,7 @@ export default class IniciarSesion extends React.Component {
 						name="nombreUsuario"
 						type="text"
 						placeholder="Introduzca su nombre de usuario..."
+						id="userLogin"
 						value={this.state.nombreUsuario}
 						onChange={this.handleInputChange}
 						required
@@ -98,8 +177,27 @@ export default class IniciarSesion extends React.Component {
 	
 					<br></br><br></br>
 					<button type="submit">Iniciar sesión</button>
-					
+					<br></br><br></br>
 				</form>
+				<button onClick={this.mostrarSolicitudToken}>¿Has olvidado tu contraseña?</button>
+					<br></br>
+					{this.state.mostrarSolicitud &&
+					<div className="solicitudToken">
+						<h4>Introduce tu nombre de usuario y te enviaremos un token para reestablecer tu contraseña</h4>
+							<input text id="usuarioSolicitante" placeholder="Nombre de usuario"></input>
+							<button onClick={this.solicitarToken} id="botonToken">Solicitar Token</button>
+					</div>}
+
+					<br></br><br></br>
+					{this.state.mostrarFormularioToken && 
+					<div className="formularioToken">
+						<h4>Introduce el token recibido y tu nueva contraseña</h4>
+						<input text id="token" placeholder="Token"></input>
+						<br></br><br></br>
+						<input type="password" text id="password" placeholder="Nueva contraseña"></input>
+						<br></br><br></br>
+						<button onClick={this.cambiarPassword}>Cambiar Contraseña</button>
+					</div>}
 			</div>
 		);  
 	}
