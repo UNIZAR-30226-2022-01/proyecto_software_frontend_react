@@ -33,6 +33,9 @@ export default class Amigos extends React.Component {
     }
 
     componentDidMount() {
+        if (document.getElementById("busqueda").value === "") {
+            document.getElementById("botonBuscar").disabled = true;
+        }
         this.recuperarAmigos();
         this.interval = setInterval(() => this.recuperarAmigos(), 10000);
     }
@@ -225,10 +228,6 @@ export default class Amigos extends React.Component {
     }
 
     render() {
-        if (document.getElementById("busqueda").value === "") {
-            document.getElementById("botonBuscar").disabled = true;
-        }
-
         return (
             <div className='cen'>
             <BarraSuperiorGeneral/>
