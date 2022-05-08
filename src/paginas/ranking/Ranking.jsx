@@ -10,10 +10,13 @@ export default class Ranking extends React.Component {
     super(props);
     this.state = {
         jugadores: [],
-        partidasGanadas: [],
-        partidasJugadas: [],
+        partidasGanadasUsuario: 0,
+        partidasJugadasUsuario: 0,
         usuario: null,
-        posicion: null
+        posicion: null,
+        // Cambiar para modificar el número de jugadores del ranking mostrados
+        // Si hay menos jugadores que los especificados, se adapta el número
+        maxNumeroJugadores: 10, 
     };
 
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
@@ -54,30 +57,49 @@ export default class Ranking extends React.Component {
     })
     .then((response) => {
       let jugadoresArr = [];
+      if (Object.keys(response).length < this.state.maxNumeroJugadores) {
+        this.setState({maxNumeroJugadores: Object.keys(response).length});
+      }
+
       for (var i=0; i < Object.keys(response).length; i++) {
-        jugadoresArr.push(<div className='infoJugador' key={i}>
-          <h3>{response[i]["NombreUsuario"]}</h3>
-          <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, partidas jugadas: {response[i]["PartidasTotales"]}</h4>
-          <Link to='/perfil' onClick={this.verPerfil} id={response[i]}><button>Ver Perfil</button></Link>
-          </div>);
+        if (i < this.state.maxNumeroJugadores) {
+          jugadoresArr.push(<div className='infoJugador' key={i}>
+            <h3>Puesto {i+1}: {response[i]["NombreUsuario"]}</h3>
+            <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, partidas jugadas: {response[i]["PartidasTotales"]}</h4>
+            <Link to='/perfil' onClick={this.verPerfil} id={response[i]["NombreUsuario"]}><button>Ver Perfil</button></Link>
+            </div>);
+        }
+
+        if (response[i]["NombreUsuario"] == this.state.usuario) {
+          // Almacenamos la información del usuario
+          this.setState({posicion: i+1});
+          this.setState({partidasGanadasUsuario: response[i]["PartidasGanadas"]});
+          this.setState({partidasJugadasUsuario: response[i]["PartidasTotales"]});
+        }
       }
 
       this.setState({jugadores: jugadoresArr});
     })
     .catch((e) => {
         swal.fire({
-            title: 'Se ha producido un error al recuperar la lista de amigos',
+            title: 'Se ha producido un error al recuperar el ranking',
             text: e,
             icon: 'error',
         });
     })
   }
 
+  // TODO, arreglar el scroll para que la bottom bar no se superponga a los jugadores de la parte baja del ranking
   render() {
     return (
     <div className="cen">
       <BarraSuperiorGeneral/>
       <h1>Ranking</h1>
+      <h3>Eres el jugador número {this.state.posicion} del Ranking, 
+        con {this.state.partidasGanadasUsuario} partidas ganadas de 
+        un total de {this.state.partidasJugadasUsuario} partidas.
+      </h3>
+      <h2>Top {this.state.maxNumeroJugadores} del ranking</h2>
       {this.state.jugadores}
       <BarraInferior/>
     </div>
