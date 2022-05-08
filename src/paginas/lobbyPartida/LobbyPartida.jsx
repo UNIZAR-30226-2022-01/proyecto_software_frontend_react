@@ -41,6 +41,7 @@ export default class LobbyPartida extends React.Component {
 				timer: 2000,
 				timerProgressBar: true,
 			});
+      localStorage.setItem('volver_partida', "false");
 			this.setState({irBuscarPartida:true});
 		})
 		.catch ((e) => {

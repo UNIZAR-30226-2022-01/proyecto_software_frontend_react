@@ -52,7 +52,8 @@ export default class Mapa extends React.Component {
       turno: null,
       territorioOrigenFortificar: null,
       finPartida: false,
-      obtenerInfoPartida: localStorage.getItem("volver_partida")
+      obtenerInfoPartida: localStorage.getItem("volver_partida"),
+      volviendoMapaPartida: false
     };
 
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
@@ -167,6 +168,7 @@ export default class Mapa extends React.Component {
      tropas extras recibidas por controlar al completo una región */
   handleUserButton() {
     this.setState({enableMapInfo: false});
+    this.setState({volviendoMapaPartida: true});
   };
 
   handleCardButton() {
@@ -221,6 +223,12 @@ export default class Mapa extends React.Component {
       tropas -= numero;
     }
     document.getElementById("t" + territorios[id]).textContent = tropas;
+  }
+
+  limpiarInfoJugadores() {
+    this.setState({tropasJugadores: [0,0,0,0,0,0]});
+    this.setState({regionesJugadores: [0,0,0,0,0,0]});
+    this.setState({cartasJugadores: [0,0,0,0,0,0]});
   }
 
   actualizarInfoJugadores(jugador, numTropas = 0, numTerritorios = 0, numCartas = 0, sumar = true) {
@@ -740,8 +748,8 @@ export default class Mapa extends React.Component {
 
   componentDidMount() {
     this.obtenerNombreJugadores();
-    if (this.state.obtenerInfoPartida) {
-      localStorage.removeItem("volver_partida")
+    if (this.state.obtenerInfoPartida || performance.navigation.type === 1) {
+      localStorage.removeItem("volver_partida");
       this.obtenerEstadoActualPartida();
     } else {
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
@@ -757,6 +765,12 @@ export default class Mapa extends React.Component {
 
     if (this.state.finPartida) {
       return <Navigate to='/inicio'/>;
+    }
+
+    if (this.state.volviendoMapaPartida) {
+      this.limpiarInfoJugadores();
+      this.obtenerEstadoActualPartida();
+      this.setState({volviendoMapaPartida: false});
     }
 
     var jugadores = [];
