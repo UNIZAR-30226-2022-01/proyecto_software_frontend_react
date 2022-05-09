@@ -56,6 +56,7 @@ export default class Mapa extends React.Component {
       obtenerInfoPartida: localStorage.getItem("volver_partida"),
       volviendoMapaPartida: false,
       imagenes: [],
+      imagenAvatar: null,
       resultadoDadosAtacante: 0,
       resultadoDadosDefensor: 0
     };
@@ -64,6 +65,7 @@ export default class Mapa extends React.Component {
     this.min = this.min.bind(this);
     this.mostrarAlertaInformativaAsincrona = this.mostrarAlertaInformativaAsincrona.bind(this);
     this.mostrarAlertaRangoAsincrona = this.mostrarAlertaRangoAsincrona.bind(this);
+    this.mostrarAlertaInformativaAvatar = this.mostrarAlertaInformativaAvatar.bind(this);
     this.mostrarAlertaDados = this.mostrarAlertaDados.bind(this);
     this.mostrarAlertaFin = this.mostrarAlertaFin.bind(this);
     this.handleChartButton = this.handleChartButton.bind(this);
@@ -145,7 +147,24 @@ export default class Mapa extends React.Component {
     });
   }
 
-  mostrarAlertaDados (accion) {
+  mostrarAlertaInformativaAvatar(titulo, texto, imagen) {
+    clearInterval(this.interval);
+    swal.fire({
+      title: titulo,
+      text: texto,
+      imageUrl: imagen,
+      imageWidth: 200,
+      imageHeight: 400,
+      imageAlt: 'Avatar usuario',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#3085d6',
+      allowOutsideClick: false
+		}).then(() => {
+      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    })
+  }
+
+  mostrarAlertaDados(accion) {
     clearInterval(this.interval);
     var resultadoDadosAtacante = 0;
     var resultadoDadosDefensor = 0;
@@ -153,7 +172,10 @@ export default class Mapa extends React.Component {
     // Atacante
     for (var i = 0; i < accion.DadosAtacante.length; i++) {
       resultadoDadosAtacante += parseInt(accion.DadosAtacante[i]);
-      fetch("https://i.picsum.photos/id/566/200/300.jpg?hmac=gDpaVMLNupk7AufUDLFHttohsJ9-C17P7L-QKsVgUQU")
+      fetch(`http://localhost:8090/api/obtenerDados/${accion.DadosAtacante[i]}`, {
+        method: 'get',
+        credentials: 'include'
+      })
       .then((response) => {
         if (!response.ok) {
           return response.text().then(text => {throw new Error(text)});
@@ -792,15 +814,36 @@ export default class Mapa extends React.Component {
           case 2:
             clearInterval(this.interval);
             this.setState({turno: accion.Jugador});
-            if (this.state.nombrePropioJugador === accion.Jugador) {
-              
 
-              this.mostrarAlertaInformativaAsincrona("Tu turno: Fase de refuerzo", "Has obtenido " + 
+            fetch(`http://localhost:8090/api/obtenerAvatar/${accion.Jugador}`, {
+              method: 'get',
+              credentials: 'include'
+            })
+            .then((response) => {
+              if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+              }
+              return response.blob();
+            })
+            .then((blob) => {
+              let objectURL = URL.createObjectURL(blob);
+              this.setState({imagenAvatar: objectURL})
+            })
+            .catch ((e) => {
+              swal.fire({
+                title: 'Se ha producido un error al obtener el avatar del usuario',
+                text: e,
+                icon: 'error',
+              });
+            })
+
+            if (this.state.nombrePropioJugador === accion.Jugador) {
+              this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
               accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
-              " territorios y " + accion.RazonContinentesOcupados + " continentes.");
+              " territorios y " + accion.RazonContinentesOcupados + " continentes.", this.state.imagenAvatar);
             }
             else {
-              this.mostrarAlertaInformativaAsincrona("Fase de refuerzo", "Turno de " + accion.Jugador);
+              this.mostrarAlertaInformativaAvatar("Fase de refuerzo", "Turno de " + accion.Jugador, this.state.imagenAvatar);
             }
             break;
           
@@ -944,7 +987,7 @@ export default class Mapa extends React.Component {
       localStorage.removeItem("volver_partida");
       this.obtenerEstadoActualPartida();
     } else {
-      //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+      this.interval = setInterval(() => this.comprobarAcciones(), 500);
     }
   }
 

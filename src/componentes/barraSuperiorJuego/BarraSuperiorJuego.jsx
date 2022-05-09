@@ -67,7 +67,7 @@ export default class BarraSuperiorJuego extends React.Component {
         <a className="active" >World Domination</a>
   
       	<div className="topnav-right">
-      	  <a><img className="fotoRendirse" onClick={this.abandonarPartida} src="https://img.icons8.com/external-victoruler-linear-colour-victoruler/64/000000/external-white-flag-chess-victoruler-linear-colour-victoruler.png"/></a> 
+      	  <a><img className="fotoRendirse" alt="rendicion" onClick={this.abandonarPartida} src="https://img.icons8.com/external-victoruler-linear-colour-victoruler/64/000000/external-white-flag-chess-victoruler-linear-colour-victoruler.png"/></a> 
     		</div>
       </div>
 		);  
