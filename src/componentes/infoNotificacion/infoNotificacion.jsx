@@ -1,6 +1,6 @@
 import React from 'react';
 import swal from 'sweetalert2';
-//import "./infoNotificacion.css";
+import "./infoNotificacion.css";
 
 export default class InfoNotificacion extends React.Component {
 	constructor(props) {
@@ -64,7 +64,6 @@ export default class InfoNotificacion extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }

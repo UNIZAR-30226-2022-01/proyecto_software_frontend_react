@@ -147,7 +147,6 @@ export default class Mapa extends React.Component {
 
   mostrarAlertaDados (accion) {
     clearInterval(this.interval);
-    var imagenes = [];
     var resultadoDadosAtacante = 0;
     var resultadoDadosDefensor = 0;
 
@@ -174,8 +173,8 @@ export default class Mapa extends React.Component {
       })
     }
     // Defensor
-    for (var i = 0; i < accion.DadosDefensor.length; i++) {
-      resultadoDadosDefensor += parseInt(accion.DadosDefensor[i]);
+    for (var j = 0; j < accion.DadosDefensor.length; j++) {
+      resultadoDadosDefensor += parseInt(accion.DadosDefensor[j]);
     }
 
     this.setState({accionAtaque: accion})
@@ -698,9 +697,9 @@ export default class Mapa extends React.Component {
         }
 
         // Territorios
-        for (var i = 0; i < Object.keys(response.Mapa).length; i++) {
-          this.actualizarInfoJugadores(response.Mapa[i].Ocupante, response.Mapa[i].NumTropas, 1);
-          this.actualizarTerritorio(i, response.Mapa[i].NumTropas, response.Mapa[i].Ocupante);
+        for (var j = 0; j < Object.keys(response.Mapa).length; j++) {
+          this.actualizarInfoJugadores(response.Mapa[j].Ocupante, response.Mapa[j].NumTropas, 1);
+          this.actualizarTerritorio(j, response.Mapa[j].NumTropas, response.Mapa[j].Ocupante);
         }
         this.interval = setInterval(() => this.comprobarAcciones(), 500);
       }
@@ -715,7 +714,6 @@ export default class Mapa extends React.Component {
   }
 
   comprobarAcciones() {
-    console.log("loop")
     fetch('http://localhost:8090/api/obtenerEstadoPartida', {
       method: 'get',
       credentials: 'include'
@@ -795,6 +793,8 @@ export default class Mapa extends React.Component {
             clearInterval(this.interval);
             this.setState({turno: accion.Jugador});
             if (this.state.nombrePropioJugador === accion.Jugador) {
+              
+
               this.mostrarAlertaInformativaAsincrona("Tu turno: Fase de refuerzo", "Has obtenido " + 
               accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
               " territorios y " + accion.RazonContinentesOcupados + " continentes.");
@@ -944,7 +944,7 @@ export default class Mapa extends React.Component {
       localStorage.removeItem("volver_partida");
       this.obtenerEstadoActualPartida();
     } else {
-      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+      //this.interval = setInterval(() => this.comprobarAcciones(), 500);
     }
   }
 

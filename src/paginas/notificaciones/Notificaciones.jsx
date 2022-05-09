@@ -49,7 +49,7 @@ export default class Notificaciones extends React.Component {
         .then((response) => {
             // Notificaciones de prueba
             //response = JSON.parse(this.state.notificacionesPrueba);
-            if (response.localeCompare("null\n") == 0) {
+            if (response.localeCompare("null\n") === 0) {
                 console.log("No hay notificaciones");
                 this.setState({hayNotificaciones: false});
             } 

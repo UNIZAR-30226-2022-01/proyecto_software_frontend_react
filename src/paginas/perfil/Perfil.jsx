@@ -139,7 +139,6 @@ export default class Perfil extends React.Component {
     render() {
         let solicitudAmistad = null;
         let modBio = null;
-        let resetPassword = null;
        
         if (!this.state.es_usuario && !this.state.es_amigo) {
             // Si no es amigo aparece un botón para solicitar amistad

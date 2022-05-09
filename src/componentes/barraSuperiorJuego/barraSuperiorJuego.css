@@ -41,12 +41,10 @@
   background-color: #ddd;
 }
 
-.imagenes { 
-  width: 50%;
-  height: 50%;
-  overflow: hidden;
-}
-
-.invertida {
-  filter: invert(100%); 
+.fotoRendirse { 
+  width: 40px; height: 40px;
+  margin-top: -8px;
+  margin-bottom: -11px;
+  cursor: pointer;
+  overflow: none;
 }

@@ -6,8 +6,6 @@ import "./amigos.css";
 import InfoNotificacion from "../../componentes/infoNotificacion/infoNotificacion.jsx";
 import { Link } from "react-router-dom";
 
-import queryString from 'query-string';
-
 export default class Amigos extends React.Component {
     constructor(props) {
         super(props);
@@ -49,50 +47,46 @@ export default class Amigos extends React.Component {
     }
 
     eliminarAmigo(e) {
-        e.preventDefault();
-        let nombre = e.currentTarget.id;
-        swal.fire({
-            title: `¿Seguro que quieres dejar de ser amigo de ${nombre}?`,
-            showCancelButton: true,
-            confirmButtonText: 'Aceptar',
-            confirmButtonColor: '#3085d6',
-            cancelButtonText: 'Cancelar',
-            reverseButtons: true,
-            backdrop: true,
-            showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                        console.log('Antes del fetch, nombre:'+nombre);
-                        // TODO la llamada a API no funciona desde frontend pero si desde backend/tests
-                        return fetch(`http://localhost:8090/api/eliminarAmigo/${nombre}`, {
-                            method: 'get',
-                            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                            credentials: 'include' 
-                        })
-                        .then((response) => {
-                            console.log('Respuesta de la api, eliminar amigo');
-                            if (!response.ok) {
-                                console.log('Respuesta de la api, error al eliminar amigo');
-                                return response.text().then(text => {throw new Error(text)});
-                            }
-                            console.log('Respuesta de la api, OK eliminar amigo');
-                            return response.text();
-                        })
-                        .then(() => {
-                            swal.fire({
-                                title: `Has dejado de ser amigo de ${nombre}`,
-                                icon: 'success',
-                                timer: 3000,
-                                timerProgressBar: true,
-                            });
-                            // Actualizamos la lista de amigos
-                            this.recuperarAmigos();
-                        })
-                        .catch(error => {
-                            swal.showValidationMessage(`${error}`)
-                        })
-                    },
-            allowOutsideClick: () => !swal.isLoading()
+      e.preventDefault();
+      let nombre = e.currentTarget.id;
+      swal.fire({
+        title: `¿Seguro que quieres dejar de ser amigo de ${nombre}?`,
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        backdrop: true,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          // TODO la llamada a API no funciona desde frontend pero si desde backend/tests
+          return fetch(`http://localhost:8090/api/eliminarAmigo/${nombre}`, {
+            method: 'get',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include' 
           })
+          .then((response) => {
+            if (!response.ok) {
+              return response.text().then(text => {throw new Error(text)});
+            }
+            return response.text();
+          })
+          .then(() => {
+            swal.fire({
+            title: `Has dejado de ser amigo de ${nombre}`,
+            icon: 'success',
+            timer: 3000,
+            timerProgressBar: true,
+            });
+            // Actualizamos la lista de amigos
+            this.recuperarAmigos();
+          })
+          .catch(error => {
+            swal.showValidationMessage(`${error}`)
+          })
+        },
+        allowOutsideClick: () => !swal.isLoading()
+      })
     }
 
     recuperarAmigos() {
@@ -110,7 +104,7 @@ export default class Amigos extends React.Component {
         })
         .then((response) => {
             var amigosArr = []
-            if (response.localeCompare("null\n") == 0) {
+            if (response.localeCompare("null\n") === 0) {
                 this.setState({amigos: <h3>Aún no tienes amigos registrados</h3>})
             }
             else {
@@ -183,7 +177,7 @@ export default class Amigos extends React.Component {
             return response.text();
         })
         .then((response) => {
-            if (response.localeCompare("null\n") == 0) {
+            if (response.localeCompare("null\n") === 0) {
                 console.log("No hay coincidencias");
                 this.setState({usuarios: <h3>No se ha encontrado ningún usuario</h3>});
             }
@@ -192,7 +186,7 @@ export default class Amigos extends React.Component {
                 let nombreUsuario = this.getNombreUsuario(document.cookie);
                 response = JSON.parse(response);
                 for (var i=0; i < response.length; i++) {
-                    if (!response[i]["EsAmigo"] && nombreUsuario != response[i]["Nombre"]){
+                    if (!response[i]["EsAmigo"] && nombreUsuario !== response[i]["Nombre"]){
                         usuariosArr.push(<div className='infoUsuario' key={i}>
                             <h3>{response[i]["Nombre"]}</h3> 
                             <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>

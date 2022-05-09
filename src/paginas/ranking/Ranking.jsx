@@ -70,7 +70,7 @@ export default class Ranking extends React.Component {
             </div>);
         }
 
-        if (response[i]["NombreUsuario"] == this.state.usuario) {
+        if (response[i]["NombreUsuario"] === this.state.usuario) {
           // Almacenamos la información del usuario
           this.setState({posicion: i+1});
           this.setState({partidasGanadasUsuario: response[i]["PartidasGanadas"]});
