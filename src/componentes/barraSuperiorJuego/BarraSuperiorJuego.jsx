@@ -1,6 +1,7 @@
 import React from 'react';
 import swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import WhiteFlag from "../../imagenes/white-flag.png";
 import "./barraSuperiorJuego.css";
 
 export default class BarraSuperiorJuego extends React.Component {
@@ -67,7 +68,7 @@ export default class BarraSuperiorJuego extends React.Component {
         <a className="active" >World Domination</a>
   
       	<div className="topnav-right">
-      	  <a><img className="fotoRendirse" alt="rendicion" onClick={this.abandonarPartida} src="https://img.icons8.com/external-victoruler-linear-colour-victoruler/64/000000/external-white-flag-chess-victoruler-linear-colour-victoruler.png"/></a> 
+      	  <a><img className="fotoRendirse" alt="rendicion" onClick={this.abandonarPartida} src={WhiteFlag}/></a> 
     		</div>
       </div>
 		);  

@@ -2,6 +2,9 @@ import React from 'react';
 import swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Coins from "../../imagenes/coins.png";
+import Message from "../../imagenes/message.png";
+import Friends from "../../imagenes/friends.png";
 import "./barraSuperior.css";
 
 export default class BarraSuperiorGeneral extends React.Component {
@@ -81,10 +84,10 @@ export default class BarraSuperiorGeneral extends React.Component {
 				
         <div class="topnav-right">
           <div className="datosPuntuacion">
-            <img className="puntuacion" src="https://img.icons8.com/ios/50/000000/coins.png" alt="puntos"/> {this.state.puntos}
+            <img className="puntuacion" src={Coins} alt="puntos"/> {this.state.puntos}
           </div>
-          <Link to='/amigos'><img class="imagenes" src="https://img.icons8.com/material-rounded/48/000000/add-user-group-man-man.png"/></Link>
-        	<Link to='/notificaciones'><img class="imagenes" src="https://img.icons8.com/material-sharp/50/000000/mail.png" /></Link>
+          <Link to='/amigos'><img class="imagenes" src={Friends} alt="friends"/></Link>
+        	<Link to='/notificaciones'><img class="imagenes" src={Message} alt="notificacion"/></Link>
         
         	<div class="dropdown"> 
             <button class="dropbtn">{this.state.nombre_usuario}</button>
