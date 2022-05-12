@@ -1,8 +1,8 @@
 import React from 'react';
 import swal from 'sweetalert2';
-import "./personalizacion.css";
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
+import "./personalizacion.css";
 
 export default class Personalizacion extends React.Component {
     constructor(props) {
@@ -206,12 +206,12 @@ export default class Personalizacion extends React.Component {
 
             {this.state.mostrarAvatares && 
                 <div className="avatares">
-                    Avatar Equipado {avatarEquipado}
-                    Avatares Disponibles {avataresArr}
+                    <h2>Avatar equipado</h2> {avatarEquipado}
+                    <h2>Avatares disponibles</h2> {avataresArr}
                 </div>}
             {this.state.mostrarDados && <div className="dados">
-                    Dados equipados {dadoEquipado}
-                    Dados {dadosArr}
+                    <h2>Dados equipados</h2> {dadoEquipado}
+                    <h2>Dados disponibles</h2> {dadosArr}
                 </div>}
             <BarraInferior></BarraInferior>
         </div>

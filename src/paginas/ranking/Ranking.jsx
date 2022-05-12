@@ -22,8 +22,18 @@ export default class Ranking extends React.Component {
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
     this.recuperarRanking = this.recuperarRanking.bind(this);
     this.verPerfil = this.verPerfil.bind(this);
+    this.calcularWinrate = this.calcularWinrate.bind(this);
   };
 
+  calcularWinrate(partidasGanadas, partidasTotales) {
+    if (partidasTotales == 0) {
+      return 0;
+    } 
+    else {
+      return partidasGanadas / partidasTotales * 100;
+    } 
+
+  }
 
   componentDidMount() {
     this.setState({usuario: this.getNombreUsuario(document.cookie)});
@@ -63,9 +73,10 @@ export default class Ranking extends React.Component {
 
       for (var i=0; i < Object.keys(response).length; i++) {
         if (i < this.state.maxNumeroJugadores) {
+          let winRate = this.calcularWinrate(response[i]["PartidasGanadas"],response[i]["PartidasTotales"]);
           jugadoresArr.push(<div className='infoJugador' key={i}>
             <h3>Puesto {i+1}: {response[i]["NombreUsuario"]}</h3>
-            <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, partidas jugadas: {response[i]["PartidasTotales"]}</h4>
+            <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, con un porcentaje de victorias del {winRate}%</h4>
             <Link to='/perfil' onClick={this.verPerfil} id={response[i]["NombreUsuario"]}><button>Ver Perfil</button></Link>
             </div>);
         }
@@ -75,6 +86,7 @@ export default class Ranking extends React.Component {
           this.setState({posicion: i+1});
           this.setState({partidasGanadasUsuario: response[i]["PartidasGanadas"]});
           this.setState({partidasJugadasUsuario: response[i]["PartidasTotales"]});
+          this.setState({winRateUsuario: this.calcularWinrate(response[i]["PartidasGanadas"],response[i]["PartidasTotales"])});
         }
       }
 
@@ -96,8 +108,8 @@ export default class Ranking extends React.Component {
       <BarraSuperiorGeneral/>
       <h1>Ranking</h1>
       <h3>Eres el jugador número {this.state.posicion} del Ranking, 
-        con {this.state.partidasGanadasUsuario} partidas ganadas de 
-        un total de {this.state.partidasJugadasUsuario} partidas.
+        con {this.state.partidasGanadasUsuario} partidas ganadas,
+        con un porcentaje de victorias del {winRate}%.
       </h3>
       <h2>Top {this.state.maxNumeroJugadores} del ranking</h2>
       {this.state.jugadores}
