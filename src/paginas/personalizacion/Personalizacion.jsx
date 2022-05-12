@@ -107,8 +107,6 @@ export default class Personalizacion extends React.Component {
                 }
             }
 
-            dadosArr.forEach((x,i) => console.log(x));
-            avataresArr.forEach((x,i) => console.log(x));
             this.setState({dados: dadosArr, avatares:avataresArr});
         })
         .catch((e) => {
@@ -169,6 +167,7 @@ export default class Personalizacion extends React.Component {
                     onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dado</button>}
             </div>)
 
+            // Si el avatar es el equipado, lo renderizamos de manera destacada
             if (this.state.dados[i].id == this.state.dadoEquipado) {
                 dadoEquipado = <div className="dadoEquipado">
                     <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
@@ -187,6 +186,7 @@ export default class Personalizacion extends React.Component {
                     <button id={this.state.avatares[i].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</button>}
             </div>)
 
+            // Si el dado es el equipado, lo renderizamos de manera destacada
             if (this.state.avatares[i].id == this.state.avatarEquipado) {
                 avatarEquipado = <div className="avatarEquipado">
                     <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>

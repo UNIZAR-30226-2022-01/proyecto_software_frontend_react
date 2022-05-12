@@ -29,6 +29,12 @@ export default class BarraSuperiorGeneral extends React.Component {
     this.obtenerPuntos();
 	}
 
+    static getDerivedStateFromProps(newProps) {
+        return {
+			puntos: newProps.puntos,
+		};
+    }
+
   getNombreUsuario(nombre) {
 		if (nombre.length > 0) {
     	nombre = nombre.split('=')[1];
@@ -70,6 +76,7 @@ export default class BarraSuperiorGeneral extends React.Component {
   }
 
 	render() {
+    console.log("Render topbar")
     if (this.state.irIdentificacion) {
       return <Navigate to='/'/>;
     }

@@ -109,7 +109,7 @@ export default class Ranking extends React.Component {
       <h1>Ranking</h1>
       <h3>Eres el jugador número {this.state.posicion} del Ranking, 
         con {this.state.partidasGanadasUsuario} partidas ganadas,
-        con un porcentaje de victorias del {winRate}%.
+        con un porcentaje de victorias del {this.state.winRateUsuario}%.
       </h3>
       <h2>Top {this.state.maxNumeroJugadores} del ranking</h2>
       {this.state.jugadores}

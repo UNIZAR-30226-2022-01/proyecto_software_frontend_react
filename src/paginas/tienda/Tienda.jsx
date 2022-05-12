@@ -10,22 +10,23 @@ export default class Tienda extends React.Component {
         this.state = {
             mostrarAvatares: true,
             mostrarDados: false,
-            avatares: [],
-            dados: [],
-            dadoEquipado: -1,
-            avatarEquipado: -1,
+            avataresTienda: [],
+            dadosTienda: [],
+            coleccion: [], // IDs de los cosméticos que ya ha comprado
+            puntos: 0,
         };
         this.consultarColeccion = this.consultarColeccion.bind(this);
         this.getNombreUsuario = this.getNombreUsuario.bind(this);
-        this.consultarEquipacion = this.consultarEquipacion.bind(this);
-        this.equiparCosmetico = this.equiparCosmetico.bind(this);
+        this.consultarTienda = this.consultarTienda.bind(this);
         this.obtenerImagen = this.obtenerImagen.bind(this);
+        this.obtenerPuntos = this.obtenerPuntos.bind(this);
     }
 
     componentDidMount() {
         let usuario = this.getNombreUsuario(document.cookie);
-        this.consultarEquipacion(usuario);
         this.consultarColeccion(usuario);
+        this.obtenerPuntos(usuario);
+        this.consultarTienda();
     }
 
     getNombreUsuario(nombre) {
@@ -36,25 +37,42 @@ export default class Tienda extends React.Component {
         return nombre;
     }
 
-    // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
+    // Obtener la imagen de uno de los cosméticos de la tienda id
     obtenerImagen(id) {
-        for (var i = 0; i < this.state.avatares.length; i++) {
-            if (id == this.state.avatares[i].id) {
-                return this.state.avatares[i].img;
+        for (var i = 0; i < this.state.avataresTienda.length; i++) {
+            if (id == this.state.avataresTienda[i].id) {
+                return this.state.avataresTienda[i].img;
             }
         }
 
-        for (var i = 0; i < this.state.dados.length; i++) {
-            if (id == this.state.dados[i].id) {
-                return this.state.dados[i].img;
+        for (var i = 0; i < this.state.dadosTienda.length; i++) {
+            if (id == this.state.dadosTienda[i].id) {
+                return this.state.dadosTienda[i].img;
             }
         }
 
         return null;
     }
+    
+    // Obtener el precio de uno de los cosméticos de la tienda por id
+    obtenerPrecio(id) {
+        for (var i = 0; i < this.state.avataresTienda.length; i++) {
+            if (id == this.state.avataresTienda[i].id) {
+                return this.state.avataresTienda[i].precio;
+            }
+        }
 
-    // Obtener el dado y el avatar que tiene equipado el usuario
-    consultarEquipacion(usuario) {
+        for (var i = 0; i < this.state.dadosTienda.length; i++) {
+            if (id == this.state.dadosTienda[i].id) {
+                return this.state.dadosTienda[i].precio;
+            }
+        }
+
+        return 0;
+    }
+
+    // Obtener puntos del usuario
+    obtenerPuntos(usuario) {
         fetch(`http://localhost:8090/api/obtenerPerfil/${usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -68,20 +86,52 @@ export default class Tienda extends React.Component {
             return response.json();
         })
         .then((response) => {
-            this.setState({dadoEquipado: response['ID_dado']});
-            this.setState({avatarEquipado: response['ID_avatar']});
+            this.setState({puntos: response['Puntos']});
         })
         .catch((e) => {
             swal.fire({
-                title: 'Se ha producido un error al consultar los cosméticos del usuario',
+                title: 'Se ha producido un error al recuperar el perfil',
                 text: e,
                 icon: 'error',
             });
         })
     }
 
+    // Obtener la lista de objetos ya comprados por el usuario
     consultarColeccion(usuario) {
         fetch(`http://localhost:8090/api/consultarColeccion/${usuario}`, {
+            method: 'get',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+            return response.json();
+        })
+        .then((response) => {
+            let coleccionArr = [];
+            for (var i=0; i < Object.keys(response).length; i++) { 
+                coleccionArr.push(response[i]["Id"]);
+            }
+
+            console.log(coleccionArr)
+            this.setState({coleccion: coleccionArr});
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al recuperar la colección de cosméticos',
+                text: e,
+                icon: 'error',
+            });
+        })
+    }
+
+    // Consultar los objetos a la venta
+    consultarTienda() {
+        fetch(`http://localhost:8090/api/consultarTienda`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -97,19 +147,19 @@ export default class Tienda extends React.Component {
             let dadosArr = [];
             let avataresArr = [];
             for (var i=0; i < Object.keys(response).length; i++) {
+                let cosmetico = {id: response[i]["Id"], nombre: response[i]["Nombre"], descripcion: response[i]["Descripcion"],
+                        precio: response[i]["Precio"], img: response[i]["Imagen"]};
+                
                 if (response[i]["Tipo"] === "dado") {
-                    let dado = {id: response[i]["Id"], nombre: response[i]["Nombre"], descripcion: response[i]["Descripcion"], img: response[i]["Imagen"]}
-                    dadosArr.push(dado);
+                    
+                    dadosArr.push(cosmetico);
                 }
                 else {
-                    let avatar = {id: response[i]["Id"], nombre: response[i]["Nombre"], descripcion: response[i]["Descripcion"],img: response[i]["Imagen"]};
-                    avataresArr.push(avatar);
+                    avataresArr.push(cosmetico);
                 }
             }
 
-            dadosArr.forEach((x,i) => console.log(x));
-            avataresArr.forEach((x,i) => console.log(x));
-            this.setState({dados: dadosArr, avatares:avataresArr});
+            this.setState({dadosTienda: dadosArr, avataresTienda:avataresArr});
         })
         .catch((e) => {
             swal.fire({
@@ -120,85 +170,118 @@ export default class Tienda extends React.Component {
         })
     }
 
-    equiparCosmetico(e, mensaje) {
-        let img = this.obtenerImagen(e.currentTarget.id)
-        console.log("Equipando el cosmético: "+e.currentTarget.id);
-        fetch(`http://localhost:8090/api/modificarAspecto/${e.currentTarget.id}`, {
-            method: 'post',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            credentials: 'include'
-        })
-        .then((response) => {
-            console.log('Respuesta recibida de la api');
-            if (!response.ok) {
-                return response.text().then(text => {throw new Error(text)});
-            }
-            // Recargamos los cosméticos del jugador
-            let usuario = this.getNombreUsuario(document.cookie);
-            this.consultarEquipacion(usuario);
-            swal.fire({
-                title: mensaje,
-                icon: 'success',
-                html: `<img class="imagenAlerta" src='data:image;base64,${img}'/>`,
-                timer: 3000,
-                timerProgressBar: true,
-            });
-        })
-        .catch((e) => {
-            swal.fire({
-                title: 'Se ha producido un error al equipar el cosmético',
-                text: e,
-                icon: 'error',
-            });
+    // Comprar un nuevo cosmético
+    comprarCosmetico(e, mensaje) {
+        e.preventDefault();
+        let img = this.obtenerImagen(e.currentTarget.id);
+        let idCosmetico = e.currentTarget.id;
+        let precio = this.obtenerPrecio(e.currentTarget.id);
+        swal.fire({
+            title: `¿Seguro que quieres comprar este aspecto?`,
+            showCancelButton: true,
+            html: `<img class="imagenAlerta" src='data:image;base64,${img}'/>`,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true,
+            backdrop: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                    return fetch(`http://localhost:8090/api/comprarObjeto/${idCosmetico}`, {
+                    method: 'post',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    credentials: 'include' 
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.text().then(text => {throw new Error(text)});
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    swal.fire({
+                    title: mensaje,
+                    icon: 'success',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    });
+                    
+                    // Actualizamos los puntos del jugador y su colección de objetos
+                    //console.log("Actualizando coleccion:"+this.state.coleccion)
+                    this.setState({coleccion: this.state.coleccion.concat(idCosmetico)})
+                    this.setState({puntos: this.state.puntos - precio})
+
+                })
+                .catch(error => {
+                    swal.showValidationMessage(`${error}`)
+                })},
+            allowOutsideClick: () => !swal.isLoading()
         })
     }
 
     render() {
-        let dadosArr = [];
-        let avataresArr = [];
-        let avatarEquipado = null;
-        let dadoEquipado = null;
+        console.log("Render tienda")
+        console.log("Coleccion de cosméticos del usuario: "+this.state.coleccion)
+        let dadosTienda = [];
+        let dadosColeccion = [];
+        let avataresTienda = [];
+        let avataresColeccion = [];
+        
         // Creamos la lista de dados a mostrar
-        for (var i=0; i < this.state.dados.length; i++) {
-            dadosArr.push(<div className="dado" key={this.state.dados[i].id}>
-                <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
-                {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
-                {this.state.dadoEquipado == this.state.dados[i].id && <button disabled>Dados equipados</button>}
-                {this.state.dadoEquipado != this.state.dados[i].id && 
-                    <button id={this.state.dados[i].id } 
-                    onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dado</button>}
-            </div>)
+        // TODO, el estado cambia correctamente y la coleccion se actualiza, pero el nuevo item aparece con comprado = false
+        for (var i=0; i < this.state.dadosTienda.length; i++) {
+            let comprado = this.state.coleccion.includes(this.state.dadosTienda[i].id);
+            let dado = (
+                <div className="dado" key={this.state.dadosTienda[i].id}>
+                    <img className="imagenDado" src={`data:image;base64,${this.state.dadosTienda[i].img}`}></img>
+                    {this.state.dadosTienda[i].nombre}, {this.state.dadosTienda[i].descripcion}
+                    <br></br>
+                    Precio: {this.state.dadosTienda[i].precio} puntos
+                    {comprado && <button disabled>Dados comprados</button>}
+                    {!comprado && 
+                    <button id={this.state.dadosTienda[i].id } 
+                        onClick={(e) => this.comprarCosmetico(e, "Dados comprados")}>Comprar dados</button>}
+                </div>)
 
-            if (this.state.dados[i].id == this.state.dadoEquipado) {
-                dadoEquipado = <div className="dadoEquipado">
-                    <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
-                    {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
-                    </div>
+            // Separamos dados comprados de dados no comprados
+            // Los comprados aparecerán al principio de la lista, los no comprados al final
+            if (comprado) {
+                dadosColeccion.push(dado);
+            }
+            else {
+                dadosTienda.push(dado)
             }
         }
 
         // Creamos la lista de avatares a mostrar
-        for (var i=0; i < this.state.avatares.length; i++) {
-            avataresArr.push(<div className="avatar" key={this.state.avatares[i].id}>
-                <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>
-                {this.state.avatares[i].nombre}, {this.state.avatares[i].descripcion}
-                {this.state.avatarEquipado == this.state.avatares[i].id && <button disabled>Avatar equipado</button>}
-                {this.state.avatarEquipado != this.state.avatares[i].id && 
-                    <button id={this.state.avatares[i].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</button>}
-            </div>)
+        for (var i=0; i < this.state.avataresTienda.length; i++) {
+            let comprado = this.state.coleccion.includes(this.state.avataresTienda[i].id);
+            console.log("i = ", i, ", añadiendo avatar ", this.state.avataresTienda[i].id, " comprado:", comprado)
+            let avatar = 
+                (<div className="avatar" key={this.state.avataresTienda[i].id}>
+                    <img className="imagenAvatar" src={`data:image;base64,${this.state.avataresTienda[i].img}`}></img>
+                    {this.state.avataresTienda[i].nombre}, {this.state.avataresTienda[i].descripcion}
+                    <br></br>
+                    Precio: {this.state.avataresTienda[i].precio} puntos
+                    {comprado && <button disabled>Avatar comprado</button>}
+                    {!comprado && 
+                        <button id={this.state.avataresTienda[i].id} onClick={(e) => this.comprarCosmetico(e, "Avatar comprado")}>Comprar avatar</button>}
+                </div>);
 
-            if (this.state.avatares[i].id == this.state.avatarEquipado) {
-                avatarEquipado = <div className="avatarEquipado">
-                    <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>
-                    {this.state.avatares[i].nombre}, {this.state.avatares[i].descripcion}
-                </div>
+            // Separamos dados comprados de dados no comprados
+            // Los comprados aparecerán al principio de la lista, los no comprados al final
+            if (comprado) {
+                avataresColeccion.push(avatar);
+            }
+            else {
+                avataresTienda.push(avatar)
             }
         }
         
 
         return (
         <div className="cen">
-            <BarraSuperiorGeneral></BarraSuperiorGeneral>
+            <BarraSuperiorGeneral puntos={this.state.puntos}></BarraSuperiorGeneral>
             <h1>Tienda</h1>
 
             <button onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>Avatares</button>
@@ -206,12 +289,10 @@ export default class Tienda extends React.Component {
 
             {this.state.mostrarAvatares && 
                 <div className="avatares">
-                    <h2>Avatar equipado</h2> {avatarEquipado}
-                    <h2>Avatares disponibles</h2> {avataresArr}
+                    <h2>Avatares disponibles</h2> {avataresColeccion} {avataresTienda}
                 </div>}
             {this.state.mostrarDados && <div className="dados">
-                    <h2>Dados equipados</h2> {dadoEquipado}
-                    <h2>Dados disponibles</h2> {dadosArr}
+                    <h2>Dados disponibles</h2> {dadosColeccion} {dadosTienda}
                 </div>}
             <BarraInferior></BarraInferior>
         </div>

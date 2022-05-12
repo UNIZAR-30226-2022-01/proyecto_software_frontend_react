@@ -59,7 +59,6 @@ export default class Amigos extends React.Component {
         backdrop: true,
         showLoaderOnConfirm: true,
         preConfirm: () => {
-          // TODO la llamada a API no funciona desde frontend pero si desde backend/tests
           return fetch(`http://localhost:8090/api/eliminarAmigo/${nombre}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
