@@ -88,6 +88,11 @@ export default class Inicio extends React.Component {
       </button>
       <br></br><br></br>
 
+      <button>
+        <Link to="/cartas">Cartas</Link>
+      </button>
+      <br></br><br></br>
+
       <BarraInferior></BarraInferior>
     </div>
     );  
