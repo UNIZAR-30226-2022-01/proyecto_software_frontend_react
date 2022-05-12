@@ -20,11 +20,13 @@ export default class Perfil extends React.Component {
             es_amigo: false,
             es_usuario: false,
             recibido: false,
+            imagen: null,
         };
 
         this.recuperarPerfil = this.recuperarPerfil.bind(this);
         this.enviarSolicitudAmistad = this.enviarSolicitudAmistad.bind(this);
         this.modificarBiografia = this.modificarBiografia.bind(this);
+        this.obtenerAvatar = this.obtenerAvatar.bind(this);
     }
 
     componentDidMount() {
@@ -35,13 +37,37 @@ export default class Perfil extends React.Component {
         }
 
         this.setState({es_usuario: nombre_login === this.state.nombre_usuario});
-        
+        this.obtenerAvatar();
         this.recuperarPerfil();
     }
 
     componentWillUnmount() {
         // Es necesario borrarlo?, se puede cambiar cuando sea necesario y ya
         //localStorage.removeItem('nombre_usuario');
+    }
+
+    obtenerAvatar() {
+        fetch(`http://localhost:8090/api/obtenerFotoPerfil/${this.state.nombre_usuario}`, {
+            method: 'get',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+            response.blob().then((blob) => {
+                this.setState({imagen: URL.createObjectURL(blob)});
+            })
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al recuperar el avatar',
+                text: e,
+                icon: 'error',
+            });
+        })
     }
     
     recuperarPerfil() {
@@ -157,6 +183,7 @@ export default class Perfil extends React.Component {
             <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
             <h2>Perfil de {this.state.nombre_usuario}</h2>
+            <img className="avatarPerfil" src={this.state.imagen}></img>
             <h2>Biografía: <input type="text" id="bio" name="bio" value={this.state.biografia} 
                 onChange={(e) => {this.setState({biografia: e.target.value})}} disabled></input></h2>
             {modBio}

@@ -19,6 +19,7 @@ export default class Personalizacion extends React.Component {
         this.getNombreUsuario = this.getNombreUsuario.bind(this);
         this.consultarEquipacion = this.consultarEquipacion.bind(this);
         this.equiparCosmetico = this.equiparCosmetico.bind(this);
+        this.obtenerImagen = this.obtenerImagen.bind(this);
     }
 
     componentDidMount() {
@@ -33,6 +34,23 @@ export default class Personalizacion extends React.Component {
             nombre = nombre.split('|')[0];
         }
         return nombre;
+    }
+
+    // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
+    obtenerImagen(id) {
+        for (var i = 0; i < this.state.avatares.length; i++) {
+            if (id == this.state.avatares[i].id) {
+                return this.state.avatares[i].img;
+            }
+        }
+
+        for (var i = 0; i < this.state.dados.length; i++) {
+            if (id == this.state.dados[i].id) {
+                return this.state.dados[i].img;
+            }
+        }
+
+        return null;
     }
 
     // Obtener el dado y el avatar que tiene equipado el usuario
@@ -102,7 +120,8 @@ export default class Personalizacion extends React.Component {
         })
     }
 
-    equiparCosmetico(e) {
+    equiparCosmetico(e, mensaje) {
+        let img = this.obtenerImagen(e.currentTarget.id)
         console.log("Equipando el cosmético: "+e.currentTarget.id);
         fetch(`http://localhost:8090/api/modificarAspecto/${e.currentTarget.id}`, {
             method: 'post',
@@ -117,6 +136,13 @@ export default class Personalizacion extends React.Component {
             // Recargamos los cosméticos del jugador
             let usuario = this.getNombreUsuario(document.cookie);
             this.consultarEquipacion(usuario);
+            swal.fire({
+                title: mensaje,
+                icon: 'success',
+                html: `<img class="imagenAlerta" src='data:image;base64,${img}'/>`,
+                timer: 3000,
+                timerProgressBar: true,
+            });
         })
         .catch((e) => {
             swal.fire({
@@ -130,25 +156,43 @@ export default class Personalizacion extends React.Component {
     render() {
         let dadosArr = [];
         let avataresArr = [];
-        
+        let avatarEquipado = null;
+        let dadoEquipado = null;
         // Creamos la lista de dados a mostrar
         for (var i=0; i < this.state.dados.length; i++) {
             dadosArr.push(<div className="dado" key={this.state.dados[i].id}>
+                <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
                 {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
-                {this.state.dadoEquipado == this.state.dados[i].id && "Objeto equipado"}
+                {this.state.dadoEquipado == this.state.dados[i].id && <button disabled>Dados equipados</button>}
                 {this.state.dadoEquipado != this.state.dados[i].id && 
-                    <button id={this.state.dados[i].id } onClick={(e) => this.equiparCosmetico(e)}>Equipar dado</button>}
+                    <button id={this.state.dados[i].id } 
+                    onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dado</button>}
             </div>)
+
+            if (this.state.dados[i].id == this.state.dadoEquipado) {
+                dadoEquipado = <div className="dadoEquipado">
+                    <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
+                    {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
+                    </div>
+            }
         }
 
         // Creamos la lista de avatares a mostrar
         for (var i=0; i < this.state.avatares.length; i++) {
             avataresArr.push(<div className="avatar" key={this.state.avatares[i].id}>
+                <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>
                 {this.state.avatares[i].nombre}, {this.state.avatares[i].descripcion}
-                {this.state.avatarEquipado == this.state.avatares[i].id && "Objeto equipado"}
+                {this.state.avatarEquipado == this.state.avatares[i].id && <button disabled>Avatar equipado</button>}
                 {this.state.avatarEquipado != this.state.avatares[i].id && 
-                    <button id={this.state.avatares[i].id} onClick={(e) => this.equiparCosmetico(e)}>Equipar avatar</button>}
+                    <button id={this.state.avatares[i].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</button>}
             </div>)
+
+            if (this.state.avatares[i].id == this.state.avatarEquipado) {
+                avatarEquipado = <div className="avatarEquipado">
+                    <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>
+                    {this.state.avatares[i].nombre}, {this.state.avatares[i].descripcion}
+                </div>
+            }
         }
         
 
@@ -156,12 +200,19 @@ export default class Personalizacion extends React.Component {
         <div className="cen">
             <BarraSuperiorGeneral></BarraSuperiorGeneral>
             <h1>Personalizacion</h1>
+
             <button onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>Avatares</button>
             <button onClick={() => {this.setState({mostrarAvatares: false, mostrarDados: true})}}>Dados</button>
 
-            <div className="equipacionActual">Avatar equipado {this.state.avatarEquipado}, dado {this.state.dadoEquipado}</div>
-            {this.state.mostrarAvatares && <div className="avatares">Avatares {avataresArr}</div>}
-            {this.state.mostrarDados && <div className="dados">Dados {dadosArr}</div>}
+            {this.state.mostrarAvatares && 
+                <div className="avatares">
+                    Avatar Equipado {avatarEquipado}
+                    Avatares Disponibles {avataresArr}
+                </div>}
+            {this.state.mostrarDados && <div className="dados">
+                    Dados equipados {dadoEquipado}
+                    Dados {dadosArr}
+                </div>}
             <BarraInferior></BarraInferior>
         </div>
         );  

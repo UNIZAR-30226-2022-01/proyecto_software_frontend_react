@@ -1,0 +1,17 @@
+.imagenDado {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+}
+
+.imagenAvatar {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+}
+
+.imagenAlerta {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+}
