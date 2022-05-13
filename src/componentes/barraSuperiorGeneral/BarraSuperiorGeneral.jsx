@@ -29,12 +29,6 @@ export default class BarraSuperiorGeneral extends React.Component {
     this.obtenerPuntos();
 	}
 
-    static getDerivedStateFromProps(newProps) {
-        return {
-			puntos: newProps.puntos,
-		};
-    }
-
   getNombreUsuario(nombre) {
 		if (nombre.length > 0) {
     	nombre = nombre.split('=')[1];
@@ -64,6 +58,7 @@ export default class BarraSuperiorGeneral extends React.Component {
       return response.json();
     })
     .then((response) => {
+      console.log(response.Puntos)
       this.setState({puntos: response.Puntos});
     })
     .catch ((e) => {
@@ -76,31 +71,26 @@ export default class BarraSuperiorGeneral extends React.Component {
   }
 
 	render() {
-    console.log("Render topbar")
     if (this.state.irIdentificacion) {
       return <Navigate to='/'/>;
     }
-    
-    if (this.state.irPerfil) {
-      return <Navigate to={`/perfil`}/>;
-    }
 
 		return (
-      <div class="topnav">
-        <a class="active" href="/inicio">World Domination</a>
+      <div className="topnav">
+        <a className="active" href="/inicio">World Domination</a>
 				
-        <div class="topnav-right">
+        <div className="topnav-right">
           <div className="datosPuntuacion">
             <img className="puntuacion" src={Coins} alt="puntos"/> {this.state.puntos}
           </div>
-          <Link to='/amigos'><img class="imagenes" src={Friends} alt="friends"/></Link>
-        	<Link to='/notificaciones'><img class="imagenes" src={Message} alt="notificacion"/></Link>
+          <Link to='/amigos'><img className="imagenes" src={Friends} alt="friends"/></Link>
+        	<Link to='/notificaciones'><img className="imagenes" src={Message} alt="notificacion"/></Link>
         
-        	<div class="dropdown"> 
-            <button class="dropbtn">{this.state.nombre_usuario}</button>
-            <div class="dropdown-content">
-            <Link to='/perfil' onClick={this.navegarPerfil}>Perfil</Link>
-            <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
+        	<div className="dropdown"> 
+            <button className="dropbtn">{this.state.nombre_usuario}</button>
+            <div className="dropdown-content">
+              <Link to='/perfil' onClick={this.navegarPerfil}>Perfil</Link>
+              <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
             </div>
         	</div>
         </div>
