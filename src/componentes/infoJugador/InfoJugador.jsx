@@ -56,10 +56,6 @@ export default class InfoJugador extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.obtenerFotoPerfil();
-	}
-
 	componentDidUpdate() {
 		if (this.state.fotoPerfil === null) {
 			this.obtenerFotoPerfil();
