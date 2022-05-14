@@ -11,9 +11,10 @@ import Ranking from "./paginas/ranking/Ranking";
 import Tienda from "./paginas/tienda/Tienda";
 import Personalizacion from "./paginas/personalizacion/Personalizacion";
 import Perfil from './paginas/perfil/Perfil';
-import { BrowserRouter, Route, Routes} from "react-router-dom";
 import Notificaciones from './paginas/notificaciones/Notificaciones';
 import Amigos from './paginas/amigos/amigos'
+import Cartas from './paginas/cartas/Cartas'
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 export default class App extends React.Component {
   render() {
@@ -35,6 +36,7 @@ export default class App extends React.Component {
           <Route path="/perfilUsuario" element={<Perfil key="2"/>}/>
           <Route path="/notificaciones" element={<Notificaciones/>}/>
           <Route path="/amigos" element={<Amigos/>}/>
+          <Route path="/cartas" element={<Cartas/>}/>
         </Routes>
       </BrowserRouter>
     );  

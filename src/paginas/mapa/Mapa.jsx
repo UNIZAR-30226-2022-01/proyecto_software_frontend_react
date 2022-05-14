@@ -1,6 +1,7 @@
 import React from 'react';
 import swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import queryString from 'query-string';
 import InfoJugador from "../../componentes/infoJugador/InfoJugador";
 import MapaPartida from "../../componentes/mapaPartida/MapaPartida";
 import MapaInfo from "../../componentes/mapaInfo/MapaInfo";
@@ -10,6 +11,7 @@ import Cards from "../../imagenes/cards.png";
 import User from "../../imagenes/user.png";
 import World from "../../imagenes/world.png";
 import Fase from "../../imagenes/fase.png";
+import Chat from "../../imagenes/chat.png";
 import "./mapa.css";
 
 const territorios = ["Australia_Oriental", "Indonesia", "Nueva_Guinea", "Alaska", "Ontario", "Territorio_del_Noroeste", "Venezuela", 
@@ -39,6 +41,7 @@ export default class Mapa extends React.Component {
       enableMapInfo: false,
       coloresJugadores: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
       coloresCirculos: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
+      coloresInfo: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
       accionesIniciales: [],
       indexAccionesIniciales: 0,
       territorioSeleccionado: "",
@@ -56,9 +59,10 @@ export default class Mapa extends React.Component {
       obtenerInfoPartida: localStorage.getItem("volver_partida"),
       volviendoMapaPartida: false,
       imagenes: [],
-      imagenAvatar: null,
       resultadoDadosAtacante: 0,
-      resultadoDadosDefensor: 0
+      resultadoDadosDefensor: 0,
+      jugadorChat: "", 
+      mensajeChat: "" 
     };
 
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
@@ -67,6 +71,7 @@ export default class Mapa extends React.Component {
     this.mostrarAlertaRangoAsincrona = this.mostrarAlertaRangoAsincrona.bind(this);
     this.mostrarAlertaInformativaAvatar = this.mostrarAlertaInformativaAvatar.bind(this);
     this.mostrarAlertaDados = this.mostrarAlertaDados.bind(this);
+    this.mostrarAlertaChat = this.mostrarAlertaChat.bind(this);
     this.mostrarAlertaFin = this.mostrarAlertaFin.bind(this);
     this.handleChartButton = this.handleChartButton.bind(this);
     this.handleWorldButton = this.handleWorldButton.bind(this);
@@ -153,14 +158,40 @@ export default class Mapa extends React.Component {
       title: titulo,
       text: texto,
       imageUrl: imagen,
-      imageWidth: 200,
-      imageHeight: 400,
+      imageWidth: 300,
+      imageHeight: 300,
       imageAlt: 'Avatar usuario',
       confirmButtonText: 'OK',
       confirmButtonColor: '#3085d6',
       allowOutsideClick: false
 		}).then(() => {
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
+    })
+  }
+
+  mostrarAlertaChat() {
+    swal.fire({
+      title: 'Escribe en el chat',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+        maxlength: 32
+      },
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Enviar',
+      reverseButtons: true,
+      showLoaderOnConfirm: true,
+      preConfirm: (chat) => {
+        return fetch(`http://localhost:8090/api/enviarMensaje`, {
+          method: 'post',
+          credentials: 'include',
+          headers: {'Content-Type':'application/x-www-form-urlencoded'},
+          body: queryString.stringify({
+            mensaje: chat,
+			    })
+        })
+      }
     })
   }
 
@@ -172,7 +203,7 @@ export default class Mapa extends React.Component {
     // Atacante
     for (var i = 0; i < accion.DadosAtacante.length; i++) {
       resultadoDadosAtacante += parseInt(accion.DadosAtacante[i]);
-      fetch(`http://localhost:8090/api/obtenerDados/${accion.DadosAtacante[i]}`, {
+      fetch(`http://localhost:8090/api/obtenerDados/${accion.JugadorAtacante}/${accion.DadosAtacante[i]}`, {
         method: 'get',
         credentials: 'include'
       })
@@ -211,14 +242,15 @@ export default class Mapa extends React.Component {
           allowOutsideClick: false
         })
         .then(() => {
-          var htmlText = 'Atacante: ' + this.state.resultadoDadosAtacante + '<br>' +
-            'Defensor: ' + this.state.resultadoDadosDefensor + '<br> <br>' +
-            '<img src=' + this.state.imagenes[0] +  ' >';
+          console.log();
+          let htmlText = 'Atacante: ' + this.state.resultadoDadosAtacante + ' <br>' +
+            'Defensor: ' + this.state.resultadoDadosDefensor + ' <br> <br>' +
+            '<img src=' + this.state.imagenes[0] +  ' height="70" width="70">';
           if (this.state.imagenes.length >= 2) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' >';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="70" width="70">';
           }
           if (this.state.imagenes.length >= 3) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' >';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="70" width="70">';
           }
           
           swal.fire({
@@ -604,9 +636,11 @@ export default class Mapa extends React.Component {
 
   jugadorEliminado(jugador) {
     var indexJugador = this.state.nombreJugadores.indexOf(jugador);
-    const vC = this.state.coloresJugadores;
-    vC[indexJugador] = "#000000";
-    this.setState({coloresJugadores: vC}); 
+    //const vCJ = this.state.coloresJugadores;
+    //vCJ[indexJugador] = "#F8DDD7";
+    const vCC = this.state.coloresInfo;
+    vCC[indexJugador] = "#F8DDD7";
+    this.setState({coloresInfo: vCC}); 
   }
 
   changeMap() {
@@ -815,7 +849,7 @@ export default class Mapa extends React.Component {
             clearInterval(this.interval);
             this.setState({turno: accion.Jugador});
 
-            fetch(`http://localhost:8090/api/obtenerAvatar/${accion.Jugador}`, {
+            fetch(`http://localhost:8090/api/obtenerFotoPerfil/${accion.Jugador}`, {
               method: 'get',
               credentials: 'include'
             })
@@ -827,7 +861,16 @@ export default class Mapa extends React.Component {
             })
             .then((blob) => {
               let objectURL = URL.createObjectURL(blob);
-              this.setState({imagenAvatar: objectURL})
+
+              if (this.state.nombrePropioJugador === accion.Jugador) {
+                this.setState({numTropasReforzar: accion.TropasObtenidas});
+                this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
+                accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
+                " territorios y " + accion.RazonContinentesOcupados + " continentes.", objectURL);
+              }
+              else {
+                this.mostrarAlertaInformativaAvatar("Fase de refuerzo", "Turno de " + accion.Jugador, objectURL);
+              }
             })
             .catch ((e) => {
               swal.fire({
@@ -836,15 +879,6 @@ export default class Mapa extends React.Component {
                 icon: 'error',
               });
             })
-
-            if (this.state.nombrePropioJugador === accion.Jugador) {
-              this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
-              accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
-              " territorios y " + accion.RazonContinentesOcupados + " continentes.", this.state.imagenAvatar);
-            }
-            else {
-              this.mostrarAlertaInformativaAvatar("Fase de refuerzo", "Turno de " + accion.Jugador, this.state.imagenAvatar);
-            }
             break;
           
           // IDAccionCambioCartas----------------------------------------------------------------------------
@@ -953,6 +987,13 @@ export default class Mapa extends React.Component {
             break;
           }
 
+          // IDAccionPartidaFinalizada----------------------------------------------------------------------------
+          case 12: {
+            this.setState({jugadorChat: accion.JugadorEmisor});
+            this.setState({mensajeChat: accion.Mensaje});
+            break;
+          }
+
           default:
             break;
         }
@@ -1016,7 +1057,7 @@ export default class Mapa extends React.Component {
         numTropas={this.state.tropasJugadores[i]}
         numTerritorios={this.state.regionesJugadores[i]}
         numCartas={this.state.cartasJugadores[i]}
-        color={this.state.coloresJugadores[i]}/>);
+        color={this.state.coloresInfo[i]}/>);
     }
 
     return (
@@ -1057,6 +1098,16 @@ export default class Mapa extends React.Component {
               <text className="textoInfo"> Fase: {this.obtenerNombreFase()}</text> <br></br>
               <text className="textoInfo"> Turno: {this.state.turno}</text> <br></br>
               <text className="textoInfo"> Refuerzos: {this.state.numTropasReforzar}</text>
+            </div>
+            <div className="botonFase">
+              <input type="image" id="chat_but" onClick={this.mostrarAlertaChat} src={Chat} alt='chat' height="70" width="70"/>
+            </div>
+            <div className="botonChat">
+              {(this.state.jugadorChat === "" && this.state.mensajeChat === "") && 
+                <text className="textoChat"> Chat vacío</text>}
+              {(this.state.jugadorChat !== "" && this.state.mensajeChat !== "") && 
+                <text className="textoChat"> {this.state.jugadorChat}: {this.state.mensajeChat}</text>}
+              
             </div>
             
           </div>

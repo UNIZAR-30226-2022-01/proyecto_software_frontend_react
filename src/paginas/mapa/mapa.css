@@ -10,7 +10,7 @@
 
 .botonesPrincipales {
   /* border: 1.5px solid white; */
-  width: 600px;
+  width: 1000px;
   display: flex;
 }
 
@@ -38,7 +38,6 @@
   width: 180px;
   padding: .5em;
   margin-left: 20px;
-  transition: width 0.5s, height 0.5s, transform 0.5s;
 }
 
 .textoInfo {
@@ -46,6 +45,29 @@
   color:#000000;
   font-size: 17px;
   font-weight: 550;
+}
+
+.botonChat {
+  border: 1.5px solid white; 
+  border-radius: 20px;
+  background-color: #CCF4FF;
+  height: 75px; 
+  width: 280px;
+  padding: .5em;
+  margin-left: 20px;
+}
+
+.textoChat {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color:#000000;
+  font-size: 16px;
+  font-weight: 400;
+  display: block;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 5em;
+  line-height:2.3em;
 }
 
 .botonFase {

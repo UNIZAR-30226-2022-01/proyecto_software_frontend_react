@@ -16,8 +16,8 @@ export default class BarraSuperiorJuego extends React.Component {
 
   abandonarPartida() {
     swal.fire({
-      title: '¿Está seguro de que quiere rendirse?',
-      text: 'Perdera puntos por abandonar la partida',
+      title: '¿Estás seguro de que quieres rendirte?',
+      text: 'Perderás puntos por abandonar la partida',
       showCancelButton: true,
       confirmButtonText: 'Abandonar',
       cancelButtonText: 'Cancelar',
@@ -35,7 +35,6 @@ export default class BarraSuperiorJuego extends React.Component {
           if (!response.ok) {
             return response.text().then(text => {throw new Error(text)});
           }
-          return response.json();
         })
         .then(() => {
           swal.fire({
@@ -56,7 +55,6 @@ export default class BarraSuperiorJuego extends React.Component {
       } 
     })
   }
-
 
 	render() {
     if (this.state.salirPartida) {
