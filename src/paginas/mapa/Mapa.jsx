@@ -893,7 +893,7 @@ export default class Mapa extends React.Component {
               this.setState({numTropasReforzar: this.state.numTropasReforzar + accion.NumTropasObtenidas});
               swal.fire({
                 title: 'Cambio de cartas',
-                text: 'Has obtenido ' + accion.NumTropasObtenidas + ' tropas.',
+                text: 'Has obtenido ' + accion.NumTropasObtenidas + 't',
                 icon: 'info',
               });
             } else {
