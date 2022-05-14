@@ -1,4 +1,5 @@
 .text-white {
+    text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
 }
 
@@ -19,24 +20,30 @@
     padding: 25px 20px;
 }
 
-.downnavC {
-    bottom: 0;
-    padding: 100px 40px;
+.contenedorBoton {
+    /* border: 2px solid red; */
+    margin-top: 10%;
+    margin-bottom: 5%;
 }
 
 .botonCentro {
-    top: 50%;
-    left: 40%;
+    /* border: 2px solid red; */
+    margin-top: 3%;
     font-size: 20px; 
     text-decoration: none;
     text-align: center;
-    position: fixed;
     font-weight: 450;
     border-radius: 15px;
-    padding: 0.5%;
+    padding: 0.75%;
+    cursor: pointer;
 }
 
-.carta { 
+.contenedorCartas1 {
+    /* border: 2px solid red; */
+    margin-top: 10%;
+}
+
+.cartaNoSeleccionada { 
     width: 155px;
     height: 230px;
     background-color: #fafafa;
@@ -44,36 +51,21 @@
     box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
     font-size: 20px;  
     font-weight: 550;
-    color:#000000;
-    cursor: pointer;
-    
-}
-
-.contenedorCartas1 {
-    border: 1.5px solid rgb(189, 24, 24);
-    position: fixed;
-    top:15%;
-    right: 62%;
-    width: 20px;
+    display: inline-block;
+    margin-left: 30px;
+    border: 4px solid #000000;
+    border-style: dashed;
+    padding: 0.6em;
+    overflow: hidden;
 }
 
 .cartasJugador {
-    border: 1.5px solid rgb(189, 24, 24);
-    position: fixed;
-    top: 65%;
-    right: 50%;
-    z-index: 1;
-    justify-content: center;
-    float: right;
+    /* border: 2px solid red; */
+    margin-top: 10%;
 }
 
-.cartaNoSeleccionada{
-    border: 4px solid #000000;
-    border-style: dashed ;
-}
-
-.fotoCarta{
-    padding-top: 30px;
+.fotoCarta {
+    padding-top: 45px;
     margin-bottom: 30px;
 }
 
@@ -85,63 +77,4 @@
     top: 60%;
     left:10%;
     position:fixed;
-}
-
-.containerBonus{
-    width:3%;
-    height: 95px;
-    margin-top: 10%;
-    margin-right: 8%;
-    float:right;
-    clear:right;
-}
-
-.bonus{
-    width: 200px;
-    height: 200%;
-    margin-top: 95%;
-    float:right;
-    clear:right;
-    border-radius: 30px;
-    border: 1px solid #fafafa;
-    box-shadow:  rgba(0, 0, 0, 0.25) 0px 5px 10px;
-    background: #c3195d;
-    font-size: 50px;
-}
-
-.bonus:hover {
-    opacity: 0.9;
-    transition: 0.1s;
-}
-
-.datosBonus{
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color:hsl(0, 0%, 0%, 0);
-    font-size: 18px;
-    font-weight: 550;
-    padding: 9px 0;
-    color: #fafafa;
-    text-align: center;
-}
-
-tr{
-    padding: 5px; 
-}
-
-th {
-    vertical-align: top;
-    padding-left: 20px; 
-}
-  
-.mith{
-    padding-left: 100px;
-}
-
-.botonC {
-    border: 1.5px solid white;
-    border-radius: 20px;
-    background-color: #c0c7c8;
-    padding: .5em;
-    cursor: pointer;
-    transition: width 0.5s, height 0.5s, transform 0.5s;
 }

@@ -62,7 +62,8 @@ export default class Mapa extends React.Component {
       resultadoDadosAtacante: 0,
       resultadoDadosDefensor: 0,
       jugadorChat: "", 
-      mensajeChat: "" 
+      mensajeChat: "",
+      irCartas: false
     };
 
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
@@ -313,7 +314,9 @@ export default class Mapa extends React.Component {
   };
 
   handleCardButton() {
-    
+    if (this.state.habilitarCartas) {
+      this.setState({irCartas: true});
+    }
   };
 
   handleFase() {
@@ -721,6 +724,7 @@ export default class Mapa extends React.Component {
       return response.json();
     })
     .then((response) => {
+      clearInterval(this.interval);
       if (response.Terminada) {
         this.mostrarAlertaFin("Fin de la partida", 
           "La partida en la que te encontrabas ha terminado.");
@@ -745,7 +749,6 @@ export default class Mapa extends React.Component {
             this.setState({numTropasReforzar: estadoJugador.Tropas});
           } 
           this.actualizarInfoJugadores(jugador, 0, 0, estadoJugador.NumCartas);
-          
           
           if (estadoJugador.Expulsado || estadoJugador.Eliminado) {
             this.jugadorEliminado(jugador);
@@ -820,6 +823,7 @@ export default class Mapa extends React.Component {
               this.habilitarCartas();
             } // Fase de ataque
             else if (this.state.fase === 2 && accion.Jugador === this.state.nombrePropioJugador) {
+              this.deshabilitarCartas();
               if (this.state.nombrePropioJugador === accion.Jugador) {
                 this.mostrarAlertaInformativaAsincrona("Fase de ataque", 
                   "Selecciona un territorio desde el que lanzar un ataque.");
@@ -829,6 +833,7 @@ export default class Mapa extends React.Component {
               }
             } // Fase de fortificar
             else if (this.state.fase === 3 && accion.Jugador === this.state.nombrePropioJugador) {
+              this.deshabilitarCartas();
               if (this.state.nombrePropioJugador === accion.Jugador) {
                 this.mostrarAlertaInformativaAsincrona("Fase de fortificación", 
                   "Selecciona el territorio origen de la fortificaión.");
@@ -931,7 +936,7 @@ export default class Mapa extends React.Component {
 
           // IDAccionObtenerCarta----------------------------------------------------------------------------
           case 8: { 
-
+            
             break;
           }
 
@@ -1026,7 +1031,7 @@ export default class Mapa extends React.Component {
     this.obtenerNombreJugadores();
     if (this.state.obtenerInfoPartida || performance.navigation.type === 1) {
       localStorage.removeItem("volver_partida");
-      this.obtenerEstadoActualPartida();
+      this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 500);
     } else {
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
     }
@@ -1041,6 +1046,10 @@ export default class Mapa extends React.Component {
 
     if (this.state.finPartida) {
       return <Navigate to='/inicio'/>;
+    }
+
+    if (this.state.irCartas) {
+      return <Navigate to='/cartas'/>;
     }
 
     if (this.state.volviendoMapaPartida) {

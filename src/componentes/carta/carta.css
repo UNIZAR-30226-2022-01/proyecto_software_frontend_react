@@ -1,0 +1,19 @@
+.cartaSeleccionada { 
+    width: 155px;
+    height: 230px;
+    border-radius: 18px;
+    box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
+    font-size: 20px;  
+    font-weight: 550;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 30px;
+    border: 3px solid #000000;
+    padding: 0.6em;
+    overflow: hidden;
+    background-color: #fafafa;
+}
+
+.cartaSeleccionada:hover {
+    opacity: 75%;
+}
