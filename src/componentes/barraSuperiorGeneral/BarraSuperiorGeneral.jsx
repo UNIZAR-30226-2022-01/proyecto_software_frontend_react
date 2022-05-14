@@ -18,7 +18,7 @@ export default class BarraSuperiorGeneral extends React.Component {
 		};
       
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
-		this.cerrarSesion = this.cerrarSesion.bind(this);
+	this.cerrarSesion = this.cerrarSesion.bind(this);
     this.navegarPerfil = this.navegarPerfil.bind(this);
     this.obtenerPuntos = this.obtenerPuntos.bind(this);
 	}
@@ -86,11 +86,11 @@ export default class BarraSuperiorGeneral extends React.Component {
           <Link to='/amigos'><img className="imagenes" src={Friends} alt="friends"/></Link>
         	<Link to='/notificaciones'><img className="imagenes" src={Message} alt="notificacion"/></Link>
         
-        	<div className="dropdown"> 
-            <button className="dropbtn">{this.state.nombre_usuario}</button>
-            <div className="dropdown-content">
-              <Link to='/perfil' onClick={this.navegarPerfil}>Perfil</Link>
-              <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
+        	<div class="dropdown"> 
+            <button class="dropbtn">{this.state.nombre_usuario}</button>
+            <div class="dropdown-content">
+            <Link to='/perfilUsuario' onClick={this.navegarPerfil}>Perfil</Link>
+            <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
             </div>
         	</div>
         </div>

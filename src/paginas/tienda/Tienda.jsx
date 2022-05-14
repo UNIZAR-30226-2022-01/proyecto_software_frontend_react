@@ -210,7 +210,6 @@ export default class Tienda extends React.Component {
                     //console.log("Actualizando coleccion:"+this.state.coleccion)
                     this.setState({coleccion: this.state.coleccion.concat(idCosmetico)})
                     this.setState({puntos: this.state.puntos - precio})
-
                 })
                 .catch(error => {
                     swal.showValidationMessage(`${error}`)
@@ -230,7 +229,12 @@ export default class Tienda extends React.Component {
         // Creamos la lista de dados a mostrar
         // TODO, el estado cambia correctamente y la coleccion se actualiza, pero el nuevo item aparece con comprado = false
         for (var i=0; i < this.state.dadosTienda.length; i++) {
-            let comprado = this.state.coleccion.includes(this.state.dadosTienda[i].id);
+            let comprado = false;
+            for (var j=0; j < this.state.coleccion.length; j++) {
+                if (this.state.coleccion[j] == this.state.dadosTienda[i].id) {
+                    comprado = true;
+                }
+            }
             let dado = (
                 <div className="dado" key={this.state.dadosTienda[i].id}>
                     <img className="imagenDado" src={`data:image;base64,${this.state.dadosTienda[i].img}`}></img>
@@ -255,8 +259,12 @@ export default class Tienda extends React.Component {
 
         // Creamos la lista de avatares a mostrar
         for (var i=0; i < this.state.avataresTienda.length; i++) {
-            let comprado = this.state.coleccion.includes(this.state.avataresTienda[i].id);
-            console.log("i = ", i, ", añadiendo avatar ", this.state.avataresTienda[i].id, " comprado:", comprado)
+            let comprado = false;
+            for (var j=0; j < this.state.coleccion.length; j++) {
+                if (this.state.coleccion[j] == this.state.avataresTienda[i].id) {
+                    comprado = true;
+                }
+            }
             let avatar = 
                 (<div className="avatar" key={this.state.avataresTienda[i].id}>
                     <img className="imagenAvatar" src={`data:image;base64,${this.state.avataresTienda[i].img}`}></img>
