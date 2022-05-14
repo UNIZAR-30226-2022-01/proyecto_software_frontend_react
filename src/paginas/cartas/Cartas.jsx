@@ -119,7 +119,7 @@ export default class Cartas extends React.Component {
   }
 
   componentDidMount() {
-    //this.obtenerCartas();
+    this.obtenerCartas();
   }
 
   render() {

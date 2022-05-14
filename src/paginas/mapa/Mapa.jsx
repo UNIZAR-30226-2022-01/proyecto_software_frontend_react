@@ -888,7 +888,21 @@ export default class Mapa extends React.Component {
           
           // IDAccionCambioCartas----------------------------------------------------------------------------
           case 3: 
-            
+            this.actualizarInfoJugadores(accion.Jugador, 0, 0, 3, false);
+            if (accion.Jugador === this.state.nombrePropioJugador) {
+              this.setState({numTropasReforzar: this.state.numTropasReforzar + accion.NumTropasObtenidas});
+              swal.fire({
+                title: 'Cambio de cartas',
+                text: 'Has obtenido ' + accion.NumTropasObtenidas + ' tropas.',
+                icon: 'info',
+              });
+            } else {
+              swal.fire({
+                title: 'Cambio de cartas',
+                text: 'El jugador ' + accion.Jugador + " ha recibido " + accion.NumTropasObtenidas + ' tropas.',
+                icon: 'info',
+              });
+            }
             break;
           
           // IDAccionReforzar----------------------------------------------------------------------------
@@ -935,8 +949,8 @@ export default class Mapa extends React.Component {
           }
 
           // IDAccionObtenerCarta----------------------------------------------------------------------------
-          case 8: { 
-            
+          case 8: {
+            this.actualizarInfoJugadores(accion.Jugador, 0, 0, 1);
             break;
           }
 
