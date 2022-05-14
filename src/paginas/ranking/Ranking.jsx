@@ -12,6 +12,7 @@ export default class Ranking extends React.Component {
         jugadores: [],
         partidasGanadasUsuario: 0,
         partidasJugadasUsuario: 0,
+        winRateUsuario: 0,
         usuario: null,
         posicion: null,
         // Cambiar para modificar el número de jugadores del ranking mostrados
@@ -76,7 +77,7 @@ export default class Ranking extends React.Component {
           let winRate = this.calcularWinrate(response[i]["PartidasGanadas"],response[i]["PartidasTotales"]);
           jugadoresArr.push(<div className='infoJugador' key={i}>
             <h3>Puesto {i+1}: {response[i]["NombreUsuario"]}</h3>
-            <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, con un porcentaje de victorias del {winRate}%</h4>
+            <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, con un porcentaje de victorias del {+winRate.toFixed(2)}%</h4>
             <Link to='/perfil' onClick={this.verPerfil} id={response[i]["NombreUsuario"]}><button>Ver Perfil</button></Link>
             </div>);
         }
@@ -109,7 +110,7 @@ export default class Ranking extends React.Component {
       <h1>Ranking</h1>
       <h3>Eres el jugador número {this.state.posicion} del Ranking, 
         con {this.state.partidasGanadasUsuario} partidas ganadas,
-        con un porcentaje de victorias del {this.state.winRateUsuario}%.
+        con un porcentaje de victorias del {+this.state.winRateUsuario.toFixed(2)}%.
       </h3>
       <h2>Top {this.state.maxNumeroJugadores} del ranking</h2>
       {this.state.jugadores}

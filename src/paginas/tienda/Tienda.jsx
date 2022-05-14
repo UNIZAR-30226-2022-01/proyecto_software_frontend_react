@@ -210,7 +210,6 @@ export default class Tienda extends React.Component {
                     //console.log("Actualizando coleccion:"+this.state.coleccion)
                     this.setState({coleccion: this.state.coleccion.concat(idCosmetico)})
                     this.setState({puntos: this.state.puntos - precio})
-
                 })
                 .catch(error => {
                     swal.showValidationMessage(`${error}`)

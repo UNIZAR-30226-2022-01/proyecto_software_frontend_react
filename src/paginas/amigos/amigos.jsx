@@ -228,9 +228,12 @@ export default class Amigos extends React.Component {
             <h2>Lista de amigos</h2>
             {this.state.amigos}
             <h2>Buscar usuarios</h2>
-           
-            <input type="text" id="busqueda" name="busqueda" placeholder="Busca un usuario" onChange={this.actualizarBoton}></input>
-            <button id="botonBuscar" onClick={this.buscarUsuarios}>Buscar</button>
+            
+            <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+            <form onSubmit={this.buscarUsuarios} target="frameAux">
+                <input type="text" id="busqueda" name="busqueda" placeholder="Busca un usuario" onChange={this.actualizarBoton}></input>
+                <button type="submit" id="botonBuscar" onClick={this.buscarUsuarios}>Buscar</button>
+            </form>
             {this.state.usuarios}
             <BarraInferior/>
             </div>

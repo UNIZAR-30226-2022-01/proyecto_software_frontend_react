@@ -31,7 +31,8 @@ export default class App extends React.Component {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/personalizacion" element={<Personalizacion />} />
-          <Route path="/perfil" element={<Perfil/>}/>
+          <Route path="/perfil" element={<Perfil key="1"/>}/>
+          <Route path="/perfilUsuario" element={<Perfil key="2"/>}/>
           <Route path="/notificaciones" element={<Notificaciones/>}/>
           <Route path="/amigos" element={<Amigos/>}/>
         </Routes>
