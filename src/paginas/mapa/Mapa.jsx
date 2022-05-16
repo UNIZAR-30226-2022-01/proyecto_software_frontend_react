@@ -864,9 +864,10 @@ export default class Mapa extends React.Component {
               }
               return response.blob();
             })
-            .then((blob) => {
+            // eslint-disable-next-line
+            .then((blob) => { 
               let objectURL = URL.createObjectURL(blob);
-
+ 
               if (this.state.nombrePropioJugador === accion.Jugador) {
                 this.setState({numTropasReforzar: accion.TropasObtenidas});
                 this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
@@ -893,7 +894,7 @@ export default class Mapa extends React.Component {
               this.setState({numTropasReforzar: this.state.numTropasReforzar + accion.NumTropasObtenidas});
               swal.fire({
                 title: 'Cambio de cartas',
-                text: 'Has obtenido ' + accion.NumTropasObtenidas + 't',
+                text: 'Has obtenido ' + accion.NumTropasObtenidas + 'tropas.',
                 icon: 'info',
               });
             } else {

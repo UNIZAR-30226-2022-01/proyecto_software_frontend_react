@@ -183,7 +183,7 @@ export default class Perfil extends React.Component {
             <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
             <h2>Perfil de {this.state.nombre_usuario}</h2>
-            <img className="avatarPerfil" src={this.state.imagen}></img>
+            <img className="avatarPerfil" src={this.state.imagen} alt="avatar"></img>
             <h2>Biografía: <input type="text" id="bio" name="bio" value={this.state.biografia} 
                 onChange={(e) => {this.setState({biografia: e.target.value})}} disabled></input></h2>
             {modBio}

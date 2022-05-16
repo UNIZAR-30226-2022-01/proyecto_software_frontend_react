@@ -184,7 +184,7 @@ export default class IniciarSesion extends React.Component {
 					{this.state.mostrarSolicitud &&
 					<div className="solicitudToken">
 						<h4>Introduce tu nombre de usuario y te enviaremos un token para reestablecer tu contraseña</h4>
-							<iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+							<iframe title="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
 							<form onSubmit={this.solicitarToken} target="frameAux">
 								<input type="text" id="usuarioSolicitante" placeholder="Nombre de usuario" required></input>
 								<button type="submit" id="botonToken">Solicitar Token</button>

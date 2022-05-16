@@ -3,7 +3,6 @@ import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./amigos.css";
-import InfoNotificacion from "../../componentes/infoNotificacion/infoNotificacion.jsx";
 import { Link } from "react-router-dom";
 
 export default class Amigos extends React.Component {

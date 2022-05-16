@@ -39,14 +39,14 @@ export default class Personalizacion extends React.Component {
     // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
     obtenerImagen(id) {
         for (var i = 0; i < this.state.avatares.length; i++) {
-            if (id == this.state.avatares[i].id) {
+            if (id === this.state.avatares[i].id) {
                 return this.state.avatares[i].img;
             }
         }
 
-        for (var i = 0; i < this.state.dados.length; i++) {
-            if (id == this.state.dados[i].id) {
-                return this.state.dados[i].img;
+        for (var j = 0; j < this.state.dados.length; j++) {
+            if (id === this.state.dados[j].id) {
+                return this.state.dados[j].img;
             }
         }
 
@@ -159,38 +159,38 @@ export default class Personalizacion extends React.Component {
         // Creamos la lista de dados a mostrar
         for (var i=0; i < this.state.dados.length; i++) {
             dadosArr.push(<div className="dado" key={this.state.dados[i].id}>
-                <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
+                <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`} alt="dado"></img>
                 {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
-                {this.state.dadoEquipado == this.state.dados[i].id && <button disabled>Dados equipados</button>}
-                {this.state.dadoEquipado != this.state.dados[i].id && 
+                {this.state.dadoEquipado === this.state.dados[i].id && <button disabled>Dados equipados</button>}
+                {this.state.dadoEquipado !== this.state.dados[i].id && 
                     <button id={this.state.dados[i].id } 
                     onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dado</button>}
             </div>)
 
             // Si el avatar es el equipado, lo renderizamos de manera destacada
-            if (this.state.dados[i].id == this.state.dadoEquipado) {
+            if (this.state.dados[i].id === this.state.dadoEquipado) {
                 dadoEquipado = <div className="dadoEquipado">
-                    <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`}></img>
+                    <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`} alt="dado"></img>
                     {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
                     </div>
             }
         }
 
         // Creamos la lista de avatares a mostrar
-        for (var i=0; i < this.state.avatares.length; i++) {
-            avataresArr.push(<div className="avatar" key={this.state.avatares[i].id}>
-                <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>
-                {this.state.avatares[i].nombre}, {this.state.avatares[i].descripcion}
-                {this.state.avatarEquipado == this.state.avatares[i].id && <button disabled>Avatar equipado</button>}
-                {this.state.avatarEquipado != this.state.avatares[i].id && 
-                    <button id={this.state.avatares[i].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</button>}
+        for (var j=0; j < this.state.avatares.length; j++) {
+            avataresArr.push(<div className="avatar" key={this.state.avatares[j].id}>
+                <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[j].img}`} alt="avatarUsuario"></img>
+                {this.state.avatares[j].nombre}, {this.state.avatares[j].descripcion}
+                {this.state.avatarEquipado === this.state.avatares[j].id && <button disabled>Avatar equipado</button>}
+                {this.state.avatarEquipado !== this.state.avatares[j].id && 
+                    <button id={this.state.avatares[j].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</button>}
             </div>)
 
             // Si el dado es el equipado, lo renderizamos de manera destacada
-            if (this.state.avatares[i].id == this.state.avatarEquipado) {
+            if (this.state.avatares[j].id === this.state.avatarEquipado) {
                 avatarEquipado = <div className="avatarEquipado">
-                    <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[i].img}`}></img>
-                    {this.state.avatares[i].nombre}, {this.state.avatares[i].descripcion}
+                    <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[j].img}`} alt="dadoUsuario"></img>
+                    {this.state.avatares[j].nombre}, {this.state.avatares[j].descripcion}
                 </div>
             }
         }
