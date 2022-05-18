@@ -48,6 +48,7 @@
 }
 
 .botonChat {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   border: 1.5px solid white; 
   border-radius: 20px;
   background-color: #CCF4FF;
@@ -61,10 +62,8 @@
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   color:#000000;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 550;
   display: block;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
   overflow: hidden;
   max-height: 5em;
   line-height:2.3em;

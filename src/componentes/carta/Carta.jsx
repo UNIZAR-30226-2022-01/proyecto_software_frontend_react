@@ -48,15 +48,15 @@ export default class Carta extends React.Component {
 		if (this.state.comodin) {
 			return (
 				<div className="cartaSeleccionada" id={this.state.id} onClick={this.handleClick}>
-						<img className="fotoCartaMini" src={tipoCarta[0]} height="65" width="60"/> <br></br> 
-						<img className="fotoCartaMini" src={tipoCarta[1]} height="65" width="60"/> <br></br> 
-	  		<img className="fotoCartaMini" src={tipoCarta[2]} height="65" width="60"/> <br></br>
+					<img className="fotoCartaMini" src={tipoCarta[0]} height="65" width="60" alt="imagenComodin1"/> <br></br> 
+					<img className="fotoCartaMini" src={tipoCarta[1]} height="65" width="60" alt="imagenComodin2"/> <br></br> 
+	  		  <img className="fotoCartaMini" src={tipoCarta[2]} height="65" width="60" alt="imagenComodin3"/> <br></br>
 				</div>
 	  );
 		} else {
 			return (
 				<div className="cartaSeleccionada" id={this.state.id} onClick={this.handleClick}>
-					<img className="fotoCarta" src={tipoCarta[this.state.tipo]} height="110" width="70"/> <br></br>
+					<img className="fotoCarta" src={tipoCarta[this.state.tipo]} height="110" width="70" alt="imagenCartaNormal"/> <br></br>
 					{territorios[this.state.region]}
 				</div>
 			); 

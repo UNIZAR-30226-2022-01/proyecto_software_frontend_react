@@ -1090,7 +1090,7 @@ export default class Mapa extends React.Component {
       //localStorage.removeItem("volver_partida");
       //this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 700);
     } else {
-      this.interval = setInterval(() => this.comprobarAcciones(), 500);
+      //this.interval = setInterval(() => this.comprobarAcciones(), 500);
     }
   }
 
@@ -1173,9 +1173,7 @@ export default class Mapa extends React.Component {
                 <text className="textoChat"> Chat vacío</text>}
               {(this.state.jugadorChat !== "" && this.state.mensajeChat !== "") && 
                 <text className="textoChat"> {this.state.jugadorChat}: {this.state.mensajeChat}</text>}
-              
             </div>
-            
           </div>
         </div>
       </div>

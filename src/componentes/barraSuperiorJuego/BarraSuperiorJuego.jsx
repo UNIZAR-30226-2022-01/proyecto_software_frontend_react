@@ -1,7 +1,7 @@
 import React from 'react';
 import swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Container } from 'react-bootstrap';
 import WhiteFlag from "../../imagenes/white-flag.png";
 import "./barraSuperiorJuego.css";
 
