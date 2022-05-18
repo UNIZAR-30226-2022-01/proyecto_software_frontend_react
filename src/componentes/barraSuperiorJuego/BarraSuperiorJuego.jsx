@@ -1,6 +1,7 @@
 import React from 'react';
 import swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 import WhiteFlag from "../../imagenes/white-flag.png";
 import "./barraSuperiorJuego.css";
 
@@ -62,11 +63,25 @@ export default class BarraSuperiorJuego extends React.Component {
 		}
 
 		return (
-			<div className="topnav">
-        <a className="active" >World Domination</a>
+			<div>
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand>World Domination</Navbar.Brand>
+            <Navbar.Collapse className="justify-content-end">
+            <img
+              src={WhiteFlag}
+              width="40"
+              height="40"
+              className="d-inline-block align-top cursorpointer"
+              alt="Rendición"
+              onClick={this.abandonarPartida}
+            />
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
   
       	<div className="topnav-right">
-      	  <a><img className="fotoRendirse" alt="rendicion" onClick={this.abandonarPartida} src={WhiteFlag}/></a> 
+      	  
     		</div>
       </div>
 		);  

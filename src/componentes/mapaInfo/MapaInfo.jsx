@@ -6,7 +6,7 @@ export default class MpaInfo extends React.Component {
 		return (
 			<svg
       width="65%"
-      viewBox="0 -30 1020 720"
+      viewBox="0 -30 1020 720" /* ["#f94144", "#f9c74f", "#90be6d", "#0a9396", "#6a4c93", "#f9844a"], */
       >
       <g id="map" visibility="visible" fill="none" strokeWidth={2.5}>
         <g id="Seas" fill="none">
@@ -31,9 +31,8 @@ export default class MpaInfo extends React.Component {
             d="M241 211c21-8 13 5 29 10 0 2 1 4 1 6-1-1-3-1-4-2-1 5-1 5-3 6v-1h-4c2-4 3-6 0-9-2 1-3 2-4 5h-2c-1 3-1 7-2 10-1 1-3 1-5 2 1-8 3-11 7-17h5v-3c-4-1-4-1-6 0 0-1-1-2-2-3-4 1-8 1-13 2v-3h3v-3z"
           />
         </g>
-        <g id="Africa" stroke="#C68A31" fill="#CEA252" visibility="visible">
+        <g id="Africa" stroke="#D41A19" fill="#f94144" visibility="visible">
           <path
-            fill="#CEA252"
             className="countryI"
             id="Africa_Oriental"
             d="M532 514c-1-6-1-12-2-17 5-1 6-8 7-12h4c1-8 11-8 10-19-5-1-10-2-16-2 0-2-1-4-2-6 0 1-1 2-2 3-7-10-12-18-16-29-1-14 2-24 4-37v-4h4c-1-3-1-3 1-9h33c2-3 2-3 5-4 7 11 9 26 14 38 1 1 2 1 3 1 2 5 3 9 5 14h-3c9 6 21 1 30-1 0 0 0 1 1 2-4 12-9 23-16 34-15 12-22 25-33 39 0 7 0 14 1 21-6 1-11 2-16 4-2 6-2 16-2 18-2-1-3-1-5-1v-23c-2-3-5-7-7-10h-2z"
@@ -64,7 +63,7 @@ export default class MpaInfo extends React.Component {
             d="M468 473c-1-4-1-6 0-10-7-3-7-3-13-3-2-6-2-6-4-7-5 0-9 1-14 1v3c-16-1-25 7-36-8-6-2-10-16-12-22h-2v-3h-3c-2-9-2-16 1-25 0-9-1-19 2-28 5-1 8-15 10-20 13-6 13-10 17-25 7-4 9-7 14-14h1c7 5 16-1 23-4 7 0 10-1 28-2v4c-1 1-1 1-2 1 2 3 1 6 1 10h-4c0 1 0 1 3 1v3l6 3c-4 0-4 0-8 3 0 3 0 5-1 7 0 1-1 1-2 2 1 10 0 18 1 29 9 8 16 9 28 11 1 2 2 4 2 6 7 2 8 7 15 9-2 13-5 23-4 37-6 4-10 8-17 9 0 2 0 3-1 4-5 2-6 5-10 7 2 7 1 12 0 20-4 0-4 0-13-2v3h-6z"
           />
         </g>
-        <g id="Asia" stroke="#9CC35A" fill="#BDDB8C" visibility="visible">
+        <g id="Asia" stroke="#BBAA30" fill="#f9c74f" visibility="visible">
           <path
             className="countryI"
             id="Afganistan"
@@ -126,7 +125,7 @@ export default class MpaInfo extends React.Component {
             d="M797 166c-1-8-1-18-4-26 1-1 3-2 4-3v-3c-3 0-6-1-8-2v-3c-1 0-2 0-3-1 0-1-1-2-1-3 8-2 15-2 23-2 2-7 3-13 8-19 0-5-1-6-2-12 1 0 2-1 3-2h-4v-3c7 0 19-4 22 4-1 1-2 1-3 1 1 2 1 3 1 4 5 0 8 4 13 4 1-1 2-3 3-5 4 3 8-1 10 2 3 0 5-1 8-1-2-1-3-2-5-2 0-2 0-4-1-5 3 0 6 0 8-1v3c4-2 4-2 12-3v3c-3 0-3 0-3 1 15 2 30 4 44 8l-1 1c1 1 3 1 5 2v3c-1 1-2 3-3 5-7 1-12 5-19 8 0 3-1 7-1 10 2 1 5 1 8 2v8h-4c-1 2-2 4-3 7-2 0-4 1-6 2-1-1-1-2-1-3-2-1-4-1-6-2-1-2-1-4-2-5-3 0-5 1-8 2 0 1-1 2-1 3-2 0-4 1-7 1-2 11-11 13-14 24-5-3-6-3-8-9-3 0-6 0-8-1-1-1-1-2-1-2-19-1-21 1-29 1-2 2-3 5-5 7-4 1-8 2-11 2zm60-79c0-1 1-3 2-4 8 0 8 0 9 1-5 1-6 2-11 3zm0-10c-2 7-11 2-15 0v-3h5c0-1 0-2 1-3 1 1 2 1 3 1 0 1 0 2 1 3s3 1 5 2zm5 0v-4c4 0 4 0 10 4h-10z"
           />
         </g>
-        <g id="Oceania" stroke="#D65163" fill="#E78A94" visibility="visible">
+        <g id="Oceania" stroke="#257E8C" fill="#0a9396" visibility="visible">
         <path
             className="countryI"
             id="Australia_Oriental"
@@ -148,7 +147,7 @@ export default class MpaInfo extends React.Component {
             d="M838 474s1-1 2-1c3-1 3-1 6 1-3 2-7 4-11 6v-4c1-1 2-1 3-2zm-16 2v1c-2-1-4-1-6-1v2c-10-2-10-2-30-2v-3c-2-1-5-2-7-3v-6h-4c-3-8-6-11-8-18-1 0-2-1-2-1-1-4-1-4-4-10h-3c0-2-1-4-1-6 5 1 5 1 13 4 2 6 5 8 7 13 1 0 2-1 3-1 1 6 2 7 8 8v3c-1 0-2 1-3 1 1 1 1 3 2 4l1-1c2 2 0 4 4 6v3c0 1 1 1 2 1v-2c9-1 16 3 26 5v3h2zm0 0c3-6 13-3 18-3-1 0-2 1-2 1h-4v3c-4-1-8-1-12-1zm-1-11c1-11 4-16 10-24 5 0 10 0 15-2v2c-4 2-8 4-13 3 0 1 0 2-1 3h8c-1 2-1 2-6 2v12h-5v-7h-2c-1 4-1 7-2 11h-4zm-19-5c-2-4-4-5-3-9h-2c-1-5 0-7 2-12 2 0 4-1 7-2v-3c3-1 6-2 8-3 1-3 2-5 3-7h3c0-2 0-3 1-4 4 0 5 0 9 1v3c-1 0-2 0-3 1 1 0 1 1 2 2-3 3-6 8-2 13-7 5-8 10-11 17-3 2-3 2-14 3zm39-2v-2c7-1 11-2 17 2h-17zm8-13v-8c1 1 2 1 3 1 0 3 1 5 1 7h-4zm26-51c0-1 0-1 1-2 0 0 1 0 2-1 0 4 0 4-2 7-1 0-3 1-4 1 1-2 2-4 3-5zm-22 2c1-5 8-10 12-14 0 8-4 13-12 14zm23-4c-1 1-1 1-1 2h-3c0-6-3-8-4-12 4 0 8 4 12 6-2 0-3 1-4 2v2zm5-4c0-2-1-5-1-8h-8c-1-1-1-2-2-3h-2c-2-1-3-1-4-4h4c0-2 0-2-2-2-1-3-1-6-1-9 1 1 2 3 3 4-2-5-2-5-1-11h9c0 2-1 3-1 5 1 0 1 0 2 1 0 2-1 4-2 6l-1-1c0 2 0 4 1 7 2 0 4 1 6 2 2 5 3 7 3 12-1 1-2 1-3 1z"
           />
         </g>
-        <g id="Europa" stroke="#9482AD" fill="#CEBADE" visibility="visible">
+        <g id="Europa" stroke="#3AAD1D" fill="#90be6d" visibility="visible">
           <path
             className="countryI"
             id="Reino_Unido"
@@ -186,7 +185,7 @@ export default class MpaInfo extends React.Component {
             d="M428 312c-1-2-3-3-4-5h-9c-3-11-2-19-1-31 0 0 0-1-1-1 3-12 15-7 26-7 5-6 0-16-1-22-4-1-4-1-8-4 3-1 3-1 4-4h3v2c6-2 6-2 7-3 0 0-1 0-2-1v-2h8c1-1 1-1 2-5 3 0 3 0 3-2 3 4 7 6 9 11 3 0 4 1 6 4-6 5-9 22-1 26-1 1-1 2-1 3-4 0-8 0-12 1-6 11-7 12-7 25-1 3-4 5-6 8-6 1-10 2-14 7h-1z"
           />
         </g>
-        <g id="America_del_Norte" stroke="#C99B32" fill="#EFCB73" visibility="visible">
+        <g id="America_del_Norte" stroke="#BB6312" fill="#f9844a" visibility="visible">
           <path
             className="countryI"
             id="Alaska"
@@ -239,7 +238,7 @@ export default class MpaInfo extends React.Component {
             d="M319 229v-13c-4 0-4 0-9 2-1 1-1 3-1 5-10 2-10 2-17 2-4-4-6-4-11-4v2h-4c0-8 1-17 1-25h3c2-5 2-11 2-17 5-1 7-3 11-6 0-7-1-9-3-15 8-2 7-8 8-16 5 3 10 2 15 2 0 1 1 2 1 3h4c3 6 3 6 4 9h-3c1 3 3 5 4 7 2 1 3 1 5 1v-2l6-3c0-1 0-3 1-5 1-1 3-2 5-2 3 7 4 17 6 24 2 2 5 4 8 6-4 2-4 2-4 4h9c0 3 1 6 1 9-9 2-9 2-15 4-7 7-18 1-22 6 2 1 5 2 7 3 0 1 0 2 1 4-2 0-3 0-4 1 2 1 2 1 2 7h10v3c-9 3-13 9-21 10v-3c2-1 3-2 5-3-1-1-1-1-5 0zm38-10c0-1-1-2-2-4-1 1-2 2-4 3v-3c-2 0-5 0-7-1 0-2 1-3 2-5h3c1-6 9-10 15-11-1 2-1 4-1 5h-4c0 1 0 2 1 3 1-1 2-1 3-1 0 1 1 3 2 4-1 0-2 1-2 1v3c1 0 2 1 3 1 0 1 0 2-1 3-2 1-5 1-8 2z"
           />
         </g>
-        <g id="America_del_Sur" stroke="#DE7952" fill="#E79273" visibility="visible">
+        <g id="America_del_Sur" stroke="#522783" fill="#6a4c93" visibility="visible">
           <path
             className="countryI"
             id="Argentina"

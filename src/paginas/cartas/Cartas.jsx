@@ -2,6 +2,7 @@ import React from 'react';
 import Carta from "../../componentes/carta/Carta";
 import { Navigate } from 'react-router-dom';
 import swal from 'sweetalert2';
+import { Button, Navbar, Container } from 'react-bootstrap';
 import "./cartas.css";
 
 export default class Cartas extends React.Component {
@@ -98,9 +99,7 @@ export default class Cartas extends React.Component {
         this.setState({carta1: null});
         this.setState({carta2: null});
         this.setState({carta3: null});
-        document.getElementById(this.state.cartas.indexOf(this.state.carta1)).style.backgroundColor = '#fafafa';
-        document.getElementById(this.state.cartas.indexOf(this.state.carta2)).style.backgroundColor = '#fafafa';
-        document.getElementById(this.state.cartas.indexOf(this.state.carta3)).style.backgroundColor = '#fafafa';
+       
         this.obtenerCartas();
       })
       .catch ((e) => {
@@ -123,6 +122,8 @@ export default class Cartas extends React.Component {
   }
 
   render() {
+    document.body.style.backgroundColor = "rgb(50,173,230)";
+
     if (this.state.volverMapa) {
       localStorage.setItem('volver_partida', "true");
 			return <Navigate to='/mapa'/>;
@@ -140,9 +141,13 @@ export default class Cartas extends React.Component {
 
     return (
     <div className="cen">
-        <div className="barraC topnavC">
-          <a className="text-white">Tarjetas</a>   
-        </div>
+          <Navbar bg="dark" variant="dark">
+            <Container>
+              <Navbar.Collapse className="justify-content-center">
+                <Navbar.Brand>Cartas</Navbar.Brand>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
             
         <div className="contenedorCartas1">
           {this.state.carta1 !== null &&
@@ -175,8 +180,8 @@ export default class Cartas extends React.Component {
         </div>
 
         <div className="contenedorBoton">
-          <button onClick={this.cerrarCartas}>Volver</button> &nbsp; &nbsp;
-          <button onClick={this.cambiarCartas}>Intercambiar cartas</button>
+          <Button variant="dark" size="lg"  onClick={this.cerrarCartas}>Volver</Button> &nbsp; &nbsp;
+          <Button variant="success" size="lg" onClick={this.cambiarCartas}>Intercambiar cartas</Button>
         </div>
 
         <div className="contenedorCartas1">

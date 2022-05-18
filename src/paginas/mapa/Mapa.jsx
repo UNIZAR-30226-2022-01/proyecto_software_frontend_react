@@ -39,9 +39,9 @@ export default class Mapa extends React.Component {
       numJugadores: 0,
       enableButton: false,
       enableMapInfo: false,
-      coloresJugadores: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
-      coloresCirculos: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
-      coloresInfo: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
+      coloresJugadores: ["rgb(249, 65, 68)", "rgb(249, 199, 79)", "rgb(144, 190, 109)", "rgb(10, 147, 150)", "rgb(140, 110, 181)", "rgb(249, 132, 74)"],
+      coloresCirculos: ["#fc7476", "#fad57d", "#b7db9c", "#22afb3", "#8c6eb5", "#fa9664"],
+      coloresInfo: ["rgb(249, 65, 68)", "rgb(249, 199, 79)", "rgb(144, 190, 109)", "rgb(10, 147, 150)", "rgb(140, 110, 181)", "rgb(249, 132, 74)"],
       accionesIniciales: [],
       indexAccionesIniciales: 0,
       territorioSeleccionado: "",
@@ -452,13 +452,9 @@ export default class Mapa extends React.Component {
               icon: 'error',
             });
             this.setState({resultadoAlerta: null});
-            clearInterval(this.interval);
-            this.interval = setInterval(() => this.comprobarAcciones(), 500);
           })
         } else if (this.state.resultadoAlerta === 0) {
           this.setState({resultadoAlerta: null});
-          clearInterval(this.interval);
-          this.interval = setInterval(() => this.comprobarAcciones(), 500);
         }
       }, 500);
     } else {
@@ -712,6 +708,46 @@ export default class Mapa extends React.Component {
     }
   }
 
+  resolverOcupacion(origen, destino) {
+    clearInterval(this.interval);
+    var numTropasAtacante = parseInt(document.getElementById("t" + territorios[origen]).textContent);
+    this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", 1, numTropasAtacante - 1);
+    this.interval = setInterval(() => {
+      if (this.state.resultadoAlerta > 0) {
+        fetch(`http://localhost:8090/api/ocupar/${destino}/${this.state.resultadoAlerta}`, {
+          method: 'post',
+          credentials: 'include'
+        })
+        .then((response) => {
+          if (!response.ok) {
+            return response.text().then(text => {throw new Error(text)});
+          }
+        })
+        .then(() => {
+          this.actualizarTerritorio(destino, this.state.resultadoAlerta, this.state.nombrePropioJugador);
+          this.sumarRestarValorTerritorio(origen, this.state.resultadoAlerta, false);
+          this.actualizarInfoJugadores(this.state.nombrePropioJugador, 0, 1, 0);
+
+          this.setState({resultadoAlerta: null});
+          clearInterval(this.interval);
+          this.interval = setInterval(() => this.comprobarAcciones(), 500);
+        })
+        .catch ((e) => {
+          swal.fire({
+            title: 'Se ha producido un error al ocupar el territorio',
+            text: e,
+            icon: 'error',
+          });
+          this.setState({resultadoAlerta: null});
+          this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", 1, numTropasAtacante - 1);
+        })
+      } else if (this.state.resultadoAlerta === 0) {
+        this.setState({resultadoAlerta: null});
+        this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", 1, numTropasAtacante - 1);
+      }
+    }, 500);
+  }
+
   obtenerEstadoActualPartida() {
     fetch('http://localhost:8090/api/resumirPartida', {
       method: 'get',
@@ -760,7 +796,13 @@ export default class Mapa extends React.Component {
           this.actualizarInfoJugadores(response.Mapa[j].Ocupante, response.Mapa[j].NumTropas, 1);
           this.actualizarTerritorio(j, response.Mapa[j].NumTropas, response.Mapa[j].Ocupante);
         }
-        this.interval = setInterval(() => this.comprobarAcciones(), 500);
+
+        // Ocupación pendiente
+        if (response.OcupacionPendiente && (response.TurnoJugador === this.state.nombrePropioJugador)) {
+          this.resolverOcupacion(response.TerritorioOcupacionOrigen, response.TerritorioOcupacionDestino);
+        } else {
+          this.interval = setInterval(() => this.comprobarAcciones(), 500);
+        }
       }
     })
     .catch ((e) => {
@@ -1045,8 +1087,8 @@ export default class Mapa extends React.Component {
   componentDidMount() {
     this.obtenerNombreJugadores();
     if (this.state.obtenerInfoPartida || performance.navigation.type === 1) {
-      localStorage.removeItem("volver_partida");
-      this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 500);
+      //localStorage.removeItem("volver_partida");
+      //this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 700);
     } else {
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
     }
@@ -1057,7 +1099,7 @@ export default class Mapa extends React.Component {
   }
 
   render() {
-    document.body.style.backgroundColor = "#45AFCB";
+    document.body.style.backgroundColor = "rgb(50,173,230)";
 
     if (this.state.finPartida) {
       return <Navigate to='/inicio'/>;

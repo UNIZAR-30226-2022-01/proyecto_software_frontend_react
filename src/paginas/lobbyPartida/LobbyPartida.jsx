@@ -14,7 +14,7 @@ export default class LobbyPartida extends React.Component {
       maxJugadores: 3,
 			enCurso: false,
       irBuscarPartida: false,
-      colores: ['red', 'purple','green', 'blue', 'orange', 'yellow'],
+      colores: ["#f94144", "#f9c74f", "#90be6d", "#0a9396", "#6a4c93", "#f9844a"]
 		};
 
     this.handleLeaveButton = this.handleLeaveButton.bind(this);
