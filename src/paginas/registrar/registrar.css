@@ -3,7 +3,40 @@
 }
 
 .errorRegistrar {
-  color:#db2269;
-  font-size: 18px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color:#dc3545;
+  font-size: 19px;
   display: relative;
+}
+
+.boxRegistrar {
+  margin-top: 2px;
+  width: 50%;
+  display: inline-block;
+}
+
+.contenedorRegistrar {
+  border-radius: 20px;
+  background-color: rgb(229, 229, 234);
+  margin-top: 3.5%;
+  width: 45%;
+  display: inline-block;
+  padding: 35px 0;
+  margin-bottom: 3.5%;
+}
+
+.textoRegistar {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: "rgb(28,28,30)";
+  font-size: 24px;
+  font-weight: 600;
+  padding: 9px 0;
+  margin-top: 15px;
+}
+
+.textoPrincipalRegistrar {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  padding: 10px 0;
 }

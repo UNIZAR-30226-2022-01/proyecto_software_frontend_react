@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import swal from 'sweetalert2';
+import { Button, Form, Navbar, Container } from 'react-bootstrap';
 import "./registrar.css";
 
 const emailValidoRegex = RegExp(
@@ -58,7 +59,7 @@ export default class Registrar extends React.Component {
 				} else if (errLogitud) {
 					err = "El usuario debe contener mínimo 5 caracteres";
 				} else if (errorChars) {
-					err = "El usuario debe contener valores alfanuméricos, '-' o '_'";
+					err = "El usuario puede contener valores alfanuméricos, '-' o '_'";
 				}
 
 				this.setState({errores: {...this.state.errores, nombreUsuario: err}});
@@ -128,71 +129,88 @@ export default class Registrar extends React.Component {
 	};
 
 	render() {
-		document.body.style.backgroundColor = "#FFFFFF";
+		document.body.style.backgroundColor = "rgb(28,28,30)";
+
 		if (this.state.irIniciarSesion) {
 			return <Navigate to='/iniciarSesion'/>;
 		}
 
 		return (
 			<div className="cen">
-				<h1>Crear cuenta en World Domination</h1>
-				<form onSubmit={this.handleSubmit}>
-					
-					<h2>Nombre de usuario</h2>
-					<input
-						name="nombreUsuario"
-						type="text"
-						placeholder="Introduzca su nombre de usuario..."
-						value={this.state.nombreUsuario}
-						onChange={this.handleInputChange}
-						required/> 
-					<br></br>
-					{(this.state.nombreUsuario.length > 0) && 
-						<span className='errorRegistrar'>{this.state.errores.nombreUsuario}</span>}
-	
-					<h2>Correo electrónico</h2>
-					<input
-						name="email"
-						type="text"
-						placeholder="Introduzca su correo electrónico..."
-						value={this.state.email}
-						onChange={this.handleInputChange}
-						required
-					/> 
-					<br></br>
-					{(this.state.email.length > 0) && 
-						<span className='errorRegistrar'>{this.state.errores.email}</span>}
-	
-					<h2>Contraseña</h2>
-					<input
-						name="contrasegna"
-						type="password"
-						placeholder="Introduzca su contraseña..."
-						value={this.state.contrasegna}
-						onChange={this.handleInputChange}
-						required
-					/> 
-					<br></br>
-					{(this.state.contrasegna.length > 0) && 
-						<span className='errorRegistrar'>{this.state.errores.contrasegna}</span>}
-	
-					<h2>Repetir contraseña</h2>
-					<input
-						name="reContrasegna"
-						type="password"
-						placeholder="Repita su contraseña..."
-						value={this.state.reContrasegna}
-						onChange={this.handleInputChange}
-						required
-					/> 
-					<br></br>
-					{(this.state.reContrasegna.length > 0) && 
-						<span className='errorRegistrar'>{this.state.errores.reContrasegna}</span>}
-	
-					<br></br><br></br>
-					<button type="submit">Registrarse</button>
-					
-				</form>
+				<Navbar bg="primary" variant="dark">
+          <Container>
+            <Navbar.Collapse className="justify-content-center">
+              <Navbar.Brand className="textoPrincipalRegistrar">Crear cuenta en World Domination</Navbar.Brand>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+				
+				<div className="contenedorRegistrar">
+					<form onSubmit={this.handleSubmit}>
+				
+						<h2 className="textoRegistar">Nombre de usuario</h2>
+						<Form.Control
+							name="nombreUsuario"
+							type="text"
+							placeholder="Introduzca su nombre de usuario..."
+							value={this.state.nombreUsuario}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxRegistrar"/> 
+						<br/>
+						{(this.state.nombreUsuario.length > 0) && 
+							<span className='errorRegistrar'>{this.state.errores.nombreUsuario}</span>}
+		
+						<h2 className="textoRegistar">Correo electrónico</h2>
+						<Form.Control
+							name="email"
+							type="text"
+							placeholder="Introduzca su correo electrónico..."
+							value={this.state.email}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxRegistrar"
+						/> 
+						<br/>
+						{(this.state.email.length > 0) && 
+							<span className='errorRegistrar'>{this.state.errores.email}</span>}
+		
+						<h2 className="textoRegistar">Contraseña</h2>
+						<Form.Control
+							name="contrasegna"
+							type="password"
+							placeholder="Introduzca su contraseña..."
+							value={this.state.contrasegna}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxRegistrar"
+						/> 
+						<br/>
+						{(this.state.contrasegna.length > 0) && 
+							<span className='errorRegistrar'>{this.state.errores.contrasegna}</span>}
+		
+						<h2 className="textoRegistar">Repetir contraseña</h2>
+						<Form.Control
+							name="reContrasegna"
+							type="password"
+							placeholder="Repita su contraseña..."
+							value={this.state.reContrasegna}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxRegistrar"
+						/> 
+						<br/>
+						{(this.state.reContrasegna.length > 0) && 
+							<span className='errorRegistrar'>{this.state.errores.reContrasegna}</span>}
+		
+						<br/><br/>
+
+						<Button variant="primary" type="submit" size="lg">
+							Crear cuenta
+						</Button><br/><br/>
+						
+					</form>
+				</div>
 			</div>
 		);  
 	}

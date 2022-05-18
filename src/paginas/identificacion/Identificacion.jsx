@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import videoID from "../../imagenes/videoInicio2.mp4";
 import "./identificacion.css";
 
 export default class Identificacion extends React.Component {
@@ -7,15 +8,28 @@ export default class Identificacion extends React.Component {
     document.body.style.backgroundColor = "#FFFFFF";
     return (
     <div className="cen">
-      <h1>World domination</h1>
 
-      <button>
-        <Link to="/iniciarSesion">Iniciar Sesión</Link>
-      </button>
+    <div className="containerVideoInicio">
+      <video className="videoInicioInicio" loop autoPlay muted id="myVideo">
+        <source src={videoID} type="video/mp4"/>
+      </video>
+    </div>
 
-      <button>
-        <Link to="/registrarUsuario">Registrar Usuario</Link>
-      </button>
+      <div className="contenedorTituloInicio">
+        <h1 className="textoTituloInicio">World Domination</h1>
+      </div>
+
+      <div className="contenedorBotonInicio">
+        <div className="d-grid gap-2">
+            <Link className="btn btn-primary btn-lg textoBotonInicio" to="/iniciarSesion">Iniciar sesión</Link>
+        </div>
+      </div> <br/>
+
+      <div className="contenedorBotonInicio">
+        <div className="d-grid gap-2">
+            <Link className="btn btn-primary btn-lg textoBotonInicio" to="/registrarUsuario">Crear cuenta</Link>
+        </div>
+      </div>
 
     </div>
     );  

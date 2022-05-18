@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import swal from 'sweetalert2';
+import { Button, Form, Navbar, Container } from 'react-bootstrap';
 import "./iniciarSesion.css";
 
 export default class IniciarSesion extends React.Component {
@@ -71,13 +72,28 @@ export default class IniciarSesion extends React.Component {
 	};
 
 	mostrarSolicitudToken() {
-		this.setState({mostrarSolicitud: true})
+		swal.fire({
+			title: 'Introduce tu nombre de usuario',
+			text: 'Te enviaremos un token para reestablecer tu contraseña.',
+			input: 'text',
+			inputAttributes: {
+				autocapitalize: 'off',
+			},
+			confirmButtonColor: '#007bff',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: 'Aceptar',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+			showLoaderOnConfirm: true,
+			preConfirm: (usuario) => {
+				this.solicitarToken(usuario);
+			},
+			allowOutsideClick: () => !swal.isLoading()
+		})
 	}
 
-	solicitarToken() {
-		let usuario = document.getElementById("usuarioSolicitante").value;
-		console.log("Solicitando token para el cambio de la contraseña del usuario: "+usuario)
-		 
+	solicitarToken(usuario) {		 
 		fetch('http://localhost:8090/obtenerTokenResetPassword', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -94,7 +110,7 @@ export default class IniciarSesion extends React.Component {
 			swal.fire({
 				title: 'Token enviado con éxito, comprueba tu bandeja de entrada',
 				icon: 'success',
-				timer: 2000,
+				timer: 4000,
 				timerProgressBar: true,
 			});
 			this.setState({mostrarFormularioToken: true})
@@ -111,7 +127,6 @@ export default class IniciarSesion extends React.Component {
 	cambiarPassword() {
 		let password = document.getElementById("password").value;
 		let token = document.getElementById("token").value;
-		console.log("Solicitando cambio de contraseña")
 		 
 		fetch('http://localhost:8090/resetearPassword', {
 			method: 'post',
@@ -130,13 +145,15 @@ export default class IniciarSesion extends React.Component {
 			swal.fire({
 				title: 'Contraseña cambiada con éxito, intenta iniciar sesión',
 				icon: 'success',
-				timer: 2000,
+				timer: 4000,
 				timerProgressBar: true,
 			});
+			this.setState({mostrarFormularioToken: false})
 		})
 		.catch((e) => {
 			swal.fire({
 				title: 'Se ha producido un error al cambiar la contraseña, inténtalo de nuevo',
+				timer: 4000,
 				text: e,
 				icon: 'error',
 			});
@@ -144,65 +161,74 @@ export default class IniciarSesion extends React.Component {
 	}
 
 	render() {
-		document.body.style.backgroundColor = "#FFFFFF";
+		document.body.style.backgroundColor = "rgb(28,28,30)";
 		if (this.state.irInicio) {
 			return <Navigate to='/inicio'/>;
 		}
 
 		return (
 			<div className="cen">
-				<h1>Iniciar sesión en World Domination</h1>
-				<form onSubmit={this.handleSubmit}>
-					
-					<h2>Nombre de usuario</h2>
-					<input
-						name="nombreUsuario"
-						type="text"
-						placeholder="Introduzca su nombre de usuario..."
-						id="userLogin"
-						value={this.state.nombreUsuario}
-						onChange={this.handleInputChange}
-						required
-					/> 
-	
-					<h2>Contraseña</h2>
-					<input
-						name="contrasegna"
-						type="password"
-						placeholder="Introduzca su contraseña..."
-						value={this.state.contrasegna}
-						onChange={this.handleInputChange}
-						required
-					/> 
-	
-					<br></br><br></br>
-					<button type="submit">Iniciar sesión</button>
-					<br></br><br></br>
-				</form>
-				<button onClick={this.mostrarSolicitudToken}>¿Has olvidado tu contraseña?</button>
-					<br></br>
-					{this.state.mostrarSolicitud &&
-					<div className="solicitudToken">
-						<h4>Introduce tu nombre de usuario y te enviaremos un token para reestablecer tu contraseña</h4>
-							<iframe title="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
-							<form onSubmit={this.solicitarToken} target="frameAux">
-								<input type="text" id="usuarioSolicitante" placeholder="Nombre de usuario" required></input>
-								<button type="submit" id="botonToken">Solicitar Token</button>
-							</form>
-					</div>}
+				<Navbar bg="primary" variant="dark">
+          <Container>
+            <Navbar.Collapse className="justify-content-center">
+              <Navbar.Brand className="textoPrincipalIniciarSesion">Iniciar sesión en World Domination</Navbar.Brand>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
 
-					<br></br><br></br>
+				<div className="contenedorIniciarSesion">
+					<form onSubmit={this.handleSubmit}>
+						
+						<h2 className="textoIniciarSesion">Nombre de usuario</h2>
+						<Form.Control
+							name="nombreUsuario"
+							type="text"
+							placeholder="Introduzca su nombre de usuario..."
+							id="userLogin"
+							value={this.state.nombreUsuario}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxIniciarSesion"/> 
+						<br/> 
+		
+						<h2 className="textoIniciarSesion">Contraseña</h2>
+						<Form.Control
+							name="contrasegna"
+							type="password"
+							placeholder="Introduzca su contraseña..."
+							value={this.state.contrasegna}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxIniciarSesion"/> 
+						<br/> 
+		
+						<br/><br/>
+						<Button variant="primary" type="submit" size="lg">
+							Iniciar sesión
+						</Button>
+						<br/><br/>
+					</form>
+				
+					<Button variant="dark" type="submit"onClick={this.mostrarSolicitudToken}>
+						¿Has olvidado tu contraseña?
+					</Button> <br/><br/>
+					
 					{this.state.mostrarFormularioToken && 
-					<div className="formularioToken">
-						<form onSubmit={this.cambiarPassword} target="frameAux">
-							<h4>Introduce el token recibido y tu nueva contraseña</h4>
-							<input type="text" id="token" placeholder="Token" required></input>
-							<br></br><br></br>
-							<input type="password" id="password" placeholder="Nueva contraseña" required></input>
-							<br></br><br></br>
-							<button type="submit">Cambiar Contraseña</button>
+					<div className="contenedorIniciarSesion">
+						<form>
+							<h2 className="textoIniciarSesion">Token</h2>
+							<Form.Control type="text" id="token" placeholder="Introduzca el token..." required/>
+
+							<h2 className="textoIniciarSesion">Nueva contraseña</h2>
+							<Form.Control type="password" id="password" placeholder="Introduzca la nueva contraseña..." required/>
+							<br/><br/>
+
+							<Button variant="primary" size="lg" onClick={this.cambiarPassword}>
+								Cambiar contraseña
+							</Button>
 						</form>
 					</div>}
+				</div>
 			</div>
 		);  
 	}

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Coins from "../../imagenes/coins.png";
 import Message from "../../imagenes/message.png";
 import Friends from "../../imagenes/friends.png";
+import { Nav, Navbar, Container } from 'react-bootstrap';
 import "./barraSuperior.css";
 
 export default class BarraSuperiorGeneral extends React.Component {
@@ -76,24 +77,16 @@ export default class BarraSuperiorGeneral extends React.Component {
     }
 
 		return (
-      <div className="topnav">
-        <a className="active" href="/inicio">World Domination</a>
-				
-        <div className="topnav-right">
-          <div className="datosPuntuacion">
-            <img className="puntuacion" src={Coins} alt="puntos"/> {this.state.puntos}
-          </div>
-          <Link to='/amigos'><img className="imagenes" src={Friends} alt="friends"/></Link>
-        	<Link to='/notificaciones'><img className="imagenes" src={Message} alt="notificacion"/></Link>
-        
-        	<div class="dropdown"> 
-            <button class="dropbtn">{this.state.nombre_usuario}</button>
-            <div class="dropdown-content">
-            <Link to='/perfilUsuario' onClick={this.navegarPerfil}>Perfil</Link>
-            <a width ={this.state.ancho} onClick={this.cerrarSesion}>Log out</a>
-            </div>
-        	</div>
-        </div>
+      <div>
+         <Navbar bg="primary" variant="dark">
+          <Container>
+          <Navbar.Brand href="/inicio">World Domination</Navbar.Brand>
+          <Nav className="justify-content-end">
+            <Nav.Link href="https://github.com/fran1017">Fran Crespo</Nav.Link>
+            <Nav.Link href="https://github.com/Guilleuz">Guillermo Enguita</Nav.Link>
+          </Nav>
+          </Container>
+        </Navbar>
       </div>
 		);
   }

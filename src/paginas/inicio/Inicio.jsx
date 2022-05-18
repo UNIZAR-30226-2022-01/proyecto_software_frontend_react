@@ -44,7 +44,7 @@ export default class Inicio extends React.Component {
   }
 
   render() {
-    document.body.style.backgroundColor = "#FFFFFF";
+    document.body.style.backgroundColor = "rgb(28,28,30)";
 
     if (this.state.jugadorEnPartida) {
       localStorage.setItem('volver_partida', "true");
