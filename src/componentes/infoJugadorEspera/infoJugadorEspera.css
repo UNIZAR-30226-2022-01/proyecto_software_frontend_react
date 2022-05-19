@@ -3,10 +3,8 @@
     height: 70px;
     margin: 0 auto;
     margin-top: 0.75%;
-    border-radius: 15px;
-    border: 1px solid #fafafa;
+    border-radius: 25px;
     box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
-    background: #c3195d;
     font-size: 50px;   
     transition: width 0.5s, height 0.5s, transform 0.5s;
 } 

@@ -26,10 +26,11 @@
 }
 
 .informacionBarraSuperior {
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
 .tituloBarraSuperior {
   font-size: 27px;
   font-weight: 600;
+  cursor: pointer;
 }

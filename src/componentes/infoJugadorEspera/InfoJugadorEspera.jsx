@@ -1,5 +1,6 @@
 import React from 'react';
 import "./infoJugadorEspera.css";
+import { Button } from 'react-bootstrap';
 
 export default class InfoJugadorEspera extends React.Component {
 	constructor(props) {
@@ -12,7 +13,6 @@ export default class InfoJugadorEspera extends React.Component {
 	}
 
 	static getDerivedStateFromProps(newProps) {
-		//document.getElementById(this.state.id).style.background = this.state.color;
 		return {
 			id: newProps.id,
 			usuario: newProps.usuario,
@@ -28,7 +28,7 @@ export default class InfoJugadorEspera extends React.Component {
 		if (this.state.usuario === undefined) {
 			return (
 				<div id={this.state.id} className="participante">
-					<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+					<div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 				</div>
 			);  	
 		}

@@ -7,7 +7,6 @@ import Amigos from "../../imagenes/Amigos.png";
 import Perfil from "../../imagenes/Perfil.png";
 import CerrarSesion from "../../imagenes/CerrarSesion.png";
 import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
-import "../../../node_modules/bootstrap/dist/js/bootstrap.bundle";
 import "./barraSuperior.css";
 
 export default class BarraSuperiorGeneral extends React.Component {
@@ -19,21 +18,22 @@ export default class BarraSuperiorGeneral extends React.Component {
       numNotificaciones: null,
       numSolicitudes: null,
 			irIdentificacion: false,
+      irInicio: false,
+      irNotificacion: false,
+      irAmigos: false,
+      irPerfil: false,
 		};
       
     this.getNombreUsuario = this.getNombreUsuario.bind(this);
 	  this.cerrarSesion = this.cerrarSesion.bind(this);
-    this.navegarPerfil = this.navegarPerfil.bind(this);
     this.obtenerPuntos = this.obtenerPuntos.bind(this);
     this.obtenerNumNotificaciones = this.obtenerNumNotificaciones.bind(this);
     this.obtenerNumSolicitudes = this.obtenerNumSolicitudes.bind(this);
 	}
  
 	componentDidMount() {
-		this.setState({ nombre_usuario: this.getNombreUsuario(document.cookie) });
-    this.setState({ ancho: this.state.nombre_usuario.length > 100 ? this.state.nombre_usuario.length: 100 });
     this.obtenerPuntos();
-    this.obtenerNumNotificaciones();
+    //this.obtenerNumNotificaciones();
     this.obtenerNumSolicitudes()
 	}
 
@@ -48,11 +48,6 @@ export default class BarraSuperiorGeneral extends React.Component {
   cerrarSesion() {
     document.cookie = "cookie_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 		this.setState({ irIdentificacion: true });
-  }
-
-  navegarPerfil() {
-    console.log("Cambio local stg")
-    localStorage.setItem('nombre_usuario', this.state.nombre_usuario)
   }
 
   obtenerPuntos() {
@@ -129,7 +124,19 @@ export default class BarraSuperiorGeneral extends React.Component {
   }
 
 	render() {
-    if (this.state.irIdentificacion) {
+    if (this.state.irInicio) {
+      this.setState({irInicio: false});
+      return <Navigate to='/inicio'/>;
+    } else if (this.state.irNotificacion) {
+      this.setState({irNotificacion: false});
+      return <Navigate to='/notificaciones'/>;
+    } else if (this.state.irAmigos) {
+      this.setState({irAmigos: false});
+      return <Navigate to='/amigos'/>;
+    } else if (this.state.irPerfil) {
+      this.setState({irPerfil: false});
+      return <Navigate to='/perfilUsuario'/>;
+    } else if (this.state.irIdentificacion) {
       return <Navigate to='/'/>;
     }
 
@@ -137,7 +144,7 @@ export default class BarraSuperiorGeneral extends React.Component {
       <div>
          <Navbar bg="primary" variant="dark">
           <Container>
-            <Navbar.Brand className="tituloBarraSuperior" href="/inicio">World Domination</Navbar.Brand>
+            <Navbar.Brand className="tituloBarraSuperior" onClick={() => this.setState({irInicio: true})}>World Domination</Navbar.Brand>
             <Nav className="justify-content-end">
               <Navbar.Brand className="informacionBarraSuperior">{this.state.puntos}</Navbar.Brand>
               <Navbar.Brand>
@@ -150,33 +157,36 @@ export default class BarraSuperiorGeneral extends React.Component {
               />
               </Navbar.Brand>
               &nbsp;&nbsp;
-              <Navbar.Brand href="/notificaciones">
+              <Navbar.Brand>
               <img
                 src={Notificaciones}
                 width="40"
                 height="41"
                 className="imagenBarraSuperior"
                 alt="Notificaciones"
+                onClick={() => this.setState({irNotificacion: true})}
               />
               <span className="badge badge-danger badge-counter">{this.state.numNotificaciones}</span>
               </Navbar.Brand>
-              <Navbar.Brand href="/amigos">
+              <Navbar.Brand>
               <img
                 src={Amigos}
                 width="40"
                 height="40"
                 className="imagenBarraSuperior"
                 alt="Amigos"
+                onClick={() => this.setState({irAmigos: true})}
               />
               <span className="badge badge-danger badge-counter">{this.state.numSolicitudes}</span>
               </Navbar.Brand >
-              <Navbar.Brand href="/perfilUsuario" onClick={this.navegarPerfil}>
+              <Navbar.Brand>
               <img
                 src={Perfil}
                 width="40"
                 height="44"
                 className="imagenBarraSuperior"
                 alt="Perfil"
+                onClick={() => this.setState({irPerfil: true})}
               />
               </Navbar.Brand>
               &nbsp;

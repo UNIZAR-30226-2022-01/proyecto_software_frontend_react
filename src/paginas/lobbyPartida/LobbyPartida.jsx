@@ -4,6 +4,7 @@ import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import InfoJugadorEspera from "../../componentes/infoJugadorEspera/InfoJugadorEspera";
+import { Button } from 'react-bootstrap';
 import "./lobbyPartida.css";
 
 export default class LobbyPartida extends React.Component {
@@ -88,7 +89,7 @@ export default class LobbyPartida extends React.Component {
   }
 
   render() {
-    document.body.style.backgroundColor = "#FFFFFF";
+    document.body.style.backgroundColor = "rgb(28,28,30)";
     
     var infoLobby = [];
     for (var i = 0; i < this.state.maxJugadores; i++) {
@@ -111,16 +112,15 @@ export default class LobbyPartida extends React.Component {
         
         <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
-        <h1>Dominación Mundial</h1>
-        <h2>¡Domina y defiende todos los territorios del mapa!</h2>
+        <div className="contenedorTituloLobby">
+          <h1 className="textoTituloLobby">¡Domina y defiende todos los territorios del mapa!</h1>
+        </div>
 
         <div className="contenedorJugadoresEspera">
           {infoLobby}
         </div>
 
-        <button className="botonAtrasEspera" onClick={this.handleLeaveButton}>
-          Abandonar Lobby
-        </button>
+        <Button variant="secondary" onClick={this.handleLeaveButton}>Abandonar Lobby</Button>
 
         <BarraInferior></BarraInferior>
       </div>

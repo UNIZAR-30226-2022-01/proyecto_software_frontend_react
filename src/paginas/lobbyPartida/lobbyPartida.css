@@ -1,29 +1,8 @@
 .contenedorJugadoresEspera {
     width: 100%;
     height: 50%;
-    margin-top: 5%;
-    margin-right: 4%;
-    margin: auto;
-    padding-top: 0.1%;
-    padding-bottom: 3%;
+    padding-bottom: 2.5%;
 }
-
-.botonAtrasEspera {
-    border: 1.5px solid white; 
-    border-radius: 10px;
-    background-color: rgb(110, 110, 110);
-    width: 20%;
-    height: 50%;
-    vertical-align: middle;
-    padding: 15px;
-    cursor: pointer;
-    transition: width 0.5s, height 0.5s, transform 0.5s;
-    margin: auto;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    color:#fafafa;
-    font-size: 16px;
-    font-weight: 550;
-  }
   
 .botonAtrasEspera:hover {
     opacity: 0.9;
@@ -31,10 +10,16 @@
     transform: scale(1.01);
 }
 
-h1 {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+.contenedorTituloLobby {
+  margin-top: 3%;
+  margin-bottom: 2.5%;
 }
 
-h2 {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+.textoTituloLobby {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color:#ffffff;
+  font-size: 32px;
+  font-weight: 600;
+  padding: 10px 0;
+  text-shadow: 3px 3px 3px rgb(0, 0, 0);
 }

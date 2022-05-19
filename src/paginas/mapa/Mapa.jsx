@@ -1087,10 +1087,10 @@ export default class Mapa extends React.Component {
   componentDidMount() {
     this.obtenerNombreJugadores();
     if (this.state.obtenerInfoPartida || performance.navigation.type === 1) {
-      //localStorage.removeItem("volver_partida");
-      //this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 700);
+      localStorage.removeItem("volver_partida");
+      this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 700);
     } else {
-      //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+      this.interval = setInterval(() => this.comprobarAcciones(), 500);
     }
   }
 
