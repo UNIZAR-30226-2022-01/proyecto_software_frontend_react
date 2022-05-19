@@ -225,6 +225,7 @@ export default class Amigos extends React.Component {
                 let nombreUsuario = this.getNombreUsuario(document.cookie);
                 response = JSON.parse(response);
                 for (var i=0; i < response.length; i++) {
+                    // TODO limpiar un poco esto
                     let id = "boton:" + response[i]["Nombre"];
                     console.log("Sol recibida: "+response[i]["SolicitudRecibida"]+ ", solicitud pendiente: "+response[i]["SolicitudPendiente"])
                     if (response[i]["SolicitudRecibida"]) {

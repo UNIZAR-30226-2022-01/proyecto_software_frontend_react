@@ -3,6 +3,7 @@ import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import { Link } from "react-router-dom";
+import { Table } from 'react-bootstrap';
 import "./ranking.css";
 
 export default class Ranking extends React.Component {
@@ -10,6 +11,7 @@ export default class Ranking extends React.Component {
     super(props);
     this.state = {
         jugadores: [],
+        nombresRanking: [],
         partidasGanadasUsuario: 0,
         partidasJugadasUsuario: 0,
         winRateUsuario: 0,
@@ -68,18 +70,24 @@ export default class Ranking extends React.Component {
     })
     .then((response) => {
       let jugadoresArr = [];
+      let nombresArr = [];
       if (Object.keys(response).length < this.state.maxNumeroJugadores) {
         this.setState({maxNumeroJugadores: Object.keys(response).length});
       }
 
       for (var i=0; i < Object.keys(response).length; i++) {
+        nombresArr.push(response[i]["NombreUsuario"]);
         if (i < this.state.maxNumeroJugadores) {
           let winRate = this.calcularWinrate(response[i]["PartidasGanadas"],response[i]["PartidasTotales"]);
-          jugadoresArr.push(<div className='infoJugador' key={i}>
-            <h3>Puesto {i+1}: {response[i]["NombreUsuario"]}</h3>
-            <h4>Partidas ganadas: {response[i]["PartidasGanadas"]}, con un porcentaje de victorias del {+winRate.toFixed(2)}%</h4>
-            <Link to='/perfil' onClick={this.verPerfil} id={response[i]["NombreUsuario"]}><button>Ver Perfil</button></Link>
-            </div>);
+
+          jugadoresArr.push(
+            <tr>
+              <td>{i+1}</td>
+              <td className="celdaUsuario"><Link className="enlaceRanking" to='/perfil' onClick={this.verPerfil} id={response[i]["NombreUsuario"]}>{response[i]["NombreUsuario"]}</Link></td>
+              <td>{response[i]["PartidasGanadas"]}</td>
+              <td>{+winRate.toFixed(2)}%</td>
+            </tr>
+          )
         }
 
         if (response[i]["NombreUsuario"] === this.state.usuario) {
@@ -92,6 +100,7 @@ export default class Ranking extends React.Component {
       }
 
       this.setState({jugadores: jugadoresArr});
+      this.setState({nombresRanking: nombresArr});
     })
     .catch((e) => {
         swal.fire({
@@ -104,16 +113,60 @@ export default class Ranking extends React.Component {
 
   // TODO, arreglar el scroll para que la bottom bar no se superponga a los jugadores de la parte baja del ranking
   render() {
+    document.body.style.backgroundColor = "rgb(28,28,30)";
+    let usuarioTop = false;
+    if (this.state.jugadores.length > 0) {
+        for(var i = 0; i < this.state.maxNumeroJugadores; i++) {
+            if (this.state.nombresRanking[i] === this.state.usuario) {
+                usuarioTop = true;
+                break;
+            }
+        }
+    }
+
     return (
-    <div className="cen">
+    <div className="cen, ranking">
       <BarraSuperiorGeneral/>
+      <br/>
       <h1>Ranking</h1>
-      <h3>Eres el jugador número {this.state.posicion} del Ranking, 
-        con {this.state.partidasGanadasUsuario} partidas ganadas,
-        con un porcentaje de victorias del {+this.state.winRateUsuario.toFixed(2)}%.
-      </h3>
-      <h2>Top {this.state.maxNumeroJugadores} del ranking</h2>
-      {this.state.jugadores}
+      <br/>
+      {!usuarioTop && 
+      <Table className='table-fit' responsive variant="dark" striped bordered hover size="sm">
+          <thead>
+            <th>Posición</th>
+            <th>Jugador</th>
+            <th>Victorias</th>
+            <th>Win Rate</th>
+          </thead>
+          <tbody >
+            {this.state.jugadores}
+            <tr>
+              <td backgroundColor="#FFFFFF">...<br></br></td>
+              <td backgroundColor="#FFFFFF">...<br></br></td>
+              <td backgroundColor="#FFFFFF">...<br></br></td>
+              <td backgroundColor="#FFFFFF">...<br></br></td>
+            </tr>
+            <tr>
+              <td>{this.state.posicion}</td>
+              <td className="celdaUsuario"><Link className="enlaceRanking" to='/perfilUsuario' onClick={this.verPerfil} id={this.state.usuario}>{this.state.usuario}</Link></td>
+              <td>{this.state.partidasGanadasUsuario}</td>
+              <td>{this.state.winRateUsuario}</td>
+            </tr>
+          </tbody>
+      </Table>}
+
+      {usuarioTop && 
+      <Table className='table-fit' responsive variant="dark" striped bordered hover size="sm">
+          <thead>
+            <th>Posición</th>
+            <th>Jugador</th>
+            <th>Victorias</th>
+            <th>Win Rate</th>
+          </thead>
+          <tbody >
+            {this.state.jugadores}
+          </tbody>
+      </Table>}
       <BarraInferior/>
     </div>
     );  

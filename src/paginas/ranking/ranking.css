@@ -1,0 +1,42 @@
+.ranking {
+    text-align: center;
+    color: white;
+}
+
+.enlaceRanking {
+    color:white;
+    text-decoration: none;
+}
+
+.enlaceRanking:hover {
+    color: wheat;
+}
+
+.table {
+   margin: auto;
+   min-width: 50%;
+}
+
+.celdaUsuario {
+    min-width: none;
+}
+
+.table-filaVacia {
+    min-height: auto;
+    text-align: center;
+    width: 100%;
+    background-color: white !important;
+}
+
+table.table-fit {
+    width: auto !important;
+    table-layout: auto !important;
+}
+
+table.table-fit thead th, table.table-fit tfoot th{
+    width: auto !important;
+}
+
+table.table-fit tbody td, table.table-fit tfoot td{
+    width: auto !important;
+}
