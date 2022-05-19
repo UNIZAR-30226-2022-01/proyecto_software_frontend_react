@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import swal from 'sweetalert2';
+import { Button, Form, Navbar, Container } from 'react-bootstrap';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./crearPartida.css";
@@ -64,56 +65,66 @@ export default class CrearPartida extends React.Component {
   }
   
   render() {
-    document.body.style.backgroundColor = "#FFFFFF";
+    document.body.style.backgroundColor = "rgb(28,28,30)";
 
     if (this.state.irPartida) {
       return <Navigate to='/lobbyPartida'/>;
     }
 
     return (
-    <div className="cen">
-       <BarraSuperiorGeneral></BarraSuperiorGeneral>
+      <div className="cen">
+      <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
-      <form onSubmit={this.handleSubmit}>
-        <h1>Crear partida</h1>
 
-        <h2>Número de Jugadores</h2>
-        <select name="maxJugadores" onChange={this.handleInputChange}> 
-          <option value="3" selected>3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select>
+
+      <div className="contenedorTituloCrearPartida">
+        <text className="textoH1CrearPartida">Crear partida</text>
+      </div>
+
+      <br></br>
+        
+      <div className="contenedorCrearPartida">
+        <form onSubmit={this.handleSubmit}>
+          <h2 className="textoCrearPartida">Número de Jugadores</h2>
+          <select name="maxJugadores" className="btn btn-outline-primary" onChange={this.handleInputChange}> 
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+
+          <br></br><br></br>
+
+          <h2 className="textoCrearPartida">Tipo de partida</h2>
+          <select name="tipoPartida" className="btn btn-outline-primary" onChange={this.handleInputChange}>
+            <option value="Publica" selected>Pública</option>
+            <option value="Privada">Privada</option>
+          </select>
 
         <br></br><br></br>
 
-        <h2>Tipo de partida</h2>
-        <select name="tipoPartida" onChange={this.handleInputChange}>
-          <option value="Publica" selected>Pública</option>
-          <option value="Privada">Privada</option>
-        </select>
-
-        <br></br><br></br>
-
-        {this.state.tipoPartida === "Privada" && 
-        <div>
-          <h2>Contraseña</h2>
-          <input
-              name="contrasegna"
-              type="password"
-              placeholder="Introduzca su contraseña..."
-              value={this.state.contrasegna}
-              onChange={this.handleInputChange}
+          {this.state.tipoPartida === "Privada" && 
+          <div>
+            <h2 className="textoCrearPartida">Contraseña</h2>
+            <Form.Control
+              type="password" 
+              placeholder="Introduzca su contraseña..." 
+              value={this.state.contrasegna} 
+              onChange={this.handleInputChange} 
               required
-            /> 
-        </div>
-        }
+              className="mb-3 form-floating boxCrearPartida"/> 
+          </div>
+          }
 
-        <br></br><br></br>
-        <button type="submit">Crear Partida</button>
-      </form>  
-      <BarraInferior></BarraInferior>
-    </div>
-    );  
+          <br></br>
+          <Button variant="primary" type="submit" size="lg">
+          Crear Partida
+          </Button>
+        </form>  
+      </div>
+
+    <BarraInferior></BarraInferior>
+  </div>
+  );  
   }
 }
