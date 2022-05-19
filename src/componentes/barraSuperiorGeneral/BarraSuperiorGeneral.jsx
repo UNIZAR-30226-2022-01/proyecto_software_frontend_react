@@ -51,6 +51,7 @@ export default class BarraSuperiorGeneral extends React.Component {
   }
 
   navegarPerfil() {
+    console.log("Cambio local stg")
     localStorage.setItem('nombre_usuario', this.state.nombre_usuario)
   }
 
@@ -169,7 +170,7 @@ export default class BarraSuperiorGeneral extends React.Component {
               />
               <span className="badge badge-danger badge-counter">{this.state.numSolicitudes}</span>
               </Navbar.Brand >
-              <Navbar.Brand href="/perfil">
+              <Navbar.Brand href="/perfilUsuario" onClick={this.navegarPerfil}>
               <img
                 src={Perfil}
                 width="40"

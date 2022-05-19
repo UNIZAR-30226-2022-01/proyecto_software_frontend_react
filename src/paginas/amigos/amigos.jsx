@@ -19,6 +19,7 @@ export default class Amigos extends React.Component {
         this.actualizarBoton = this.actualizarBoton.bind(this);
         this.enviarSolicitudAmistad = this.enviarSolicitudAmistad.bind(this);
         this.getNombreUsuario = this.getNombreUsuario.bind(this);
+        this.aceptarSolicitud = this.aceptarSolicitud.bind(this);
     }
 
     getNombreUsuario(nombre) {
@@ -128,7 +129,8 @@ export default class Amigos extends React.Component {
     }
 
     enviarSolicitudAmistad(e) {
-        let nombre = e.currentTarget.id;
+        let nombre = e.currentTarget.name;
+        let boton = e;
         console.log("Enviando solicitud de amistad a:" + nombre)
         fetch(`http://localhost:8090/api/enviarSolicitudAmistad/${nombre}`, {
             method: 'post',
@@ -148,10 +150,49 @@ export default class Amigos extends React.Component {
                 timer: 3000,
                 timerProgressBar: true,
             });
+            // Actualizamos la búsqueda
+            this.buscarUsuarios();
         })
         .catch((e) => {
             swal.fire({
                 title: 'Se ha producido un error al recuperar el perfil',
+                text: e,
+                icon: 'error',
+            });
+        })
+    }
+
+    aceptarSolicitud(e) {
+        let usuario = e.currentTarget.name;
+        console.log("Aceptando la solicitud de amistad de:" + usuario)
+        fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${usuario}`, {
+            method: 'post',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+        })
+        .then(() => {
+            swal.fire({
+                title: `Eres amigo de ${usuario}`,
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+            this.setState({es_amigo: true})
+            this.setState({solicitudRecibida: false})
+            // Actualizamos la lista de amigos
+            this.recuperarAmigos();
+            // Actualizamos la búsqueda
+            this.buscarUsuarios();
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al aceptar la solicitud de amistad',
                 text: e,
                 icon: 'error',
             });
@@ -184,11 +225,27 @@ export default class Amigos extends React.Component {
                 let nombreUsuario = this.getNombreUsuario(document.cookie);
                 response = JSON.parse(response);
                 for (var i=0; i < response.length; i++) {
-                    if (!response[i]["EsAmigo"] && nombreUsuario !== response[i]["Nombre"]){
+                    let id = "boton:" + response[i]["Nombre"];
+                    console.log("Sol recibida: "+response[i]["SolicitudRecibida"]+ ", solicitud pendiente: "+response[i]["SolicitudPendiente"])
+                    if (response[i]["SolicitudRecibida"]) {
                         usuariosArr.push(<div className='infoUsuario' key={i}>
                             <h3>{response[i]["Nombre"]}</h3> 
                             <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
-                            <button id={response[i].Nombre} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Enviar solicitud de amistad</button>
+                            <button id={id} name={response[i]["Nombre"]} onClick={(e) =>this.aceptarSolicitud(e)}>Solicitud Recibida</button>
+                            </div>);
+                    }
+                    else if (response[i]["SolicitudPendiente"]) {
+                        usuariosArr.push(<div className='infoUsuario' key={i}>
+                            <h3>{response[i]["Nombre"]}</h3> 
+                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
+                            <button disabled>Solicitud Pendiente</button>
+                            </div>);
+                    }
+                    else if (!response[i]["EsAmigo"] && nombreUsuario !== response[i]["Nombre"]){
+                        usuariosArr.push(<div className='infoUsuario' key={i}>
+                            <h3>{response[i]["Nombre"]}</h3> 
+                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
+                            <button id={id} name={response[i]["Nombre"]} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Enviar solicitud de amistad</button>
                             </div>);
                     }
                     else {

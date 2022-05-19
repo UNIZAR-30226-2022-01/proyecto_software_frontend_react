@@ -11,22 +11,25 @@ export default class Perfil extends React.Component {
         console.log('Construyo un nuevo componente perfil');
         super(props);
         this.state = {
-            email: 'x',
+            email: null,
             nombre_usuario: usuario,
-            biografia: 'x',
-            puntos: -1,
-            partidas_ganadas: -1,
-            partidas_totales: -1,
+            biografia: '',
+            puntos: null,
+            partidas_ganadas: null,
+            partidas_totales: null,
             es_amigo: false,
             es_usuario: false,
             recibido: false,
             imagen: null,
+            solicitudPendiente: 0,
+            solicitudRecibida: 0,
         };
 
         this.recuperarPerfil = this.recuperarPerfil.bind(this);
         this.enviarSolicitudAmistad = this.enviarSolicitudAmistad.bind(this);
         this.modificarBiografia = this.modificarBiografia.bind(this);
         this.obtenerAvatar = this.obtenerAvatar.bind(this);
+        this.aceptarSolicitud = this.aceptarSolicitud.bind(this);
     }
 
     componentDidMount() {
@@ -42,8 +45,6 @@ export default class Perfil extends React.Component {
     }
 
     componentWillUnmount() {
-        // Es necesario borrarlo?, se puede cambiar cuando sea necesario y ya
-        //localStorage.removeItem('nombre_usuario');
     }
 
     obtenerAvatar() {
@@ -91,6 +92,8 @@ export default class Perfil extends React.Component {
             this.setState({puntos: response['Puntos']});
             this.setState({es_amigo: response['EsAmigo']});
             this.setState({recibido: true});
+            this.setState({solicitudPendiente: response['SolicitudPendiente']})
+            this.setState({solicitudRecibida: response['SolicitudRecibida']})
         })
         .catch((e) => {
             swal.fire({
@@ -120,6 +123,7 @@ export default class Perfil extends React.Component {
                 timer: 3000,
                 timerProgressBar: true,
             });
+            this.setState({solicitudPendiente: true});
         })
         .catch((e) => {
             swal.fire({
@@ -162,13 +166,56 @@ export default class Perfil extends React.Component {
         })
     }
 
+    aceptarSolicitud() {
+        console.log("Aceptando la solicitud de amistad de:" + this.state.nombre_usuario)
+        fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${this.state.nombre_usuario}`, {
+            method: 'post',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            credentials: 'include'
+        })
+        .then((response) => {
+            console.log('Respuesta recibida de la api');
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+        })
+        .then(() => {
+            swal.fire({
+                title: `Eres amigo de ${this.state.nombre_usuario}`,
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+            this.setState({es_amigo: true})
+            this.setState({solicitudRecibida: false})
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al aceptar la solicitud de amistad',
+                text: e,
+                icon: 'error',
+            });
+        })
+    }
+
     render() {
         let solicitudAmistad = null;
         let modBio = null;
-       
-        if (!this.state.es_usuario && !this.state.es_amigo) {
+        console.log('Sol enviada:'+this.state.solicitudPendiente+' , sol recibida:'+this.state.solicitudRecibida)
+        if (!this.state.es_usuario && !this.state.es_amigo && !this.state.solicitudPendiente && !this.state.solicitudRecibida) {
             // Si no es amigo aparece un botón para solicitar amistad
+            // Ni hay solicitudes pendientes
             solicitudAmistad = <button onClick={this.enviarSolicitudAmistad}>Enviar solicitud de amistad</button>;
+        }
+
+        // Si hay una solicitud de amistad enviada pendiente, muestra el boton desactivado
+        if (this.state.solicitudPendiente) {
+            solicitudAmistad = <button disabled>Solicitud pendiente</button>;
+        }
+
+        // Si hay una solicitud de amistad recibida pendiente, muestra el boton para aceptarla
+        if (this.state.solicitudRecibida) {
+            solicitudAmistad = <button onClick={this.aceptarSolicitud}>Solicitud de amistad recibida</button>;
         }
 
         if (this.state.es_usuario) {
@@ -191,7 +238,7 @@ export default class Perfil extends React.Component {
             <h3>Partidas ganadas: {this.state.partidas_ganadas}</h3>
             <h3>Partidas totales: {this.state.partidas_totales}</h3>
             {solicitudAmistad}
-            
+            {this.state.es_amigo && <div className="mensajeEresAmigo">Eres amigo de {this.state.nombre_usuario}</div>}
             <BarraInferior></BarraInferior>
             </div>
         );
