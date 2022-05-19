@@ -141,10 +141,10 @@ export default class Ranking extends React.Component {
           <tbody >
             {this.state.jugadores}
             <tr>
-              <td backgroundColor="#FFFFFF">...<br></br></td>
-              <td backgroundColor="#FFFFFF">...<br></br></td>
-              <td backgroundColor="#FFFFFF">...<br></br></td>
-              <td backgroundColor="#FFFFFF">...<br></br></td>
+              <td>...<br></br></td>
+              <td>...<br></br></td>
+              <td>...<br></br></td>
+              <td>...<br></br></td>
             </tr>
             <tr>
               <td>{this.state.posicion}</td>

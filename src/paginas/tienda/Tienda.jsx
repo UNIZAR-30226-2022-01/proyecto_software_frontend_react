@@ -2,6 +2,7 @@ import React from 'react';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
+import { Card, Column, Button, ButtonGroup} from 'react-bootstrap';
 import "./tienda.css";
 
 export default class Tienda extends React.Component {
@@ -219,15 +220,13 @@ export default class Tienda extends React.Component {
     }
 
     render() {
-        console.log("Render tienda")
-        console.log("Coleccion de cosméticos del usuario: "+this.state.coleccion)
+        document.body.style.backgroundColor = "rgb(28,28,30)";
         let dadosTienda = [];
         let dadosColeccion = [];
         let avataresTienda = [];
         let avataresColeccion = [];
         
         // Creamos la lista de dados a mostrar
-        // TODO, el estado cambia correctamente y la coleccion se actualiza, pero el nuevo item aparece con comprado = false
         for (var i=0; i < this.state.dadosTienda.length; i++) {
             let comprado = false;
             for (var j=0; j < this.state.coleccion.length; j++) {
@@ -235,9 +234,33 @@ export default class Tienda extends React.Component {
                     comprado = true;
                 }
             }
-            let dado = (
+            let dado = <div className="card mb-3">
+                <div className="row g-0 imagenDadoTienda">
+                    <div className="col-md-4">
+                    <img className="imagenDadoTienda" src={`data:image;base64,${this.state.dadosTienda[i].img}`}
+                    alt={this.state.dadosTienda[i].descripcion}></img>
+                    </div>
+                
+                    <div className="col-md-8">
+                        <div className="card-body" >
+                            <h5 className="card-title">{this.state.dadosTienda[i].nombre}</h5>
+                            <p className="card-text">{this.state.dadosTienda[i].descripcion}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                {!comprado && <div className="card-footer">
+                    <button id={this.state.dadosTienda[i].id} 
+                        type="button" className="botonCompra btn btn-primary" 
+                        onClick={(e) => this.comprarCosmetico(e, "Dados comprados")}>
+                        Comprar por {this.state.dadosTienda[i].precio} puntos</button>
+                </div>}
+            </div>
+
+            let dado2 = (
                 <div className="dado" key={this.state.dadosTienda[i].id}>
-                    <img className="imagenDado" src={`data:image;base64,${this.state.dadosTienda[i].img}`}></img>
+                    <img className="imagenDado" src={`data:image;base64,${this.state.dadosTienda[i].img}`}
+                    alt={this.state.dadosTienda[i].descripcion}></img>
                     {this.state.dadosTienda[i].nombre}, {this.state.dadosTienda[i].descripcion}
                     <br></br>
                     Precio: {this.state.dadosTienda[i].precio} puntos
@@ -265,18 +288,30 @@ export default class Tienda extends React.Component {
                     comprado = true;
                 }
             }
-            let avatar = 
-                (<div className="avatar" key={this.state.avataresTienda[i].id}>
-                    <img className="imagenAvatar" src={`data:image;base64,${this.state.avataresTienda[i].img}`}></img>
-                    {this.state.avataresTienda[i].nombre}, {this.state.avataresTienda[i].descripcion}
-                    <br></br>
-                    Precio: {this.state.avataresTienda[i].precio} puntos
-                    {comprado && <button disabled>Avatar comprado</button>}
-                    {!comprado && 
-                        <button id={this.state.avataresTienda[i].id} onClick={(e) => this.comprarCosmetico(e, "Avatar comprado")}>Comprar avatar</button>}
-                </div>);
+            let avatar = <div className="card mb-3">
+                <div className="row g-0 imagenAvatarTienda">
+                    <div className="col-md-4">
+                    <img className="imagenAvatarTienda" src={`data:image;base64,${this.state.avataresTienda[i].img}`}
+                    alt={this.state.avataresTienda[i].descripcion}></img>
+                    </div>
+                
+                    <div className="col-md-8">
+                        <div className="card-body" >
+                            <h5 className="card-title">{this.state.avataresTienda[i].nombre}</h5>
+                            <p className="card-text">{this.state.avataresTienda[i].descripcion}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                {!comprado && <div className="card-footer">
+                    <button id={this.state.avataresTienda[i].id} 
+                        type="button" className="botonCompra btn btn-primary" 
+                        onClick={(e) => this.comprarCosmetico(e, "Avatar comprado")}>
+                        Comprar por {this.state.avataresTienda[i].precio} puntos</button>
+                </div>}
+            </div>
 
-            // Separamos dados comprados de dados no comprados
+            // Separamos avatares comprados de dados no comprados
             // Los comprados aparecerán al principio de la lista, los no comprados al final
             if (comprado) {
                 avataresColeccion.push(avatar);
@@ -288,20 +323,48 @@ export default class Tienda extends React.Component {
         
 
         return (
-        <div className="cen">
+        <div className="cen, tienda">
             <BarraSuperiorGeneral puntos={this.state.puntos}></BarraSuperiorGeneral>
+            <br/>
             <h1>Tienda</h1>
 
-            <button onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>Avatares</button>
-            <button onClick={() => {this.setState({mostrarAvatares: false, mostrarDados: true})}}>Dados</button>
+            <ButtonGroup>
+                <Button variant="primary" onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>
+                    Avatares
+                </Button>
+                <Button variant="primary" onClick={() => {this.setState({mostrarAvatares: false, mostrarDados: true})}}>
+                    Dados
+                </Button>
+            </ButtonGroup>
 
             {this.state.mostrarAvatares && 
                 <div className="avatares">
-                    <h2>Avatares disponibles</h2> {avataresColeccion} {avataresTienda}
-                </div>}
+                    <div className="container">
+                        <div className="row align-items-start">
+                            <div className="col">
+                                <h3>Avatares disponibles</h3> {avataresTienda}
+                            </div>
+                            <div className="col">
+                                <h3>Avatares comprados</h3> {avataresColeccion}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
             {this.state.mostrarDados && <div className="dados">
-                    <h2>Dados disponibles</h2> {dadosColeccion} {dadosTienda}
-                </div>}
+                <div className="container">
+                        <div className="row align-items-start">
+                            <div className="col">
+                                <h3>Dados disponibles</h3> {dadosTienda}
+                            </div>
+                            <div className="col">
+                                <h3>Dados comprados</h3> {dadosColeccion}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <br/><br/><br/><br/>
             <BarraInferior></BarraInferior>
         </div>
         );  

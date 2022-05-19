@@ -1,17 +1,47 @@
-.imagenDado {
-    width: 100%;
-    max-width: 100px;
-    height: auto;
+.tienda {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    text-align: center;
+    color: white;
 }
 
-.imagenAvatar {
+.imagenDadoTienda img {
+    padding: 5px;
     width: 100%;
-    max-width: 100px;
-    height: auto;
+    max-width: 100%;
+}
+
+.imagenAvatarTienda img {
+    max-width: 100%;
+    height: 100%;
 }
 
 .imagenAlerta {
     width: 100%;
     max-width: 200px;
     height: auto;
+}
+
+.card {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    width: 80%;
+    height: 10%;
+    margin: auto;
+    color: black;
+    text-align: left;
+}
+
+.avatares {
+    margin-bottom: auto;
+}
+
+.card-footer {
+    text-align: center;
+}
+
+.botonCompra {
+    margin: auto;
+}
+
+.botonCompra:disabled {
+    background-color: blue;
 }
