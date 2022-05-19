@@ -1,12 +1,13 @@
 .partidaBuscada {
-    width: 50%;
-    height: 80px;
-    margin: 0 auto;
+    width: 80%;
+    height: 90px;
     margin-top: 0.75%;
+    margin-bottom: 5%;
     border-radius: 15px;
+    padding: 0.3%;
+    display: inline-block;
     border: 1px solid #fafafa;
     box-shadow:  rgba(0, 0, 0, 0.2) 0px 5px 10px;
-    background: #c3195d;  
     transition: width 0.5s, height 0.5s, transform 0.5s;
 } 
 
@@ -17,10 +18,51 @@
     cursor: pointer;
 }
 
+.contenedorInfoBuscarPartida {
+    /* border: 1px solid #fafafa; */
+    margin-bottom: 1.25%;
+    display: inline-block;
+    position: center;
+    width: 750px;
+    height: 110px;
+    margin-top: 0.75%;
+    margin-bottom: 0.5%;
+  }
+
 .datosPartidaBuscada {
     margin-top: 10px;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     color:#fafafa;
     font-size: 16px;
     font-weight: 550;
+}
+
+.datosPartidaBuscada2 {
+    margin-top: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color:#000000;
+    font-size: 16px;
+    font-weight: 550;
+}
+
+.containerImagenBuscar {
+    /* border: 1px solid #fafafa; */
+    margin-bottom: 1.25%;
+    display: inline-block;
+    position: right;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.75%;
+    padding-left: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 0.5%;
+}
+
+.candadoImagen {
+    border-radius: 20%;
+}
+
+.candadoImagenI {
+    border-radius: 20%;
+    filter: invert(100%);
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import swal from 'sweetalert2';
-import { Button, Form, Navbar, Container } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./crearPartida.css";

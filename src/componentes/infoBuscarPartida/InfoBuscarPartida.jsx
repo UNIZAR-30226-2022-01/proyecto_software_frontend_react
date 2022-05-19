@@ -2,18 +2,20 @@ import React from 'react';
 import swal from 'sweetalert2';
 import { Navigate } from "react-router-dom";
 import queryString from 'query-string';
+import Candado from "../../imagenes/candado.png";
 import "./infoBuscarPartida.css";
 
 export default class InfoBuscarPartida extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			idPartida: 0,
-			esPublica: false,
-			numJugadores: 0,
-			maxJugadores: 0,
-			amigosPresentes: [],
-			numAmigosPresentes: 0,
+			idPartida: props.idPartida,
+			esPublica: props.esPublica,
+			numJugadores: props.numJugadores,
+			maxJugadores: props.maxJugadores,
+			amigosPresentes: props.amigosPresentes,
+			numAmigosPresentes: props.numAmigosPresentes,
+			tipo: props.tipo,
 			irLobby: false
 		};
 
@@ -28,6 +30,7 @@ export default class InfoBuscarPartida extends React.Component {
 			maxJugadores: newProps.maxJugadores,
 			amigosPresentes: newProps.amigosPresentes,
 			numAmigosPresentes: newProps.numAmigosPresentes,
+			tipo: newProps.tipo
 		};
 	}
 
@@ -140,11 +143,57 @@ export default class InfoBuscarPartida extends React.Component {
 			tipoPartida = "Partida pública";
 		}
 
-		return ( // Poner las partidas de cada tipo de un color distinto (pub vs priv)
-			<div id={this.state.idPartida} className="partidaBuscada" onClick={this.entrarPartida}>
-				<div className="datosPartidaBuscada"> {tipoPartida} ({this.state.numJugadores}/{this.state.maxJugadores}) </div>
-				<div className="datosPartidaBuscada">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>
-			</div>
-		);
+    if (this.state.tipo === 0 && this.state.esPublica) {
+			return ( 
+        <div className="contenedorInfoBuscarPartida">
+          <div id={this.state.idPartida} className="partidaBuscada btn btn-primary" onClick={this.entrarPartida}>
+            <div className="datosPartidaBuscada"> 
+              {tipoPartida}  ({this.state.numJugadores}/{this.state.maxJugadores})         
+            </div>
+            <div className="datosPartidaBuscada">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>
+          </div> 
+        </div>
+        
+		  );
+		} else if (this.state.tipo === 0 && !this.state.esPublica){
+			return ( 
+        <div className="contenedorInfoBuscarPartida">
+          <div id={this.state.idPartida} className="partidaBuscada btn btn-primary" onClick={this.entrarPartida}>
+            <div className="datosPartidaBuscada"> 
+              {tipoPartida} ({this.state.numJugadores}/{this.state.maxJugadores}) 
+              <div className="containerImagenBuscar">
+                <img className="candadoImagenI" src={Candado} height="30" width="30"/>
+              </div>    
+            </div>
+            <div className="datosPartidaBuscada">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>
+          </div>
+        </div>
+		  );
+		} else if (this.state.tipo === 1 && this.state.esPublica){
+			return ( 
+        <div className="contenedorInfoBuscarPartida">
+          <div id={this.state.idPartida} className="partidaBuscada btn btn-light" onClick={this.entrarPartida}>
+            <div className="datosPartidaBuscada2"> 
+              {tipoPartida} ({this.state.numJugadores}/{this.state.maxJugadores}) 
+            </div>
+            <div className="datosPartidaBuscada2">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>
+          </div>
+        </div>
+		  );
+		} else if (this.state.tipo === 1 && !this.state.esPublica){
+			return ( 
+        <div className="contenedorInfoBuscarPartida">
+          <div id={this.state.idPartida} className="partidaBuscada btn btn-light" onClick={this.entrarPartida}>
+            <div className="datosPartidaBuscada2"> 
+              {tipoPartida} ({this.state.numJugadores}/{this.state.maxJugadores}) 
+              <div className="containerImagenBuscar">
+                <img className="candadoImagen" src={Candado} height="30" width="30"/>
+              </div>    
+            </div>
+            <div className="datosPartidaBuscada2">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>
+          </div>
+        </div>
+		  );
+		}
 	}
 }

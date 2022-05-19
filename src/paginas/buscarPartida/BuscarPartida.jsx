@@ -63,6 +63,13 @@ export default class BuscarPartida extends React.Component {
       }
 		})
 		.catch((e) => {
+      this.setState({numPartidas: 4});
+      this.setState({idPartida: [1,2,3,4]});
+        this.setState({esPublica: [false,true,true,false]});
+        this.setState({numJugadores: [1,2,3,2]});
+        this.setState({maxJugadores: [3,4,5,6]});
+        this.setState({amigosPresentes: ["", "papi", ["guille, ", "mapach"], "zineb"]});
+        this.setState({numAmigosPresentes: [0,1,2,1]});
       swal.fire({
         title: 'Se ha producido un error al obtener las partidas actuales',
         text: e,
@@ -81,7 +88,7 @@ export default class BuscarPartida extends React.Component {
   }
 
   render() {
-    document.body.style.backgroundColor = "#FFFFFF";
+    document.body.style.backgroundColor = "rgb(28,28,30)";
 
     var infoPartidas = [];
     for (var i = 0; i < this.state.numPartidas; i++) {
@@ -91,7 +98,8 @@ export default class BuscarPartida extends React.Component {
         numJugadores={this.state.numJugadores[i]}
         maxJugadores={this.state.maxJugadores[i]}
         amigosPresentes={this.state.amigosPresentes[i]}
-        numAmigosPresentes={this.state.numAmigosPresentes[i]}/>);
+        numAmigosPresentes={this.state.numAmigosPresentes[i]}
+        tipo={(i+2)%2}/>);
     } 
 
     if (this.state.irLobby) {
@@ -101,8 +109,10 @@ export default class BuscarPartida extends React.Component {
     return (
     <div className="cen">
       <BarraSuperiorGeneral></BarraSuperiorGeneral>
-
-      <h1>Buscar partida</h1>
+      
+      <div className="contenedorTituloBuscarPartida">
+        <text className="textoH1BuscarPartida">Buscar partida</text>
+      </div>
 
       <div className="contenedorPartidas">
           {infoPartidas}
