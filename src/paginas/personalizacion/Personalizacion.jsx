@@ -40,13 +40,13 @@ export default class Personalizacion extends React.Component {
     // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
     obtenerImagen(id) {
         for (var i = 0; i < this.state.avatares.length; i++) {
-            if (id === this.state.avatares[i].id) {
+            if (id == this.state.avatares[i].id) {
                 return this.state.avatares[i].img;
             }
         }
 
         for (var j = 0; j < this.state.dados.length; j++) {
-            if (id === this.state.dados[j].id) {
+            if (id == this.state.dados[j].id) {
                 return this.state.dados[j].img;
             }
         }

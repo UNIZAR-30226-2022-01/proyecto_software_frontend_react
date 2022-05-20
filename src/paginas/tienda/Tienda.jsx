@@ -41,13 +41,13 @@ export default class Tienda extends React.Component {
     // Obtener la imagen de uno de los cosméticos de la tienda id
     obtenerImagen(id) {
         for (var i = 0; i < this.state.avataresTienda.length; i++) {
-            if (id === this.state.avataresTienda[i].id) {
+            if (id == this.state.avataresTienda[i].id) {
                 return this.state.avataresTienda[i].img;
             }
         }
 
         for (var j = 0; j < this.state.dadosTienda.length; j++) {
-            if (id === this.state.dadosTienda[j].id) {
+            if (id == this.state.dadosTienda[j].id) {
                 return this.state.dadosTienda[j].img;
             }
         }

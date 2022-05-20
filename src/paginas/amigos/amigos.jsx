@@ -2,15 +2,17 @@ import React from 'react';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
+import {Button, ButtonGroup, Form} from 'react-bootstrap';
 import "./amigos.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default class Amigos extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             amigos: [],
-            usuarios: []
+            usuarios: [],
+            irPerfil: false
         };
 
         this.recuperarAmigos = this.recuperarAmigos.bind(this);
@@ -43,7 +45,9 @@ export default class Amigos extends React.Component {
     }
 
     verPerfil(e) {
+        console.log("navigando")
         localStorage.setItem('nombre_usuario', e.currentTarget.id);
+        this.setState({irPerfil: true});
     }
 
     eliminarAmigo(e) {
@@ -109,10 +113,14 @@ export default class Amigos extends React.Component {
                 response = JSON.parse(response);
                 for (var i=0; i < Object.keys(response).length; i++) {
                     amigosArr.push(<div className='infoAmigo' key={i}>
-                        <h3>{response[i]}</h3> 
-                        <button onClick={this.eliminarAmigo} id={response[i]}>Eliminar Amigo</button>
-                        <Link to='/perfil' onClick={this.verPerfil} id={response[i]}><button>Ver Perfil</button></Link>
-                        </div>);
+                        <ButtonGroup size="md" className="mb-2 elementoListaAmigos">
+                            <Button className="botonIrPerfil" onClick={(e) => {this.verPerfil(e)}} id={response[i]}>
+                                <div className="textoListaAmigos">{response[i]}</div></Button>
+                            <Button variant="danger" className="botonEliminarAmigo" 
+                                onClick={this.eliminarAmigo} id={response[i]}>Eliminar Amigo</Button>
+                        </ButtonGroup>
+                        <br/><br/>
+                    </div>);
                 }
 
                 this.setState({amigos: amigosArr});
@@ -215,35 +223,34 @@ export default class Amigos extends React.Component {
                 let nombreUsuario = this.getNombreUsuario(document.cookie);
                 response = JSON.parse(response);
                 for (var i=0; i < response.length; i++) {
-                    // TODO limpiar un poco esto
                     let id = "boton:" + response[i]["Nombre"];
+                    let botonAmistad = null;
+
                     if (response[i]["SolicitudRecibida"]) {
-                        usuariosArr.push(<div className='infoUsuario' key={i}>
-                            <h3>{response[i]["Nombre"]}</h3> 
-                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
-                            <button id={id} name={response[i]["Nombre"]} onClick={(e) =>this.aceptarSolicitud(e)}>Solicitud Recibida</button>
-                            </div>);
+                        botonAmistad = <Button variant="success" id={id} className="botonAmigo" 
+                            name={response[i]["Nombre"]} onClick={(e) =>this.aceptarSolicitud(e)}>Solicitud Recibida</Button>
                     }
                     else if (response[i]["SolicitudPendiente"]) {
-                        usuariosArr.push(<div className='infoUsuario' key={i}>
-                            <h3>{response[i]["Nombre"]}</h3> 
-                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
-                            <button disabled>Solicitud Pendiente</button>
-                            </div>);
+                        botonAmistad = <Button variant="success" className="botonAmigo"disabled>Solicitud Pendiente</Button>
                     }
                     else if (!response[i]["EsAmigo"] && nombreUsuario !== response[i]["Nombre"]){
-                        usuariosArr.push(<div className='infoUsuario' key={i}>
-                            <h3>{response[i]["Nombre"]}</h3> 
-                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
-                            <button id={id} name={response[i]["Nombre"]} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Enviar solicitud de amistad</button>
-                            </div>);
+                        botonAmistad = <Button variant="success" className="botonAmigo" id={id} 
+                            name={response[i]["Nombre"]} onClick={(e) =>this.enviarSolicitudAmistad(e)}>Solicitud de amistad</Button>
                     }
-                    else {
-                        usuariosArr.push(<div className='infoUsuario' key={i}>
-                            <h3>{response[i]["Nombre"]}</h3> 
-                            <Link to='/perfil' onClick={this.verPerfil} id={response[i].Nombre}><button>Ver Perfil</button></Link>
-                            </div>);
+                    else if (response[i]["EsAmigo"]) {
+                        botonAmistad = <Button variant="danger" className="botonAmigo" 
+                            onClick={this.eliminarAmigo} id={response[i]}>Eliminar Amigo</Button>
                     }
+
+                    let usuario = <div key={i}>
+                        <ButtonGroup size="md" className="mb-2 elementoListaBusqueda">
+                            <Button className="botonIrPerfil" onClick={(e) => this.verPerfil(e)} id={response[i]["Nombre"]}>
+                                <div className="textoListaBusqueda">{response[i]["Nombre"]}</div></Button>
+                            {botonAmistad}
+                        </ButtonGroup>
+                        <br/><br/>
+                    </div>
+                    usuariosArr.push(usuario);
                 }
 
                 this.setState({usuarios: usuariosArr});
@@ -267,20 +274,52 @@ export default class Amigos extends React.Component {
     }
 
     render() {
+        document.body.style.backgroundColor = "rgb(28,28,30)";
+        if (this.state.irPerfil) {
+            return <Navigate to='/perfil'/>;
+        }
+
         return (
-            <div className='cen'>
+            <div className='cen social'>
             <BarraSuperiorGeneral/>
-            <h1>Social</h1>
-            <h2>Lista de amigos</h2>
-            {this.state.amigos}
-            <h2>Buscar usuarios</h2>
+            <div className="contenedorTituloSocial">
+                <text className="tituloSocial">Social</text>
+            </div>
+            <br/>
             
-            <iframe title="iframeAux" name="frameAuxiliar" id="frameAux" style={{display: 'none'}}></iframe>
-            <form onSubmit={this.buscarUsuarios} target="frameAux">
-                <input type="text" id="busqueda" name="busqueda" placeholder="Busca un usuario" onChange={this.actualizarBoton}></input>
-                <button type="submit" id="botonBuscar" onClick={this.buscarUsuarios}>Buscar</button>
-            </form>
-            {this.state.usuarios}
+            <div className="container">
+                <div className="row align-items-start">
+                    <div className="col">
+                    <div className="contenedorSocial">
+                        <h2>Lista de amigos</h2>
+                        <br/>
+                        {this.state.amigos}
+                    </div>
+                    </div>
+                    <div className="col">
+                    <div className="contenedorSocial">
+                        <h2>Buscar usuarios</h2>
+                        <br/>
+                        <iframe title="frameAux" name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+                        <form onSubmit={this.buscarUsuarios} target="frameAux">
+                            <div className="input-group">
+                                <Form.Control 
+                                    className="campoBusqueda"
+                                    type="text" 
+                                    id="busqueda" 
+                                    name="busqueda" 
+                                    placeholder="Busca un usuario" 
+                                    onChange={this.actualizarBoton}
+                                />
+                                <Button type="submit" id="botonBuscar" onClick={this.buscarUsuarios}>Buscar</Button>
+                            </div>
+                        </form>
+                        <br/>
+                        {this.state.usuarios}
+                    </div>
+                    </div>
+                </div>
+            </div>
             <BarraInferior/>
             </div>
         );
