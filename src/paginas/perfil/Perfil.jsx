@@ -2,8 +2,13 @@ import React from 'react';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
+import { Button, Form} from 'react-bootstrap';
 import "./perfil.css";
 import queryString from 'query-string';
+
+const emailValidoRegex = RegExp(
+	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+);
 
 export default class Perfil extends React.Component {
     constructor(props) {
@@ -23,6 +28,11 @@ export default class Perfil extends React.Component {
             imagen: null,
             solicitudPendiente: 0,
             solicitudRecibida: 0,
+            mostrarCambioEmail: false,
+            mostrarCambioPassword: false,
+            errorEmail: "",
+            errorPassword: "",
+            errorPasswordRepetida: "",
         };
 
         this.recuperarPerfil = this.recuperarPerfil.bind(this);
@@ -30,6 +40,11 @@ export default class Perfil extends React.Component {
         this.modificarBiografia = this.modificarBiografia.bind(this);
         this.obtenerAvatar = this.obtenerAvatar.bind(this);
         this.aceptarSolicitud = this.aceptarSolicitud.bind(this);
+        this.cambiarEmail = this.cambiarEmail.bind(this);
+        this.cambiarPassword = this.cambiarPassword.bind(this);
+        this.comprobarEmail = this.comprobarEmail.bind(this);
+        this.comprobarPasswordsIguales = this.comprobarPasswordsIguales.bind(this);
+        this.comprobarPasswordCorrecta = this.comprobarPasswordCorrecta.bind(this);
     }
 
     componentDidMount() {
@@ -198,6 +213,111 @@ export default class Perfil extends React.Component {
         })
     }
 
+    cambiarEmail() {
+        if (this.state.errorEmail == "") {
+            let email = document.getElementById("nuevoEmail").value;
+            console.log("Nuevo email del usuario:" + email)
+            fetch('http://localhost:8090/api/modificarEmail', {
+                method: 'post',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: queryString.stringify({
+                    email: email,
+                }),
+                credentials: 'include'
+            })
+            .then((response) => {
+                console.log('Respuesta recibida de la api');
+                if (!response.ok) {
+                    return response.text().then(text => {throw new Error(text)});
+                }
+            })
+            .then(() => {
+                swal.fire({
+                    title: `Se ha actualizado tu correo electrónico`,
+                    icon: 'success',
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+                this.setState({email: email})
+                this.setState({mostrarCambioEmail: false});
+            })
+            .catch((e) => {
+                swal.fire({
+                    title: 'Se ha producido un error al modificar el correo electrónico',
+                    text: e,
+                    icon: 'error',
+                });
+            })
+        }
+    }
+
+    cambiarPassword() {
+        if (this.state.errorPassword == "" && this.state.errorPasswordRepetida == "") {
+            console.log("Cambiando la contraseña del usuario")
+            fetch('http://localhost:8090/api/resetearPasswordEnLogin', {
+                method: 'post',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: queryString.stringify({
+                    passwordActual: document.getElementById("oldPassword").value,
+                    passwordNueva: document.getElementById("newPassword").value,
+                }),
+                credentials: 'include'
+            })
+            .then((response) => {
+                console.log('Respuesta recibida de la api');
+                if (!response.ok) {
+                    return response.text().then(text => {throw new Error(text)});
+                }
+            })
+            .then(() => {
+                swal.fire({
+                    title: `Se ha actualizado tu contraseña`,
+                    icon: 'success',
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+                this.setState({mostrarCambioPassword: false});
+            })
+            .catch((e) => {
+                swal.fire({
+                    title: 'Se ha producido un error al actualizar la contraseña',
+                    text: e,
+                    icon: 'error',
+                });
+            })
+        }
+    }
+
+    comprobarEmail() {
+        let email = document.getElementById("nuevoEmail").value;
+        let err = emailValidoRegex.test(email)
+						? ""
+						: "El correo electrónico no tiene un formato válido";
+        this.setState({errorEmail: err});
+    }
+
+    comprobarPasswordsIguales() {
+        let pw1 = document.getElementById("newPassword").value;
+        let pw2 = document.getElementById("repetirPassword").value;
+        if (pw2 == "") {
+            this.setState({errorPasswordRepetida: ""});
+        }
+        else {
+            let err = pw1 !== pw2
+                ? "Las contraseñas deben coincidir"
+                : "";
+            this.setState({errorPasswordRepetida: err});
+        }
+    }
+
+    comprobarPasswordCorrecta() {
+        let pw = document.getElementById("newPassword").value;
+        let err = pw.length < 8
+            ? "La contraseña debe contener mínimo 8 caracteres"
+            : "";
+        this.setState({errorPassword: err});
+    }
+
     render() {
         let solicitudAmistad = null;
         let modBio = null;
@@ -239,6 +359,66 @@ export default class Perfil extends React.Component {
             <h3>Partidas totales: {this.state.partidas_totales}</h3>
             {solicitudAmistad}
             {this.state.es_amigo && <div className="mensajeEresAmigo">Eres amigo de {this.state.nombre_usuario}</div>}
+
+            {this.state.es_usuario && 
+                <div>
+                    <h3>Tu correo electrónico {this.state.email}</h3>
+                    <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: false, mostrarCambioPassword: true})}}>
+                        ¿Quieres cambiar tu contraseña?</a>
+                    <br/>
+                    <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: true, mostrarCambioPassword: false})}}>
+                        ¿Quieres cambiar tu correo electrónico?</a>
+                </div>
+            }
+
+            {this.state.mostrarCambioEmail && 
+                <div className="contenedorFormulario">
+                    <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+                    <form onSubmit={this.cambiarEmail} target="frameAux">
+                        <Form.Control
+                            id="nuevoEmail" 
+                            type="text"
+                            placeholder="Nuevo email"
+                            required
+                            onChange={this.comprobarEmail}
+                        />
+                        <div className="mensajeErrorPerfil">{this.state.errorEmail}</div>
+                        <Button variant="primary" type="submit">Cambiar correo electrónico</Button>
+                    </form>
+                </div>
+            }
+
+            {this.state.mostrarCambioPassword &&
+                <div className="contenedorFormulario">
+                <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+                <form onSubmit={this.cambiarPassword} target="frameAux">
+                    <Form.Control
+                        id="oldPassword" 
+                        type="password"
+                        placeholder="Contraseña actual"
+                        required
+                    /> 
+                    <Form.Control
+                        id="newPassword" 
+                        type="password"
+                        placeholder="Escribe tu nueva contraseña"
+                        required
+                        onChange={() => {this.comprobarPasswordCorrecta(); this.comprobarPasswordsIguales()}}
+                    />   
+                    <div className="mensajeErrorPerfil">{this.state.errorPassword}</div>
+                    <Form.Control
+                        id="repetirPassword" 
+                        type="password"
+                        placeholder="Repite la nueva contraseña"
+                        required
+                        onChange={this.comprobarPasswordsIguales}
+                    />   
+                    <div className="mensajeErrorPerfil">{this.state.errorPasswordRepetida}</div>
+                    <Button variant="primary" type="submit">Cambiar contraseña</Button>
+                </form>
+                </div>
+            }
+
             <BarraInferior></BarraInferior>
             </div>
         );
