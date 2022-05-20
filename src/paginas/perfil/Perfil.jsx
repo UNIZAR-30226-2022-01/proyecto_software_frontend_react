@@ -108,7 +108,7 @@ export default class Perfil extends React.Component {
             this.setState({solicitudPendiente: response['SolicitudPendiente']});
             this.setState({solicitudRecibida: response['SolicitudRecibida']});
             let winRate = 0;
-            if (response['PartidasTotales'] != 0) {
+            if (response['PartidasTotales'] !== 0) {
                 winRate = response['PartidasGanadas'] / response['PartidasTotales'];
             }
             this.setState({winRate: winRate});
@@ -347,7 +347,7 @@ export default class Perfil extends React.Component {
             <div className="cen perfil">
 
             <BarraSuperiorGeneral></BarraSuperiorGeneral>
-            <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+            <iframe title="iframeAux" name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
             <div className="contenedorTituloPerfil">
                 <text className="tituloPerfil">Perfil de {this.state.nombre_usuario}</text>
             </div>
@@ -378,12 +378,11 @@ export default class Perfil extends React.Component {
                 </div>
                 {this.state.es_usuario && 
                     <div>
-                       
-                        <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: false, mostrarCambioPassword: true})}}>
-                            ¿Quieres cambiar tu contraseña?</a>
+                        <button onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: false, mostrarCambioPassword: true})}}>
+                            ¿Quieres cambiar tu contraseña?</button>
                         <br/>
-                        <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: true, mostrarCambioPassword: false})}}>
-                            ¿Quieres cambiar tu correo electrónico?</a>
+                        <button onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: true, mostrarCambioPassword: false})}}>
+                            ¿Quieres cambiar tu correo electrónico?</button>
                     </div>
                 }  
             </div>
