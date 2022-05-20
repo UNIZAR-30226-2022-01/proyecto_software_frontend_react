@@ -28,8 +28,6 @@ export default class Perfil extends React.Component {
             imagen: null,
             solicitudPendiente: 0,
             solicitudRecibida: 0,
-            mostrarCambioEmail: false,
-            mostrarCambioPassword: false,
             errorEmail: "",
             errorPassword: "",
             errorPasswordRepetida: "",
@@ -42,9 +40,8 @@ export default class Perfil extends React.Component {
         this.aceptarSolicitud = this.aceptarSolicitud.bind(this);
         this.cambiarEmail = this.cambiarEmail.bind(this);
         this.cambiarPassword = this.cambiarPassword.bind(this);
-        this.comprobarEmail = this.comprobarEmail.bind(this);
-        this.comprobarPasswordsIguales = this.comprobarPasswordsIguales.bind(this);
-        this.comprobarPasswordCorrecta = this.comprobarPasswordCorrecta.bind(this);
+        this.mostrarFormularioEmail = this.mostrarFormularioEmail.bind(this);
+        this.mostrarFormularioContraseña = this.mostrarFormularioContraseña.bind(this);
     }
 
     componentDidMount() {
@@ -212,50 +209,47 @@ export default class Perfil extends React.Component {
         })
     }
 
-    cambiarEmail() {
-        if (this.state.errorEmail === "") {
-            let email = document.getElementById("nuevoEmail").value;
-            fetch('http://localhost:8090/api/modificarEmail', {
-                method: 'post',
-                headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                body: queryString.stringify({
-                    email: email,
-                }),
-                credentials: 'include'
-            })
-            .then((response) => {
-                if (!response.ok) {
-                    return response.text().then(text => {throw new Error(text)});
-                }
-            })
-            .then(() => {
-                swal.fire({
-                    title: `Se ha actualizado tu correo electrónico`,
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true,
-                });
-                this.setState({email: email})
-                this.setState({mostrarCambioEmail: false});
-            })
-            .catch((e) => {
-                swal.fire({
-                    title: 'Se ha producido un error al modificar el correo electrónico',
-                    text: e,
-                    icon: 'error',
-                });
-            })
-        }
+    cambiarEmail(email) {
+        fetch('http://localhost:8090/api/modificarEmail', {
+            method: 'post',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            body: queryString.stringify({
+                email: email,
+            }),
+            credentials: 'include'
+        })
+        .then((response) => {
+            if (!response.ok) {
+                return response.text().then(text => {throw new Error(text)});
+            }
+        })
+        .then(() => {
+            swal.fire({
+                title: `Se ha actualizado tu correo electrónico`,
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+            this.setState({email: email})
+        })
+        .catch((e) => {
+            swal.fire({
+                title: 'Se ha producido un error al modificar el correo electrónico',
+                text: e,
+                icon: 'error',
+            });
+        })
+
     }
 
-    cambiarPassword() {
+    cambiarPassword(oldPassword, newPassword) {
         if (this.state.errorPassword === "" && this.state.errorPasswordRepetida === "") {
             fetch('http://localhost:8090/api/resetearPasswordEnLogin', {
                 method: 'post',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: queryString.stringify({
-                    passwordActual: document.getElementById("oldPassword").value,
-                    passwordNueva: document.getElementById("newPassword").value,
+                    passwordActual: oldPassword,
+                    passwordNueva: newPassword,
                 }),
                 credentials: 'include'
             })
@@ -271,7 +265,6 @@ export default class Perfil extends React.Component {
                     timer: 3000,
                     timerProgressBar: true,
                 });
-                this.setState({mostrarCambioPassword: false});
             })
             .catch((e) => {
                 swal.fire({
@@ -283,34 +276,57 @@ export default class Perfil extends React.Component {
         }
     }
 
-    comprobarEmail() {
-        let email = document.getElementById("nuevoEmail").value;
-        let err = emailValidoRegex.test(email)
-						? ""
-						: "El correo electrónico no tiene un formato válido";
-        this.setState({errorEmail: err});
+    mostrarFormularioEmail() {
+        swal.fire({
+            title: 'Modificar correo electrónico',
+            html: `<input type="text" id="email" class="swal2-input" placeholder="Introduzca su nuevo correo">`,
+            confirmButtonText: 'Confirmar',
+            focusConfirm: false,
+            preConfirm: () => {
+                const email = swal.getPopup().querySelector('#email').value
+                if(!emailValidoRegex.test(email)) {
+                    swal.showValidationMessage(`El formato del correo electrónico no es válido`)
+                }
+
+                return {email: email}
+            }
+          }).then((result) => {
+            this.cambiarEmail(result.value.email);
+          })
     }
 
-    comprobarPasswordsIguales() {
-        let pw1 = document.getElementById("newPassword").value;
-        let pw2 = document.getElementById("repetirPassword").value;
-        if (pw2 === "") {
-            this.setState({errorPasswordRepetida: ""});
-        }
-        else {
-            let err = pw1 !== pw2
-                ? "Las contraseñas deben coincidir"
-                : "";
-            this.setState({errorPasswordRepetida: err});
-        }
-    }
+    mostrarFormularioContraseña() {
+        swal.fire({
+            title: 'Cambio de contraseña',
+            html: `
+            <h4>Contraseña actual</h4>
+            <input type="password" id="oldPassword" class="swal2-input" placeholder="Introduzca su contraseña"><br/><br/>
+            <h4>Nueva contraseña</h4>
+            <input type="password" id="newPassword" class="swal2-input" placeholder="Nueva contraseña"><br/><br/>
+            <h4>Repetir contraseña</h4>
+            <input type="password" id="repeatPassword" class="swal2-input" placeholder="Repita la nueva contraseña">`,
+            confirmButtonText: 'Cambiar contraseña',
+            focusConfirm: false,
+            preConfirm: () => {
+                const pw0 = swal.getPopup().querySelector('#oldPassword').value
+                const pw1 = swal.getPopup().querySelector('#newPassword').value
+                const pw2 = swal.getPopup().querySelector('#repeatPassword').value
+                if (!pw0 || !pw1 || !pw2) {
+                    swal.showValidationMessage(`Por favor, rellene todos los campos`)
+                }
 
-    comprobarPasswordCorrecta() {
-        let pw = document.getElementById("newPassword").value;
-        let err = pw.length < 8
-            ? "La contraseña debe contener mínimo 8 caracteres"
-            : "";
-        this.setState({errorPassword: err});
+                if (pw1.length < 8) {
+                    swal.showValidationMessage(`La contraseña debe tener al menos 8 caracteres`)
+                }
+
+                if (pw1 != pw2) {
+                    swal.showValidationMessage(`La nueva contraseña y la contraseña repetida deben coincidir`)
+                }
+                return { oldPassword: pw0, newPassword: pw1 }
+            }
+        }).then((result) => {
+            this.cambiarPassword(result.value.oldPassword, result.value.newPassword);
+        })          
     }
 
     render() {
@@ -352,88 +368,41 @@ export default class Perfil extends React.Component {
                 <text className="tituloPerfil">Perfil de {this.state.nombre_usuario}</text>
             </div>
             <br/>
-            <div className="contenedorPerfil">
-                <div className="row g-0">
-                    <div className="col-md-4">
-                        <img className="avatarPerfil" src={this.state.imagen} alt="avatar"></img>
+                <div className="contenedorPerfil">
+                    <div className="row g-0">
+                        <div className="col-md-4">
+                            <img className="avatarPerfil" src={this.state.imagen} alt="avatar"></img>
+                        </div>
+                        <div className="col-md-8">
+                        <form target="frameAux">
+                            <h2>{this.state.nombre_usuario}</h2>
+                            <textarea rows={nRows} wrap="soft" id="bio" name="bio" className="biografiaPerfil" value={this.state.biografia} 
+                                onChange={(e) => {this.setState({biografia: e.target.value})}} disabled></textarea>
+                            {modBio}
+                            </form>
+                        </div>
                     </div>
-                    <div className="col-md-8">
-                    <form target="frameAux">
-                        <h2>{this.state.nombre_usuario}</h2>
-                        <textarea rows={nRows} wrap="soft" id="bio" name="bio" className="biografiaPerfil" value={this.state.biografia} 
-                            onChange={(e) => {this.setState({biografia: e.target.value})}} disabled></textarea>
-                        {modBio}
-                        </form>
+                    <div className="row g-0">
+                        <div className="informacionPerfil">
+                            <h3>Puntos: {this.state.puntos}</h3>
+                            <h3>Partidas ganadas: {this.state.partidas_ganadas}</h3>
+                            <h3>Win Rate: {+this.state.winRate.toFixed(2)}%</h3>
+                            {solicitudAmistad}
+                            {this.state.es_amigo && <Button className="botonAmistadPerfil" variant="success" disabled>Eres amigo de {this.state.nombre_usuario}</Button>}
+                            {this.state.es_usuario && <h3>Tu correo electrónico es {this.state.email}</h3>}
+                        </div>
                     </div>
+                    {this.state.es_usuario && 
+                        <div>
+                        
+                        <a href="#" onClick={this.mostrarFormularioContraseña}>
+                                ¿Quieres cambiar tu contraseña?</a>
+                            <br/>
+                            <a href="#" onClick={this.mostrarFormularioEmail}>
+                                ¿Quieres cambiar tu correo electrónico?</a>
+                        </div>
+                    }  
                 </div>
-                <div className="row g-0">
-                    <div className="informacionPerfil">
-                        <h3>Puntos: {this.state.puntos}</h3>
-                        <h3>Partidas ganadas: {this.state.partidas_ganadas}</h3>
-                        <h3>Win Rate: {+this.state.winRate.toFixed(2)}%</h3>
-                        {solicitudAmistad}
-                        {this.state.es_amigo && <Button className="botonAmistadPerfil" variant="success" disabled>Eres amigo de {this.state.nombre_usuario}</Button>}
-                        {this.state.es_usuario && <h3>Tu correo electrónico es {this.state.email}</h3>}
-                    </div>
-                </div>
-                {this.state.es_usuario && 
-                    <div>
-                       
-                        <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: false, mostrarCambioPassword: true})}}>
-                            ¿Quieres cambiar tu contraseña?</a>
-                        <br/>
-                        <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: true, mostrarCambioPassword: false})}}>
-                            ¿Quieres cambiar tu correo electrónico?</a>
-                    </div>
-                }  
-            </div>
-
-            {this.state.mostrarCambioEmail && 
-                <div className="contenedorFormulario">
-                    <form onSubmit={this.cambiarEmail} target="frameAux">
-                        <Form.Control
-                            id="nuevoEmail" 
-                            type="text"
-                            placeholder="Nuevo email"
-                            required
-                            onChange={this.comprobarEmail}
-                        />
-                        <div className="mensajeErrorPerfil">{this.state.errorEmail}</div>
-                        <Button variant="primary" type="submit">Cambiar correo electrónico</Button>
-                    </form>
-                </div>
-            }
-
-            {this.state.mostrarCambioPassword &&
-                <div className="contenedorFormulario">
-                <form onSubmit={this.cambiarPassword} target="frameAux">
-                    <Form.Control
-                        id="oldPassword" 
-                        type="password"
-                        placeholder="Contraseña actual"
-                        required
-                    /> 
-                    <Form.Control
-                        id="newPassword" 
-                        type="password"
-                        placeholder="Escribe tu nueva contraseña"
-                        required
-                        onChange={() => {this.comprobarPasswordCorrecta(); this.comprobarPasswordsIguales()}}
-                    />   
-                    <div className="mensajeErrorPerfil">{this.state.errorPassword}</div>
-                    <Form.Control
-                        id="repetirPassword" 
-                        type="password"
-                        placeholder="Repite la nueva contraseña"
-                        required
-                        onChange={this.comprobarPasswordsIguales}
-                    />   
-                    <div className="mensajeErrorPerfil">{this.state.errorPasswordRepetida}</div>
-                    <Button variant="primary" type="submit">Cambiar contraseña</Button>
-                </form>
-                </div>
-            }
-
             <BarraInferior></BarraInferior>
             </div>
         );
