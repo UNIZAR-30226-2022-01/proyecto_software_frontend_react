@@ -1,5 +1,8 @@
 import React from 'react';
 import swal from 'sweetalert2';
+import { Button } from 'react-bootstrap';
+import { Navigate } from 'react-router-dom';
+import Robot from "../../imagenes/robot.png";
 import "./infoNotificacion.css";
 
 export default class InfoNotificacion extends React.Component {
@@ -11,7 +14,10 @@ export default class InfoNotificacion extends React.Component {
 			jugadorPrevio: props.jugadorPrevio,
 			puntos: props.puntos,
 			partidaGanada: props.partidaGanada,
+      buscarPartida: false
 		};
+
+    this.irBuscarPartida = this.irBuscarPartida.bind(this);
 	}
 
 	static getDerivedStateFromProps(newProps) {
@@ -23,6 +29,10 @@ export default class InfoNotificacion extends React.Component {
 			partidaGanada: newProps.partidaGanada,
 		};
 	}
+
+  irBuscarPartida(){
+    this.setState({buscarPartida: true})
+  }
 
   aceptarSolicitudAmistad(e) {
     let nombre = e.currentTarget.id;
@@ -83,7 +93,30 @@ export default class InfoNotificacion extends React.Component {
   }
 
   render() {
+    if (this.state.buscarPartida) {
+      return <Navigate to='/buscarPartida'/>;
+    }
+
     switch (this.state.idNotificacion) {
+      case -1:
+        // No existen notificaciones para el usuario
+        return (
+          <div class="contenedorInfoNotificacionVacia">
+            <div class="notificacionVacia">
+              <text className="infoVacia"> 
+                No tienes notificaciones todavía... 
+                <br></br><br></br>
+                <img className="imagenNotificacionesVacia" src={Robot} alt="notificacionesVacias" height="50" width="50"/>
+                <br></br><br></br>
+                ¡Únete a una partida para continuar disfrutando de la experiencia de juego!
+                <br></br><br></br>
+                <Button variant="primary" type="submit" size="lg" onClick={this.irBuscarPartida}>
+                  Buscar partida
+                </Button>
+              </text>
+            </div>
+          </div>
+        );
       case 0:
         // Recibida solicitud de amistad
         return (
