@@ -37,6 +37,11 @@ export default class BarraSuperiorGeneral extends React.Component {
     this.obtenerNumSolicitudes()
 	}
 
+  static getDerivedStateFromProps(newProps) {
+    // Para poder actualizar el contador de puntos al hacer una compra
+    return {puntos: newProps.puntos,};
+  }
+
   getNombreUsuario(nombre) {
 		if (nombre.length > 0) {
     	nombre = nombre.split('=')[1];
@@ -135,6 +140,7 @@ export default class BarraSuperiorGeneral extends React.Component {
       return <Navigate to='/amigos'/>;
     } else if (this.state.irPerfil) {
       this.setState({irPerfil: false});
+      localStorage.setItem('nombre_usuario', this.state.nombre_usuario)
       return <Navigate to='/perfilUsuario'/>;
     } else if (this.state.irIdentificacion) {
       return <Navigate to='/'/>;

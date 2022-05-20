@@ -1,5 +1,81 @@
+.contenedorTituloPerfil {
+    border-radius: 10px;
+    background-color: rgb(28,28,30);
+    margin-top: 1.5%;
+    width: 25%;
+    height: 15%;
+    display: inline-block;
+    padding: 10px 0;
+    margin-bottom: -1%;
+}
+
+.tituloPerfil {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: rgb(229, 229, 234);
+    font-size: 40px;
+    font-weight: 800;
+    padding: 10px 0;
+}
+
 .avatarPerfil {
+    text-align: left;
     width: 100%;
-    max-width: 200px;
-    height: auto;
+    height: 100%;
+}
+
+.perfil {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: white;
+}
+
+.contenedorPerfil {
+    border-radius: 20px;
+    border: solid 3px rgb(10,132,255);
+    background-color: rgb(229, 229, 234);
+    color: black;
+    margin-top: 3.5%;
+    width: 45%;
+    display: inline-block;
+    padding: 1%;
+    margin-bottom: 3.5%;
+}
+
+.informacionPerfil {
+    position: relative;
+    padding-top: 3%;
+    padding-left: 1%;
+    text-align: left;
+    float: left;
+}
+
+.informacionPerfil h3 {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: black;
+    font-size: 20px;
+}
+
+.biografiaPerfil {
+    padding: 1%;
+    border-radius: 20px;
+    border: solid 2px rgb(10,132,255);
+    resize: none;
+    border-radius: 10px;
+    width: 80%;
+    height: 100%;
+}
+
+.biografiaPerfil:disabled {
+    background-color: rgb(215, 234, 252);
+    color: black;
+}
+
+.botonModificarBiografia {
+    margin-top: 3%;
+}
+
+.botonAmistadPerfil {
+    position: absolute;
+    max-width: 50%;
+    bottom: 1%;
+    right: 1%;
 }
