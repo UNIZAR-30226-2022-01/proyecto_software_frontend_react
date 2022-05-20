@@ -225,6 +225,9 @@ export default class Tienda extends React.Component {
         let dadosColeccion = [];
         let avataresTienda = [];
         let avataresColeccion = [];
+
+        // Carta vacía para alinear bien las columnas cuando el número de objetos es impar
+        let cardVacio = <div className="cardTienda cardVacio"></div>
         
         // Creamos la lista de dados a mostrar
         for (var i=0; i < this.state.dadosTienda.length; i++) {
@@ -234,7 +237,7 @@ export default class Tienda extends React.Component {
                     comprado = true;
                 }
             }
-            let dado = <div className="card mb-3">
+            let dado = <div className="card mb-3 cardTienda">
                 <div className="row g-0 imagenDadoTienda">
                     <div className="col-md-4">
                     <img className="imagenDadoTienda" src={`data:image;base64,${this.state.dadosTienda[i].img}`}
@@ -257,19 +260,6 @@ export default class Tienda extends React.Component {
                 </div>}
             </div>
 
-            let dado2 = (
-                <div className="dado" key={this.state.dadosTienda[i].id}>
-                    <img className="imagenDado" src={`data:image;base64,${this.state.dadosTienda[i].img}`}
-                    alt={this.state.dadosTienda[i].descripcion}></img>
-                    {this.state.dadosTienda[i].nombre}, {this.state.dadosTienda[i].descripcion}
-                    <br></br>
-                    Precio: {this.state.dadosTienda[i].precio} puntos
-                    {comprado && <button disabled>Dados comprados</button>}
-                    {!comprado && 
-                    <button id={this.state.dadosTienda[i].id } 
-                        onClick={(e) => this.comprarCosmetico(e, "Dados comprados")}>Comprar dados</button>}
-                </div>)
-
             // Separamos dados comprados de dados no comprados
             // Los comprados aparecerán al principio de la lista, los no comprados al final
             if (comprado) {
@@ -288,7 +278,7 @@ export default class Tienda extends React.Component {
                     comprado = true;
                 }
             }
-            let avatar = <div className="card mb-3">
+            let avatar = <div className="card mb-3 cardTienda">
                 <div className="row g-0 imagenAvatarTienda">
                     <div className="col-md-4">
                     <img className="imagenAvatarTienda" src={`data:image;base64,${this.state.avataresTienda[i].img}`}
@@ -325,8 +315,10 @@ export default class Tienda extends React.Component {
         return (
         <div className="cen, tienda">
             <BarraSuperiorGeneral puntos={this.state.puntos}></BarraSuperiorGeneral>
+            <div className="contenedorTituloTienda">
+                <text className="tituloTienda">Tienda</text>
+            </div>
             <br/>
-            <h1>Tienda</h1>
 
             <ButtonGroup>
                 <Button variant="primary" onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>
@@ -336,30 +328,50 @@ export default class Tienda extends React.Component {
                     Dados
                 </Button>
             </ButtonGroup>
-
+            <br/>
+            <br/>
             {this.state.mostrarAvatares && 
-                <div className="avatares">
+                <div>
+                    <h3>Avatares disponibles</h3> 
+                    <br/>
                     <div className="container">
-                        <div className="row align-items-start">
-                            <div className="col">
-                                <h3>Avatares disponibles</h3> {avataresTienda}
-                            </div>
-                            <div className="col">
-                                <h3>Avatares comprados</h3> {avataresColeccion}
-                            </div>
+                        <div className="row">
+                            {avataresTienda} 
+                            {avataresTienda.length % 2 === 1 && cardVacio}
+                        </div>
+                    </div>
+                    {avataresTienda.length == 0 && <div className="mensajeTiendaComprada"><br/><h4>Has comprado todos los avatares disponibles</h4></div>}
+
+                    <br/><br/>
+                    <h3>Tu colección</h3> 
+                    <br/>
+                    <div className="container">
+                        <div className="row">
+                            {avataresColeccion} 
+                            {avataresColeccion.length % 2 === 1 && cardVacio}
                         </div>
                     </div>
                 </div>
             }
-            {this.state.mostrarDados && <div className="dados">
-                <div className="container">
-                        <div className="row align-items-start">
-                            <div className="col">
-                                <h3>Dados disponibles</h3> {dadosTienda}
-                            </div>
-                            <div className="col">
-                                <h3>Dados comprados</h3> {dadosColeccion}
-                            </div>
+            {this.state.mostrarDados && 
+                <div>
+                    <h3>Dados disponibles</h3> 
+                    <br/>
+                    <div className="container">
+                        <div className="row">
+                            {dadosTienda} 
+                            {dadosTienda.length % 2 === 1 && cardVacio}
+                        </div>
+                    </div>
+                    {dadosTienda.length == 0 && <div className="mensajeTiendaComprada"><br/><h4>Has comprado todos los dados disponibles</h4></div>}
+
+                    <br/><br/>
+                    <h3>Tu colección</h3> 
+                    <br/>
+                    <div className="container">
+                        <div className="row">
+                            {dadosColeccion} 
+                            {dadosColeccion.length % 2 === 1 && cardVacio}
                         </div>
                     </div>
                 </div>

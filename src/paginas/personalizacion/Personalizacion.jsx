@@ -2,6 +2,7 @@ import React from 'react';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
+import { Button, ButtonGroup} from 'react-bootstrap';
 import "./personalizacion.css";
 
 export default class Personalizacion extends React.Component {
@@ -38,18 +39,24 @@ export default class Personalizacion extends React.Component {
 
     // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
     obtenerImagen(id) {
+        console.log("Buscando imagen del cosmetico: "+id)
         for (var i = 0; i < this.state.avatares.length; i++) {
-            if (id === this.state.avatares[i].id) {
+            console.log("Avatar "+i+", id: "+ this.state.avatares[i].id)
+            if (id == this.state.avatares[i].id) {
+                console.log("Avatar con id "+id+"encontrados")
                 return this.state.avatares[i].img;
             }
         }
 
         for (var j = 0; j < this.state.dados.length; j++) {
-            if (id === this.state.dados[j].id) {
+            console.log("Dado "+j+", id: "+ this.state.dados[j].id)
+            if (id == this.state.dados[j].id) {
+                console.log("Dados con id "+id+"encontrados")
                 return this.state.dados[j].img;
             }
         }
 
+        console.log("Return null")
         return null;
     }
 
@@ -152,67 +159,102 @@ export default class Personalizacion extends React.Component {
     }
 
     render() {
+        document.body.style.backgroundColor = "rgb(28,28,30)";
         let dadosArr = [];
         let avataresArr = [];
-        let avatarEquipado = null;
-        let dadoEquipado = null;
+
+        // Carta vacía para alinear bien las columnas cuando el número de objetos es impar
+        let cardVacio = <div className="cardTienda cardVacio"></div>
+
         // Creamos la lista de dados a mostrar
         for (var i=0; i < this.state.dados.length; i++) {
-            dadosArr.push(<div className="dado" key={this.state.dados[i].id}>
-                <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`} alt="dado"></img>
-                {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
-                {this.state.dadoEquipado === this.state.dados[i].id && <button disabled>Dados equipados</button>}
-                {this.state.dadoEquipado !== this.state.dados[i].id && 
-                    <button id={this.state.dados[i].id } 
-                    onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dado</button>}
-            </div>)
-
-            // Si el avatar es el equipado, lo renderizamos de manera destacada
-            if (this.state.dados[i].id === this.state.dadoEquipado) {
-                dadoEquipado = <div className="dadoEquipado">
-                    <img className="imagenDado" src={`data:image;base64,${this.state.dados[i].img}`} alt="dado"></img>
-                    {this.state.dados[i].nombre}, {this.state.dados[i].descripcion}
+            let equipado = this.state.dados[i].id === this.state.dadoEquipado;
+            let dado = (<div className="card mb-3 cardPersonalizacion">
+                <div className="row g-0 imagenDadoPersonalizacion">
+                    <div className="col-md-4">
+                    <img className="imagenDadoTienda" src={`data:image;base64,${this.state.dados[i].img}`}
+                    alt={this.state.dados[i].descripcion}></img>
                     </div>
-            }
+                
+                    <div className="col-md-8">
+                        <div className="card-body" >
+                            <h5 className="card-title">{this.state.dados[i].nombre}</h5>
+                            <p className="card-text">{this.state.dados[i].descripcion}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                {!equipado && <div className="card-footer">
+                    <Button variant="primary" id={this.state.dados[i].id} onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dados</Button>
+                </div>}
+                {equipado && <div className="card-footer">
+                    <Button variant="success">Dados equipados</Button>
+                </div>}
+            </div>
+            )
+            dadosArr.push(dado)
         }
 
         // Creamos la lista de avatares a mostrar
         for (var j=0; j < this.state.avatares.length; j++) {
-            avataresArr.push(<div className="avatar" key={this.state.avatares[j].id}>
-                <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[j].img}`} alt="avatarUsuario"></img>
-                {this.state.avatares[j].nombre}, {this.state.avatares[j].descripcion}
-                {this.state.avatarEquipado === this.state.avatares[j].id && <button disabled>Avatar equipado</button>}
-                {this.state.avatarEquipado !== this.state.avatares[j].id && 
-                    <button id={this.state.avatares[j].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</button>}
-            </div>)
-
-            // Si el dado es el equipado, lo renderizamos de manera destacada
-            if (this.state.avatares[j].id === this.state.avatarEquipado) {
-                avatarEquipado = <div className="avatarEquipado">
-                    <img size className="imagenAvatar" src={`data:image;base64,${this.state.avatares[j].img}`} alt="dadoUsuario"></img>
-                    {this.state.avatares[j].nombre}, {this.state.avatares[j].descripcion}
+            let equipado = this.state.avatares[j].id === this.state.avatarEquipado;
+            let avatar = <div className="card mb-3 cardPersonalizacion">
+                <div className="row g-0 imagenAvatarTienda">
+                    <div className="col-md-4">
+                    <img className="imagenAvatarTienda" src={`data:image;base64,${this.state.avatares[j].img}`}
+                    alt={this.state.avatares[j].descripcion}></img>
+                    </div>
+                
+                    <div className="col-md-8">
+                        <div className="card-body" >
+                            <h5 className="card-title">{this.state.avatares[j].nombre}</h5>
+                            <p className="card-text">{this.state.avatares[j].descripcion}</p>
+                            
+                        </div>
+                    </div>
                 </div>
-            }
+                {!equipado && <div className="card-footer">
+                    <Button variant="primary" id={this.state.avatares[j].id} onClick={(e) => this.equiparCosmetico(e, "Avatar equipado")}>Equipar avatar</Button>
+                </div>}
+                {equipado && <div className="card-footer">
+                    <Button variant="success" disabled>Avatar equipado</Button>
+                </div>}
+            </div>
+            avataresArr.push(avatar);
         }
         
 
         return (
-        <div className="cen">
+        <div className="cen personalizacion">
             <BarraSuperiorGeneral></BarraSuperiorGeneral>
-            <h1>Personalizacion</h1>
-
-            <button onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>Avatares</button>
-            <button onClick={() => {this.setState({mostrarAvatares: false, mostrarDados: true})}}>Dados</button>
-
+            <div className="contenedorTituloPersonalizacion">
+                <text className="tituloPersonalizacion">Personalizacion</text>
+            </div>
+            <br/>
+            <ButtonGroup>
+                <Button variant="primary" onClick={() => {this.setState({mostrarAvatares: true, mostrarDados: false})}}>
+                    Avatares
+                </Button>
+                <Button variant="primary" onClick={() => {this.setState({mostrarAvatares: false, mostrarDados: true})}}>
+                    Dados
+                </Button>
+            </ButtonGroup>
+            <br/><br/>
             {this.state.mostrarAvatares && 
-                <div className="avatares">
-                    <h2>Avatar equipado</h2> {avatarEquipado}
-                    <h2>Avatares disponibles</h2> {avataresArr}
+                <div className="container">
+                    <div className="row">
+                        {avataresArr}
+                        {avataresArr.length % 2 === 1 && cardVacio}
+                    </div>
                 </div>}
-            {this.state.mostrarDados && <div className="dados">
-                    <h2>Dados equipados</h2> {dadoEquipado}
-                    <h2>Dados disponibles</h2> {dadosArr}
+            {this.state.mostrarDados &&
+                <div className="container">
+                    <div className="row">
+                        {dadosArr}
+                        {dadosArr.length % 2 === 1 && cardVacio}
+                    </div>
                 </div>}
+            <br/><br/><br/>
             <BarraInferior></BarraInferior>
         </div>
         );  

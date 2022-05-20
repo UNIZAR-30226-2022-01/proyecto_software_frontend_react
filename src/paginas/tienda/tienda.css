@@ -1,3 +1,22 @@
+.contenedorTituloTienda {
+    border-radius: 10px;
+    background-color: rgb(28,28,30);
+    margin-top: 1.5%;
+    width: 25%;
+    height: 15%;
+    display: inline-block;
+    padding: 10px 0;
+    margin-bottom: 1%;
+}
+
+.tituloTienda {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: rgb(229, 229, 234);
+    font-size: 40px;
+    font-weight: 800;
+    padding: 10px 0;
+}
+
 .tienda {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     text-align: center;
@@ -21,13 +40,14 @@
     height: auto;
 }
 
-.card {
+.cardTienda {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    width: 80%;
+    width: 40%;
     height: 10%;
     margin: auto;
     color: black;
     text-align: left;
+    padding: 0%;
 }
 
 .avatares {
