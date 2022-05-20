@@ -52,10 +52,12 @@ export default class BuscarPartida extends React.Component {
           amigosPresentesArr.push(response[i]['AmigosPresentes']);
           numAmigosPresentesArr.push(response[i]['NumAmigosPresentes']);
         }
+        
         this.setState({idPartida: idPartidaArr});
         this.setState({esPublica: esPublicaArr});
         this.setState({numJugadores: numJugadoresArr});
         this.setState({maxJugadores: maxJugadoresArr});
+
         if (amigosPresentesArr.length > 0) {
           this.setState({amigosPresentes: amigosPresentesArr});
         }
@@ -63,13 +65,6 @@ export default class BuscarPartida extends React.Component {
       }
 		})
 		.catch((e) => {
-      this.setState({numPartidas: 4});
-      this.setState({idPartida: [1,2,3,4]});
-        this.setState({esPublica: [false,true,true,false]});
-        this.setState({numJugadores: [1,2,3,2]});
-        this.setState({maxJugadores: [3,4,5,6]});
-        this.setState({amigosPresentes: ["", "papi", ["guille, ", "mapach"], "zineb"]});
-        this.setState({numAmigosPresentes: [0,1,2,1]});
       swal.fire({
         title: 'Se ha producido un error al obtener las partidas actuales',
         text: e,

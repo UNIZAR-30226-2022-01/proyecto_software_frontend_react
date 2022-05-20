@@ -95,7 +95,6 @@ export default class Amigos extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -130,15 +129,12 @@ export default class Amigos extends React.Component {
 
     enviarSolicitudAmistad(e) {
         let nombre = e.currentTarget.name;
-        let boton = e;
-        console.log("Enviando solicitud de amistad a:" + nombre)
         fetch(`http://localhost:8090/api/enviarSolicitudAmistad/${nombre}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -164,14 +160,12 @@ export default class Amigos extends React.Component {
 
     aceptarSolicitud(e) {
         let usuario = e.currentTarget.name;
-        console.log("Aceptando la solicitud de amistad de:" + usuario)
         fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${usuario}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -200,16 +194,13 @@ export default class Amigos extends React.Component {
     }
 
     buscarUsuarios() {
-        console.log("Inicio buscar usuarios")
         let patron = document.getElementById("busqueda").value;
-        console.log("Buscar:" + patron);
         fetch(`http://localhost:8090/api/obtenerUsuariosSimilares/${patron}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -217,7 +208,6 @@ export default class Amigos extends React.Component {
         })
         .then((response) => {
             if (response.localeCompare("null\n") === 0) {
-                console.log("No hay coincidencias");
                 this.setState({usuarios: <h3>No se ha encontrado ningún usuario</h3>});
             }
             else {
@@ -227,7 +217,6 @@ export default class Amigos extends React.Component {
                 for (var i=0; i < response.length; i++) {
                     // TODO limpiar un poco esto
                     let id = "boton:" + response[i]["Nombre"];
-                    console.log("Sol recibida: "+response[i]["SolicitudRecibida"]+ ", solicitud pendiente: "+response[i]["SolicitudPendiente"])
                     if (response[i]["SolicitudRecibida"]) {
                         usuariosArr.push(<div className='infoUsuario' key={i}>
                             <h3>{response[i]["Nombre"]}</h3> 

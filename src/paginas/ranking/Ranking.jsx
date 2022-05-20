@@ -62,7 +62,6 @@ export default class Ranking extends React.Component {
       credentials: 'include'
     })
     .then((response) => {
-      console.log('Respuesta recibida de la api');
       if (!response.ok) {
         return response.text().then(text => {throw new Error(text)});
       }

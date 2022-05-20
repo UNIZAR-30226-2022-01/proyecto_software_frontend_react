@@ -16,3 +16,14 @@
   padding: 10px 0;
   margin-bottom: 3.5%;
 }
+
+.contenedorNotificaciones {
+  border: 1px solid #fafafa;
+  width: 60%;
+  height: 450px;
+  margin-top: 1%;
+  margin-right: 4%;
+  margin: auto;
+  padding-top: 0.1%;
+  padding-bottom: 3%;
+}

@@ -13,7 +13,6 @@ const emailValidoRegex = RegExp(
 export default class Perfil extends React.Component {
     constructor(props) {
         const usuario = localStorage.getItem('nombre_usuario');
-        console.log('Construyo un nuevo componente perfil');
         super(props);
         this.state = {
             email: null,
@@ -69,7 +68,6 @@ export default class Perfil extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -93,7 +91,6 @@ export default class Perfil extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -126,7 +123,6 @@ export default class Perfil extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -159,7 +155,6 @@ export default class Perfil extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -182,14 +177,12 @@ export default class Perfil extends React.Component {
     }
 
     aceptarSolicitud() {
-        console.log("Aceptando la solicitud de amistad de:" + this.state.nombre_usuario)
         fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${this.state.nombre_usuario}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -214,9 +207,8 @@ export default class Perfil extends React.Component {
     }
 
     cambiarEmail() {
-        if (this.state.errorEmail == "") {
+        if (this.state.errorEmail === "") {
             let email = document.getElementById("nuevoEmail").value;
-            console.log("Nuevo email del usuario:" + email)
             fetch('http://localhost:8090/api/modificarEmail', {
                 method: 'post',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -226,7 +218,6 @@ export default class Perfil extends React.Component {
                 credentials: 'include'
             })
             .then((response) => {
-                console.log('Respuesta recibida de la api');
                 if (!response.ok) {
                     return response.text().then(text => {throw new Error(text)});
                 }
@@ -252,8 +243,7 @@ export default class Perfil extends React.Component {
     }
 
     cambiarPassword() {
-        if (this.state.errorPassword == "" && this.state.errorPasswordRepetida == "") {
-            console.log("Cambiando la contraseña del usuario")
+        if (this.state.errorPassword === "" && this.state.errorPasswordRepetida === "") {
             fetch('http://localhost:8090/api/resetearPasswordEnLogin', {
                 method: 'post',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -264,7 +254,6 @@ export default class Perfil extends React.Component {
                 credentials: 'include'
             })
             .then((response) => {
-                console.log('Respuesta recibida de la api');
                 if (!response.ok) {
                     return response.text().then(text => {throw new Error(text)});
                 }
@@ -299,7 +288,7 @@ export default class Perfil extends React.Component {
     comprobarPasswordsIguales() {
         let pw1 = document.getElementById("newPassword").value;
         let pw2 = document.getElementById("repetirPassword").value;
-        if (pw2 == "") {
+        if (pw2 === "") {
             this.setState({errorPasswordRepetida: ""});
         }
         else {
@@ -321,7 +310,6 @@ export default class Perfil extends React.Component {
     render() {
         let solicitudAmistad = null;
         let modBio = null;
-        console.log('Sol enviada:'+this.state.solicitudPendiente+' , sol recibida:'+this.state.solicitudRecibida)
         if (!this.state.es_usuario && !this.state.es_amigo && !this.state.solicitudPendiente && !this.state.solicitudRecibida) {
             // Si no es amigo aparece un botón para solicitar amistad
             // Ni hay solicitudes pendientes
@@ -343,7 +331,6 @@ export default class Perfil extends React.Component {
             modBio = <button onClick={this.modificarBiografia}>Modificar biografía</button>
             document.getElementById("bio").disabled = false;
         }
-        console.log('Nuevo render');
         return (
             <div className="cen">
 
@@ -363,17 +350,17 @@ export default class Perfil extends React.Component {
             {this.state.es_usuario && 
                 <div>
                     <h3>Tu correo electrónico {this.state.email}</h3>
-                    <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: false, mostrarCambioPassword: true})}}>
-                        ¿Quieres cambiar tu contraseña?</a>
+                    <button onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: false, mostrarCambioPassword: true})}}>
+                        ¿Quieres cambiar tu contraseña?</button>
                     <br/>
-                    <a href="#" onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: true, mostrarCambioPassword: false})}}>
-                        ¿Quieres cambiar tu correo electrónico?</a>
+                    <button onClick={(e)=> {e.preventDefault(); this.setState({mostrarCambioEmail: true, mostrarCambioPassword: false})}}>
+                        ¿Quieres cambiar tu correo electrónico?</button>
                 </div>
             }
 
             {this.state.mostrarCambioEmail && 
                 <div className="contenedorFormulario">
-                    <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+                    <iframe title="iframeAux" name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
                     <form onSubmit={this.cambiarEmail} target="frameAux">
                         <Form.Control
                             id="nuevoEmail" 
@@ -390,7 +377,7 @@ export default class Perfil extends React.Component {
 
             {this.state.mostrarCambioPassword &&
                 <div className="contenedorFormulario">
-                <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+                <iframe title="iframeAux" name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
                 <form onSubmit={this.cambiarPassword} target="frameAux">
                     <Form.Control
                         id="oldPassword" 
