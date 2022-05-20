@@ -2,7 +2,7 @@ import React from 'react';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
-import { Button, Form} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import "./perfil.css";
 import queryString from 'query-string';
 
@@ -319,7 +319,7 @@ export default class Perfil extends React.Component {
                     swal.showValidationMessage(`La contraseña debe tener al menos 8 caracteres`)
                 }
 
-                if (pw1 != pw2) {
+                if (pw1 !== pw2) {
                     swal.showValidationMessage(`La nueva contraseña y la contraseña repetida deben coincidir`)
                 }
                 return { oldPassword: pw0, newPassword: pw1 }

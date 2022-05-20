@@ -4,7 +4,7 @@ import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSu
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import {Button, ButtonGroup, Form} from 'react-bootstrap';
 import "./amigos.css";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export default class Amigos extends React.Component {
     constructor(props) {

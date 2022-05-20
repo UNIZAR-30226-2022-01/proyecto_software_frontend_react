@@ -23,7 +23,7 @@ export default class Notificaciones extends React.Component {
 
   componentDidMount() {
     this.recuperarNotificaciones();
-    //this.interval = setInterval(() => this.recuperarNotificaciones(), 3000);
+    this.interval = setInterval(() => this.recuperarNotificaciones(), 3000);
   }
 
   componentWillUnmount() {
@@ -72,6 +72,14 @@ export default class Notificaciones extends React.Component {
       }
     })
     .catch((e) => {
+      /*this.setState({idNotificaciones: [0,1,2,3]});
+      this.setState({jugadores: ["emii", "", "", ""]});
+      this.setState({jugadoresPrevios: ["", "zineb helali", "", ""]});
+      this.setState({puntos: [0,0,20,40]});
+      this.setState({partidasSonGanadas: [false,false,false,false]});
+      this.setState({hayNotificaciones: false});
+      this.setState({numNotificaciones: 4}); */
+
       swal.fire({
         title: 'Se ha producido un error al recuperar las notificaciones',
         text: e,

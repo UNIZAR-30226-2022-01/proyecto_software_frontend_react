@@ -19,14 +19,9 @@
   border-radius: 15px;
   padding: 1%;
   display: inline-block;
-} 
-
-.imagenNotificacionesVacia {
-  border-radius: 20%;
-  filter: invert(100%);
 }
 
-.infoVacia {
+.infoNotificacionVacia {
   margin-top: 10px;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   color:#fafafa;
@@ -34,11 +29,72 @@
   font-weight: 550;
 }
 
-.contenedorInfoNotificacion{
-
+.imagenNotificacionesVacia {
+  border-radius: 20%;
+  filter: invert(100%);
 }
 
+.infoNotificacion {
+  margin-top: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color:#000000;
+  font-size: 18px;
+  font-weight: 430;
+}
 
-.notificacion{
+.contenedorInfoNotificacion {
+  border: 1px solid #fafafa; 
+  margin-bottom: 1.25%;
+  display: inline-block;
+  position: center;
+  width: 750px;
+  height: 90px;
+  margin-top: 0.75%;
+  padding: 25px;
+  margin-bottom: 0.5%;
+}
 
+.notificacionRecibirPuntos {
+  border: 2.5px solid #fafafa; 
+  margin-bottom: 1.25%;
+  display: inline-block;
+  position: center;
+  width: 750px;
+  height: 70px;
+  margin-top: 0.75%;
+  padding: 11px;
+  margin-bottom: 0.5%;
+}
+
+.imagenNotificacion {
+  /* border: 1px solid #fafafa; */
+  display: inline-block;
+  padding-left: 2%;
+  filter: invert(100%);
+}
+
+.botonNotificacion {
+  display: inline-block;
+  position: right;
+  margin-top: 0.75%;
+  padding-left: 15px;
+}
+
+.botonNotificacion2 {
+  display: inline-block;
+  position: right;
+  margin-top: 0.75%;
+  padding-left: 15px;
+}
+
+.notificacionExpulsion {
+  border: 2.5px solid #fafafa; 
+  margin-bottom: 1.25%;
+  display: inline-block;
+  position: center;
+  width: 750px;
+  height: 70px;
+  margin-top: 0.75%;
+  padding: 18px;
+  margin-bottom: 0.5%;
 }
