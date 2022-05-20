@@ -2,7 +2,7 @@ import React from 'react';
 import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
-import { Card, Column, Button, ButtonGroup} from 'react-bootstrap';
+import { Button, ButtonGroup} from 'react-bootstrap';
 import "./tienda.css";
 
 export default class Tienda extends React.Component {
@@ -41,14 +41,14 @@ export default class Tienda extends React.Component {
     // Obtener la imagen de uno de los cosméticos de la tienda id
     obtenerImagen(id) {
         for (var i = 0; i < this.state.avataresTienda.length; i++) {
-            if (id == this.state.avataresTienda[i].id) {
+            if (id === this.state.avataresTienda[i].id) {
                 return this.state.avataresTienda[i].img;
             }
         }
 
-        for (var i = 0; i < this.state.dadosTienda.length; i++) {
-            if (id == this.state.dadosTienda[i].id) {
-                return this.state.dadosTienda[i].img;
+        for (var j = 0; j < this.state.dadosTienda.length; j++) {
+            if (id === this.state.dadosTienda[j].id) {
+                return this.state.dadosTienda[j].img;
             }
         }
 
@@ -58,14 +58,14 @@ export default class Tienda extends React.Component {
     // Obtener el precio de uno de los cosméticos de la tienda por id
     obtenerPrecio(id) {
         for (var i = 0; i < this.state.avataresTienda.length; i++) {
-            if (id == this.state.avataresTienda[i].id) {
+            if (id === this.state.avataresTienda[i].id) {
                 return this.state.avataresTienda[i].precio;
             }
         }
 
-        for (var i = 0; i < this.state.dadosTienda.length; i++) {
-            if (id == this.state.dadosTienda[i].id) {
-                return this.state.dadosTienda[i].precio;
+        for (var j = 0; j < this.state.dadosTienda.length; j++) {
+            if (id === this.state.dadosTienda[j].id) {
+                return this.state.dadosTienda[j].precio;
             }
         }
 
@@ -80,7 +80,6 @@ export default class Tienda extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -106,7 +105,6 @@ export default class Tienda extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -118,7 +116,6 @@ export default class Tienda extends React.Component {
                 coleccionArr.push(response[i]["Id"]);
             }
 
-            console.log(coleccionArr)
             this.setState({coleccion: coleccionArr});
         })
         .catch((e) => {
@@ -138,7 +135,6 @@ export default class Tienda extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -208,7 +204,6 @@ export default class Tienda extends React.Component {
                     });
                     
                     // Actualizamos los puntos del jugador y su colección de objetos
-                    //console.log("Actualizando coleccion:"+this.state.coleccion)
                     this.setState({coleccion: this.state.coleccion.concat(idCosmetico)})
                     this.setState({puntos: this.state.puntos - precio})
                 })
@@ -233,7 +228,7 @@ export default class Tienda extends React.Component {
         for (var i=0; i < this.state.dadosTienda.length; i++) {
             let comprado = false;
             for (var j=0; j < this.state.coleccion.length; j++) {
-                if (this.state.coleccion[j] == this.state.dadosTienda[i].id) {
+                if (this.state.coleccion[j] === this.state.dadosTienda[i].id) {
                     comprado = true;
                 }
             }
@@ -271,10 +266,10 @@ export default class Tienda extends React.Component {
         }
 
         // Creamos la lista de avatares a mostrar
-        for (var i=0; i < this.state.avataresTienda.length; i++) {
+        for (let i=0; i < this.state.avataresTienda.length; i++) {
             let comprado = false;
-            for (var j=0; j < this.state.coleccion.length; j++) {
-                if (this.state.coleccion[j] == this.state.avataresTienda[i].id) {
+            for (let j=0; j < this.state.coleccion.length; j++) {
+                if (this.state.coleccion[j] === this.state.avataresTienda[i].id) {
                     comprado = true;
                 }
             }
@@ -340,7 +335,7 @@ export default class Tienda extends React.Component {
                             {avataresTienda.length % 2 === 1 && cardVacio}
                         </div>
                     </div>
-                    {avataresTienda.length == 0 && <div className="mensajeTiendaComprada"><br/><h4>Has comprado todos los avatares disponibles</h4></div>}
+                    {avataresTienda.length === 0 && <div className="mensajeTiendaComprada"><br/><h4>Has comprado todos los avatares disponibles</h4></div>}
 
                     <br/><br/>
                     <h3>Tu colección</h3> 
@@ -363,7 +358,7 @@ export default class Tienda extends React.Component {
                             {dadosTienda.length % 2 === 1 && cardVacio}
                         </div>
                     </div>
-                    {dadosTienda.length == 0 && <div className="mensajeTiendaComprada"><br/><h4>Has comprado todos los dados disponibles</h4></div>}
+                    {dadosTienda.length === 0 && <div className="mensajeTiendaComprada"><br/><h4>Has comprado todos los dados disponibles</h4></div>}
 
                     <br/><br/>
                     <h3>Tu colección</h3> 

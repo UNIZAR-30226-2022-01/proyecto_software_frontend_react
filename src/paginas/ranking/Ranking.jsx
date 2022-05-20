@@ -29,7 +29,7 @@ export default class Ranking extends React.Component {
   };
 
   calcularWinrate(partidasGanadas, partidasTotales) {
-    if (partidasTotales == 0) {
+    if (partidasTotales === 0) {
       return 0;
     } 
     else {
@@ -62,7 +62,6 @@ export default class Ranking extends React.Component {
       credentials: 'include'
     })
     .then((response) => {
-      console.log('Respuesta recibida de la api');
       if (!response.ok) {
         return response.text().then(text => {throw new Error(text)});
       }

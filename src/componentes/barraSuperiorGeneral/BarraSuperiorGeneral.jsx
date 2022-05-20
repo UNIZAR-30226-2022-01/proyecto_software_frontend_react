@@ -6,7 +6,7 @@ import Notificaciones from "../../imagenes/Notificaciones.png";
 import Amigos from "../../imagenes/Amigos.png";
 import Perfil from "../../imagenes/Perfil.png";
 import CerrarSesion from "../../imagenes/CerrarSesion.png";
-import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 import "./barraSuperior.css";
 
 export default class BarraSuperiorGeneral extends React.Component {

@@ -162,7 +162,7 @@ export default class InfoBuscarPartida extends React.Component {
             <div className="datosPartidaBuscada"> 
               {tipoPartida} ({this.state.numJugadores}/{this.state.maxJugadores}) 
               <div className="containerImagenBuscar">
-                <img className="candadoImagenI" src={Candado} height="30" width="30"/>
+                <img className="candadoImagenI" src={Candado} alt="candadoUsuario" height="30" width="30"/>
               </div>    
             </div>
             <div className="datosPartidaBuscada">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>
@@ -187,7 +187,7 @@ export default class InfoBuscarPartida extends React.Component {
             <div className="datosPartidaBuscada2"> 
               {tipoPartida} ({this.state.numJugadores}/{this.state.maxJugadores}) 
               <div className="containerImagenBuscar">
-                <img className="candadoImagen" src={Candado} height="30" width="30"/>
+                <img className="candadoImagen" src={Candado} alt="candadoUsuario" height="30" width="30"/>
               </div>    
             </div>
             <div className="datosPartidaBuscada2">Amigos ({this.state.numAmigosPresentes}): {this.state.amigosPresentes} </div>

@@ -1,0 +1,29 @@
+.textoH1Notificaciones {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: rgb(229, 229, 234);
+  font-size: 40px;
+  font-weight: 800;
+  padding: 10px 0;
+}
+
+.contenedorTituloNotificaciones{
+  border-radius: 10px;
+  background-color:rgb(28,28,30);
+  margin-top: 2.5%;
+  width: 25%;
+  height: 15%;
+  display: inline-block;
+  padding: 10px 0;
+  margin-bottom: 3.5%;
+}
+
+.contenedorNotificaciones {
+  border: 1px solid #fafafa;
+  width: 60%;
+  height: 450px;
+  margin-top: 1%;
+  margin-right: 4%;
+  margin: auto;
+  padding-top: 0.1%;
+  padding-bottom: 3%;
+}

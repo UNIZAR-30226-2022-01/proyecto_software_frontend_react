@@ -68,7 +68,7 @@ export default class InfoJugador extends React.Component {
 			<div id={this.state.id} className="jugador">
 				<div className="datosJugadores">
 					{this.state.usuario} &nbsp;&nbsp;
-					<img className="avatarUsuario" src={this.state.fotoPerfil} height="25" width="25"/>
+					<img className="avatarUsuario" src={this.state.fotoPerfil} alt="avatarUsuario" height="25" width="25"/>
 				</div>
 				<div className="datosJugadores">
 					<img src={Tropas} alt="tropas"/> {this.state.numTropas} &nbsp;&nbsp;

@@ -39,24 +39,18 @@ export default class Personalizacion extends React.Component {
 
     // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
     obtenerImagen(id) {
-        console.log("Buscando imagen del cosmetico: "+id)
         for (var i = 0; i < this.state.avatares.length; i++) {
-            console.log("Avatar "+i+", id: "+ this.state.avatares[i].id)
-            if (id == this.state.avatares[i].id) {
-                console.log("Avatar con id "+id+"encontrados")
+            if (id === this.state.avatares[i].id) {
                 return this.state.avatares[i].img;
             }
         }
 
         for (var j = 0; j < this.state.dados.length; j++) {
-            console.log("Dado "+j+", id: "+ this.state.dados[j].id)
-            if (id == this.state.dados[j].id) {
-                console.log("Dados con id "+id+"encontrados")
+            if (id === this.state.dados[j].id) {
                 return this.state.dados[j].img;
             }
         }
 
-        console.log("Return null")
         return null;
     }
 
@@ -68,7 +62,6 @@ export default class Personalizacion extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -94,7 +87,6 @@ export default class Personalizacion extends React.Component {
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }
@@ -127,14 +119,12 @@ export default class Personalizacion extends React.Component {
 
     equiparCosmetico(e, mensaje) {
         let img = this.obtenerImagen(e.currentTarget.id)
-        console.log("Equipando el cosmético: "+e.currentTarget.id);
         fetch(`http://localhost:8090/api/modificarAspecto/${e.currentTarget.id}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
         })
         .then((response) => {
-            console.log('Respuesta recibida de la api');
             if (!response.ok) {
                 return response.text().then(text => {throw new Error(text)});
             }

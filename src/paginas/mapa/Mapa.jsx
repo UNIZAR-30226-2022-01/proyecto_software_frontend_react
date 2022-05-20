@@ -243,7 +243,6 @@ export default class Mapa extends React.Component {
           allowOutsideClick: false
         })
         .then(() => {
-          console.log();
           let htmlText = 'Atacante: ' + this.state.resultadoDadosAtacante + ' <br>' +
             'Defensor: ' + this.state.resultadoDadosDefensor + ' <br> <br>' +
             '<img src=' + this.state.imagenes[0] +  ' height="70" width="70">';
@@ -384,7 +383,6 @@ export default class Mapa extends React.Component {
     }  else {
       tJ[indexJugador] = tJ[indexJugador] - parseInt(numTropas);
     }
-    console.log(tJ)
     this.setState({tropasJugadores: tJ});
     
     /* Actualizar valor territorios */
@@ -680,7 +678,6 @@ export default class Mapa extends React.Component {
 
   rellenarTerritorios() {
     if (this.state.indexAccionesIniciales === 42) {
-      console.log("dale")
       clearInterval(this.interval);
       this.interval = setInterval(() => this.comprobarAcciones(), 500);
     } 
@@ -776,7 +773,6 @@ export default class Mapa extends React.Component {
         this.setState({fase: response.Fase});
 
         // Tropas y cartas
-        console.log(Object.keys(response.EstadosJugadores).length)
         for (var i = 0; i < Object.keys(response.EstadosJugadores).length; i++) {
           var jugador = this.state.nombreJugadores[i];
           var estadoJugador = response.EstadosJugadores[jugador];
@@ -830,7 +826,6 @@ export default class Mapa extends React.Component {
       var acciones = this.state.accionesRestantes.concat(response);
       for (var i = this.state.indiceAccionesRestantes; i < Object.keys(acciones).length && !fin; i++) {
         var accion = acciones[i];
-        console.log(accion.IDAccion)
 
         switch (accion.IDAccion) {
           // IDAccionRecibirRegion----------------------------------------------------------------------------
