@@ -286,7 +286,7 @@ export default class Amigos extends React.Component {
             {this.state.amigos}
             <h2>Buscar usuarios</h2>
             
-            <iframe name="frameAux" id="frameAux" style={{display: 'none'}}></iframe>
+            <iframe title="iframeAux" name="frameAuxiliar" id="frameAux" style={{display: 'none'}}></iframe>
             <form onSubmit={this.buscarUsuarios} target="frameAux">
                 <input type="text" id="busqueda" name="busqueda" placeholder="Busca un usuario" onChange={this.actualizarBoton}></input>
                 <button type="submit" id="botonBuscar" onClick={this.buscarUsuarios}>Buscar</button>

@@ -75,8 +75,6 @@ export default class CrearPartida extends React.Component {
       <div className="cen">
       <BarraSuperiorGeneral></BarraSuperiorGeneral>
 
-
-
       <div className="contenedorTituloCrearPartida">
         <text className="textoH1CrearPartida">Crear partida</text>
       </div>

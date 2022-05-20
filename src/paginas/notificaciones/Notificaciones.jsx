@@ -7,26 +7,26 @@ import InfoNotificacion from "../../componentes/infoNotificacion/infoNotificacio
 
 // TODO poder hacer scroll en las notificaciones si ocupan más pantalla de la disponible
 export default class Notificaciones extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            hayNotificaciones: false,
-            notificacionesPrueba: '[{"IDNotificacion": 0, "Jugador": "mapachin"},{"IDNotificacion": 1, "JugadorPrevio": "mapachon"},'+
-            '{"IDNotificacion": 2, "Puntos": 20, "PartidaGanada": true}, {"IDNotificacion": 2, "Puntos": 5, "PartidaGanada": false}, {"IDNotificacion": 3}]',
-            numNotificaciones: 0,
-            idNotificaciones: [],
-            jugadores: [],
-            jugadoresPrevios: [],
-            puntos: [],
-            partidasSonGanadas: [],
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hayNotificaciones: false,
+      notificacionesPrueba: '[{"IDNotificacion": 0, "Jugador": "mapachin"},{"IDNotificacion": 1, "JugadorPrevio": "mapachon"},'+
+      '{"IDNotificacion": 2, "Puntos": 20, "PartidaGanada": true}, {"IDNotificacion": 2, "Puntos": 5, "PartidaGanada": false}, {"IDNotificacion": 3}]',
+      numNotificaciones: 0,
+      idNotificaciones: [],
+      jugadores: [],
+      jugadoresPrevios: [],
+      puntos: [],
+      partidasSonGanadas: [],
+    };
 
-        this.recuperarNotificaciones = this.recuperarNotificaciones.bind(this);
-    }
+    this.recuperarNotificaciones = this.recuperarNotificaciones.bind(this);
+  }
 
     componentDidMount() {
-        this.recuperarNotificaciones();
-        this.interval = setInterval(() => this.recuperarNotificaciones(), 3000);
+       this.recuperarNotificaciones();
+      //this.interval = setInterval(() => this.recuperarNotificaciones(), 3000);
     }
   
     componentWillUnmount() {
@@ -90,6 +90,7 @@ export default class Notificaciones extends React.Component {
         
     
     render() {
+        document.body.style.backgroundColor = "rgb(28,28,30)";
         // TODO mensaje de no tienes notificaciones si está vacío
         var notificaciones = [];
         var mensajeSinNotificaciones = null;
@@ -111,11 +112,18 @@ export default class Notificaciones extends React.Component {
         return (
             <div className="cen">
 
-            <BarraSuperiorGeneral></BarraSuperiorGeneral>
-            <h1>Notificaciones</h1>
-            {mensajeSinNotificaciones}
-            {notificaciones}
-            <BarraInferior></BarraInferior>
+              <BarraSuperiorGeneral></BarraSuperiorGeneral>
+
+              <div className="contenedorTituloNotificaciones">
+                <text className="textoH1Notificaciones">Notificaciones</text>
+              </div>
+  
+              {mensajeSinNotificaciones}
+              <div>
+                {notificaciones}
+              </div>
+              
+              <BarraInferior></BarraInferior>
             </div>
         );
     }

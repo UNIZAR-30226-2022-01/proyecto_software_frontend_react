@@ -29,7 +29,7 @@ export default class Ranking extends React.Component {
   };
 
   calcularWinrate(partidasGanadas, partidasTotales) {
-    if (partidasTotales == 0) {
+    if (partidasTotales === 0) {
       return 0;
     } 
     else {
