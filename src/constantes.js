@@ -1,4 +1,4 @@
 const Constantes = {
-    RUTA_API: 'http://localhost:8090'
+    RUTA_API: 'https://api.unizzardentertainment.tk'
   }
   export default Constantes;
