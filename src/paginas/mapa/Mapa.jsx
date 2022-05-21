@@ -315,6 +315,7 @@ export default class Mapa extends React.Component {
 
   handleCardButton() {
     if (this.state.habilitarCartas) {
+      clearInterval(this.interval);
       this.setState({irCartas: true});
     }
   };
@@ -995,6 +996,7 @@ export default class Mapa extends React.Component {
           // IDAccionJugadorEliminado----------------------------------------------------------------------------
           case 9: { 
             if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
+              clearInterval(this.interval);
               this.mostrarAlertaFin("Fin de la partida", 
                 "El jugador " + accion.JugadorEliminador + " te ha eliminado.");
               this.setState({finPartida: true});
@@ -1014,6 +1016,7 @@ export default class Mapa extends React.Component {
           // IDAccionJugadorExpulsado----------------------------------------------------------------------------
           case 10: { 
             if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
+              clearInterval(this.interval);
               this.mostrarAlertaFin("Fin de la partida", 
                 "Has sido expulsado.");
               this.setState({finPartida: true});
@@ -1097,10 +1100,12 @@ export default class Mapa extends React.Component {
     document.body.style.backgroundColor = "rgb(50,173,230)";
 
     if (this.state.finPartida) {
+      clearInterval(this.interval);
       return <Navigate to='/inicio'/>;
     }
 
     if (this.state.irCartas) {
+      clearInterval(this.interval);
       return <Navigate to='/cartas'/>;
     }
 
