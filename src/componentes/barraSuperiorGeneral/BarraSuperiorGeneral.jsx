@@ -60,7 +60,6 @@ export default class BarraSuperiorGeneral extends React.Component {
       return response.json();
     })
     .then((response) => {
-      console.log(response.Puntos)
       this.setState({puntos: response.Puntos});
     })
     .catch ((e) => {

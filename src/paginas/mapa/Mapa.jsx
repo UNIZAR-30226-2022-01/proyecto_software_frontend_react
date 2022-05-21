@@ -634,8 +634,6 @@ export default class Mapa extends React.Component {
 
   jugadorEliminado(jugador) {
     var indexJugador = this.state.nombreJugadores.indexOf(jugador);
-    //const vCJ = this.state.coloresJugadores;
-    //vCJ[indexJugador] = "#F8DDD7";
     const vCC = this.state.coloresInfo;
     vCC[indexJugador] = "#F8DDD7";
     this.setState({coloresInfo: vCC}); 
@@ -884,7 +882,7 @@ export default class Mapa extends React.Component {
               this.deshabilitarSeleccionar();
               this.deshabilitarCartas();
             }
-            //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+            this.interval = setInterval(() => this.comprobarAcciones(), 500);
             break;
           
           // IDAccionInicioTurno----------------------------------------------------------------------------
@@ -902,12 +900,13 @@ export default class Mapa extends React.Component {
               }
               return response.blob();
             })
-            // eslint-disable-next-line
             .then((blob) => { 
               let objectURL = URL.createObjectURL(blob);
  
               if (this.state.nombrePropioJugador === accion.Jugador) {
-                this.setState({numTropasReforzar: accion.TropasObtenidas});
+                if (accion.TropasObtenidas != 0) {
+                  this.setState({numTropasReforzar: accion.TropasObtenidas});
+                }
                 this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
                 accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
                 " territorios y " + accion.RazonContinentesOcupados + " continentes.", objectURL);
@@ -969,11 +968,11 @@ export default class Mapa extends React.Component {
 
           // IDAccionOcupar----------------------------------------------------------------------------
           case 6: {
-            if (accion.JugadorAtacante !== this.state.nombrePropioJugador) {
+            if (accion.JugadorOcupante !== this.state.nombrePropioJugador) {
               this.actualizarValorTerritorio(accion.Origen, accion.TropasOrigen);
-              this.actualizarTerritorio(accion.Destino, accion.TropasDestino, accion.JugadorAtacante);
-              this.actualizarInfoJugadores(accion.JugadorAtacante, 0, 1, 0);
-              this.actualizarInfoJugadores(accion.JugadorDefensor, 0, 1, 0, false);
+              this.actualizarTerritorio(accion.Destino, accion.TropasDestino, accion.JugadorOcupante);
+              this.actualizarInfoJugadores(accion.JugadorOcupante, 0, 1, 0);
+              this.actualizarInfoJugadores(accion.JugadorOcupado, 0, 1, 0, false);
             }
             break;
           }
@@ -1016,12 +1015,11 @@ export default class Mapa extends React.Component {
           case 10: { 
             if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
               this.mostrarAlertaFin("Fin de la partida", 
-                "Has sido expulsado por inactividad");
+                "Has sido expulsado.");
               this.setState({finPartida: true});
             } else {
               this.mostrarAlertaFin("Jugador eliminado", 
-                "El jugador " + accion.JugadorEliminado + " ha sido desconectado de la partida por inactividad." +
-                "Sus territorios pueden ser conquistados sin restricciones.");
+                "El jugador " + accion.JugadorEliminado + " ha sido desconectado de la partida.");
             }
             this.jugadorEliminado(accion.JugadorEliminado);
             break;
@@ -1029,6 +1027,7 @@ export default class Mapa extends React.Component {
 
           // IDAccionPartidaFinalizada----------------------------------------------------------------------------
           case 11: {
+            clearInterval(this.interval);
             if (accion.JugadorGanador === this.state.nombrePropioJugador) {
               swal.fire({
                 title: "Fin de la partida",

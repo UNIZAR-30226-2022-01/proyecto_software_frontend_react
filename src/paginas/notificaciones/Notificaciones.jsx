@@ -24,7 +24,6 @@ export default class Notificaciones extends React.Component {
 
   componentDidMount() {
     this.recuperarNotificaciones();
-    this.interval = setInterval(() => this.recuperarNotificaciones(), 3000);
   }
 
   componentWillUnmount() {
@@ -41,14 +40,13 @@ export default class Notificaciones extends React.Component {
       if (!response.ok) {
           return response.text().then(text => {throw new Error(text)});
       }
-      return response.text();
+      return response.json();
     })
     .then((response) => {
-      if (response.localeCompare("null\n") === 0) {
+      if (response == null) {
         this.setState({hayNotificaciones: false});
-      } 
+      }
       else {
-        response = JSON.parse(response);
         var idsArr = [];
         var jugadoresArr = [];
         var jugadoresPreviosArr = [];
