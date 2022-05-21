@@ -5,6 +5,7 @@ import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import { Button } from 'react-bootstrap';
 import "./perfil.css";
 import queryString from 'query-string';
+import Constantes from '../../constantes';
 
 const emailValidoRegex = RegExp(
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -60,7 +61,7 @@ export default class Perfil extends React.Component {
     }
 
     obtenerAvatar() {
-        fetch(`http://localhost:8090/api/obtenerFotoPerfil/${this.state.nombre_usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/obtenerFotoPerfil/${this.state.nombre_usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -83,7 +84,7 @@ export default class Perfil extends React.Component {
     }
     
     recuperarPerfil() {
-        fetch(`http://localhost:8090/api/obtenerPerfil/${this.state.nombre_usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/obtenerPerfil/${this.state.nombre_usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -120,7 +121,7 @@ export default class Perfil extends React.Component {
     }
 
     enviarSolicitudAmistad() {
-        fetch(`http://localhost:8090/api/enviarSolicitudAmistad/${this.state.nombre_usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/enviarSolicitudAmistad/${this.state.nombre_usuario}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -149,7 +150,7 @@ export default class Perfil extends React.Component {
     }
         
     modificarBiografia() {
-        fetch(`http://localhost:8090/api/modificarBiografia`, {
+        fetch(Constantes.RUTA_API + `/api/modificarBiografia`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             body: queryString.stringify({
@@ -180,7 +181,7 @@ export default class Perfil extends React.Component {
     }
 
     aceptarSolicitud() {
-        fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${this.state.nombre_usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/aceptarSolicitudAmistad/${this.state.nombre_usuario}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -210,7 +211,7 @@ export default class Perfil extends React.Component {
     }
 
     cambiarEmail(email) {
-        fetch('http://localhost:8090/api/modificarEmail', {
+        fetch(Constantes.RUTA_API + '/api/modificarEmail', {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             body: queryString.stringify({
@@ -244,7 +245,7 @@ export default class Perfil extends React.Component {
 
     cambiarPassword(oldPassword, newPassword) {
         if (this.state.errorPassword === "" && this.state.errorPasswordRepetida === "") {
-            fetch('http://localhost:8090/api/resetearPasswordEnLogin', {
+            fetch(Constantes.RUTA_API + '/api/resetearPasswordEnLogin', {
                 method: 'post',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: queryString.stringify({
@@ -394,8 +395,8 @@ export default class Perfil extends React.Component {
                     </div>
                     {this.state.es_usuario && 
                         <div>
-                        
-                        <a href="#" onClick={this.mostrarFormularioContraseña}>
+                            <br/><br/>
+                            <a href="#" onClick={this.mostrarFormularioContraseña}>
                                 ¿Quieres cambiar tu contraseña?</a>
                             <br/>
                             <a href="#" onClick={this.mostrarFormularioEmail}>

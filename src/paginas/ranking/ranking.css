@@ -1,3 +1,22 @@
+.contenedorTituloRanking {
+    border-radius: 10px;
+    background-color: rgb(28,28,30);
+    margin-top: 1.5%;
+    width: 25%;
+    height: 15%;
+    display: inline-block;
+    padding: 10px 0;
+    margin-bottom: 2.5%;
+}
+
+.tituloRanking {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: rgb(229, 229, 234);
+    font-size: 40px;
+    font-weight: 800;
+    padding: 10px 0;
+}
+
 .ranking {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     text-align: center;

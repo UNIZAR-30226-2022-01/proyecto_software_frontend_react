@@ -5,6 +5,7 @@ import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import { Link } from "react-router-dom";
 import { Table } from 'react-bootstrap';
 import "./ranking.css";
+import Constantes from '../../constantes';
 
 export default class Ranking extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ export default class Ranking extends React.Component {
   }
 
   recuperarRanking() {
-    fetch(`http://localhost:8090/api/ranking`, {
+    fetch(Constantes.RUTA_API + `/api/ranking`, {
       method: 'get',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
       credentials: 'include'
@@ -110,7 +111,6 @@ export default class Ranking extends React.Component {
     })
   }
 
-  // TODO, arreglar el scroll para que la bottom bar no se superponga a los jugadores de la parte baja del ranking
   render() {
     document.body.style.backgroundColor = "rgb(28,28,30)";
     let usuarioTop = false;
@@ -127,7 +127,9 @@ export default class Ranking extends React.Component {
     <div className="cen, ranking">
       <BarraSuperiorGeneral/>
       <br/>
-      <h1>Ranking</h1>
+      <div className="contenedorTituloRanking">
+        <text className="tituloRanking">Ranking</text>
+      </div>
       <br/>
       {!usuarioTop && 
       <Table className='table-fit' responsive variant="dark" striped bordered hover size="sm">

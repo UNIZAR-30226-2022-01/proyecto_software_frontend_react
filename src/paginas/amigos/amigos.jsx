@@ -5,6 +5,7 @@ import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import {Button, ButtonGroup, Form} from 'react-bootstrap';
 import "./amigos.css";
 import { Navigate } from "react-router-dom";
+import Constantes from '../../constantes';
 
 export default class Amigos extends React.Component {
     constructor(props) {
@@ -63,7 +64,7 @@ export default class Amigos extends React.Component {
         backdrop: true,
         showLoaderOnConfirm: true,
         preConfirm: () => {
-          return fetch(`http://localhost:8090/api/eliminarAmigo/${nombre}`, {
+          return fetch(Constantes.RUTA_API + `/api/eliminarAmigo/${nombre}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include' 
@@ -83,6 +84,8 @@ export default class Amigos extends React.Component {
             });
             // Actualizamos la lista de amigos
             this.recuperarAmigos();
+            // Actualizamos la búsqueda
+            this.buscarUsuarios();
           })
           .catch(error => {
             swal.showValidationMessage(`${error}`)
@@ -93,7 +96,7 @@ export default class Amigos extends React.Component {
     }
 
     recuperarAmigos() {
-        fetch(`http://localhost:8090/api/listarAmigos`, {
+        fetch(Constantes.RUTA_API + `/api/listarAmigos`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -137,7 +140,7 @@ export default class Amigos extends React.Component {
 
     enviarSolicitudAmistad(e) {
         let nombre = e.currentTarget.name;
-        fetch(`http://localhost:8090/api/enviarSolicitudAmistad/${nombre}`, {
+        fetch(Constantes.RUTA_API + `/api/enviarSolicitudAmistad/${nombre}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -168,7 +171,7 @@ export default class Amigos extends React.Component {
 
     aceptarSolicitud(e) {
         let usuario = e.currentTarget.name;
-        fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/aceptarSolicitudAmistad/${usuario}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -203,7 +206,7 @@ export default class Amigos extends React.Component {
 
     buscarUsuarios() {
         let patron = document.getElementById("busqueda").value;
-        fetch(`http://localhost:8090/api/obtenerUsuariosSimilares/${patron}`, {
+        fetch(Constantes.RUTA_API + `/api/obtenerUsuariosSimilares/${patron}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -239,7 +242,7 @@ export default class Amigos extends React.Component {
                     }
                     else if (response[i]["EsAmigo"]) {
                         botonAmistad = <Button variant="danger" className="botonAmigo" 
-                            onClick={this.eliminarAmigo} id={response[i]}>Eliminar Amigo</Button>
+                            onClick={this.eliminarAmigo} id={response[i]["Nombre"]}>Eliminar Amigo</Button>
                     }
 
                     let usuario = <div key={i}>
@@ -285,7 +288,6 @@ export default class Amigos extends React.Component {
             <div className="contenedorTituloSocial">
                 <text className="tituloSocial">Social</text>
             </div>
-            <br/>
             
             <div className="container">
                 <div className="row align-items-start">

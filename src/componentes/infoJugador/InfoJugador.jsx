@@ -4,6 +4,7 @@ import Territorios from "../../imagenes/territorios.png";
 import Tropas from "../../imagenes/soldier.png";
 import swal from 'sweetalert2';
 import "./infoJugador.css";
+import Constantes from '../../constantes';
 
 export default class InfoJugador extends React.Component {
 	constructor(props) {
@@ -22,7 +23,7 @@ export default class InfoJugador extends React.Component {
 	}
 
   obtenerFotoPerfil() {
-    fetch(`http://localhost:8090/api/obtenerFotoPerfil/${this.state.usuario}`, {
+    fetch(Constantes.RUTA_API + `/api/obtenerFotoPerfil/${this.state.usuario}`, {
       method: 'get',
       credentials: 'include'
     })

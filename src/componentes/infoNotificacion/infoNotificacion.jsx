@@ -6,6 +6,7 @@ import Robot from "../../imagenes/robot.png";
 import Confetti from "../../imagenes/confetti.png";
 import SadFace from "../../imagenes/sad-face.png";
 import "./infoNotificacion.css";
+import Constantes from '../../constantes';
 
 export default class InfoNotificacion extends React.Component {
 	constructor(props) {
@@ -50,7 +51,7 @@ export default class InfoNotificacion extends React.Component {
 
   aceptarSolicitudAmistad(e) {
     let nombre = e.currentTarget.id;
-    fetch(`http://localhost:8090/api/aceptarSolicitudAmistad/${nombre}`, {
+    fetch(Constantes.RUTA_API + `/api/aceptarSolicitudAmistad/${nombre}`, {
       method: 'post',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
       credentials: 'include'
@@ -79,7 +80,7 @@ export default class InfoNotificacion extends React.Component {
 
   rechazarSolicitudAmistad(e) {
     let nombre = e.currentTarget.id;
-    fetch(`http://localhost:8090/api/rechazarSolicitudAmistad/${nombre}`, {
+    fetch(Constantes.RUTA_API + `/api/rechazarSolicitudAmistad/${nombre}`, {
       method: 'post',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
       credentials: 'include'
@@ -146,6 +147,7 @@ export default class InfoNotificacion extends React.Component {
               <button type="button" class="btn btn-outline-success botonNotificacion" id={this.state.jugador} size="lg" onClick={(e) => this.aceptarSolicitudAmistad(e)}>
                   Aceptar
               </button>
+              &nbsp; &nbsp;
               <button type="button" class="btn btn-outline-danger botonNotificacion2" id={this.state.jugador} size="lg" onClick={(e) => this.rechazarSolicitudAmistad(e)}>
                   Cancelar
               </button>
@@ -170,7 +172,7 @@ export default class InfoNotificacion extends React.Component {
         // Recibir puntos
         let mensaje;
         if (this.state.partidaGanada) { // Ganar Partida
-          mensaje = "¡Enhorabuena! Has recibido " + this.state.puntos + " por ganar.";
+          mensaje = "¡Enhorabuena! Has recibido " + this.state.puntos + " puntos por ganar.";
           return (
             <div className="card border-primary mb-3 notificacionRecibirPuntos">
               <text className="infoNotificacion"> 

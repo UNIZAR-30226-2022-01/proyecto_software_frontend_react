@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import queryString from 'query-string';
 import Candado from "../../imagenes/candado.png";
 import "./infoBuscarPartida.css";
+import Constantes from '../../constantes';
 
 export default class InfoBuscarPartida extends React.Component {
 	constructor(props) {
@@ -47,7 +48,7 @@ export default class InfoBuscarPartida extends React.Component {
       reverseButtons: true,
       showLoaderOnConfirm: true,
 			preConfirm: () => {
-				return fetch('http://localhost:8090/api/unirseAPartida', {
+				return fetch(Constantes.RUTA_API + '/api/unirseAPartida', {
 					method: 'post',
 					headers: {'Content-Type':'application/x-www-form-urlencoded'},
 					body: queryString.stringify({
@@ -99,7 +100,7 @@ export default class InfoBuscarPartida extends React.Component {
 				}
 			},
 			preConfirm: (password) => {
-				return fetch('http://localhost:8090/api/unirseAPartida', {
+				return fetch(Constantes.RUTA_API + '/api/unirseAPartida', {
 					method: 'post',
 					headers: {'Content-Type':'application/x-www-form-urlencoded'},
 					body: queryString.stringify({

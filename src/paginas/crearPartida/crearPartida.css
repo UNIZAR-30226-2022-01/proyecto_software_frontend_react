@@ -9,12 +9,12 @@
 .contenedorTituloCrearPartida {
   border-radius: 10px;
   background-color:rgb(28,28,30);
-  margin-top: 2.5%;
+  margin-top: 3%;
   width: 25%;
   height: 15%;
   display: inline-block;
   padding: 10px 0;
-  margin-bottom: 3.5%;
+  margin-bottom: 3%;
 }
 
 .contenedorCrearPartida {
@@ -22,7 +22,6 @@
   background-color: rgb(229, 229, 234);
   margin-top: 0.5%;
   width: 45%;
-  height: 460px;
   display: inline-block;
   padding: 15px 0;
   margin-bottom: 3.5%;
@@ -35,6 +34,7 @@
   font-weight: 500;
   padding: 2px 0;
   margin-top: 10px;
+  margin-bottom: 3%;
 }
 
 .boxCrearPartida {

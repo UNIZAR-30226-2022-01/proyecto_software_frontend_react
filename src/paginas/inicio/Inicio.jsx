@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./inicio.css";
+import Constantes from '../../constantes';
 
 export default class Inicio extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class Inicio extends React.Component {
   }
 
   jugadorEnPartida() {
-    fetch('http://localhost:8090/api/jugandoEnPartida', {
+    fetch(Constantes.RUTA_API + '/api/jugandoEnPartida', {
       method: 'get',
       credentials: 'include'
     })
@@ -42,7 +43,7 @@ export default class Inicio extends React.Component {
   }
 
   jugadorEnLobby() {
-    fetch('http://localhost:8090/api/obtenerEstadoLobby', {
+    fetch(Constantes.RUTA_API + '/api/obtenerEstadoLobby', {
 			method: 'get',
       credentials: 'include'
 		})

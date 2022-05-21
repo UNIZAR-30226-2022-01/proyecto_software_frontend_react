@@ -8,6 +8,7 @@ import Perfil from "../../imagenes/Perfil.png";
 import CerrarSesion from "../../imagenes/CerrarSesion.png";
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import "./barraSuperior.css";
+import Constantes from '../../constantes';
 
 export default class BarraSuperiorGeneral extends React.Component {
   constructor(props) {
@@ -16,7 +17,6 @@ export default class BarraSuperiorGeneral extends React.Component {
 			nombre_usuario: this.getNombreUsuario(document.cookie),
       puntos: null,
       numNotificaciones: null,
-      numSolicitudes: null,
 			irIdentificacion: false,
       irInicio: false,
       irNotificacion: false,
@@ -28,19 +28,12 @@ export default class BarraSuperiorGeneral extends React.Component {
 	  this.cerrarSesion = this.cerrarSesion.bind(this);
     this.obtenerPuntos = this.obtenerPuntos.bind(this);
     this.obtenerNumNotificaciones = this.obtenerNumNotificaciones.bind(this);
-    this.obtenerNumSolicitudes = this.obtenerNumSolicitudes.bind(this);
 	}
  
 	componentDidMount() {
     this.obtenerPuntos();
-    //this.obtenerNumNotificaciones();
-    this.obtenerNumSolicitudes()
+    this.obtenerNumNotificaciones();
 	}
-
-  static getDerivedStateFromProps(newProps) {
-    // Para poder actualizar el contador de puntos al hacer una compra
-    return {puntos: newProps.puntos,};
-  }
 
   getNombreUsuario(nombre) {
 		if (nombre.length > 0) {
@@ -56,7 +49,7 @@ export default class BarraSuperiorGeneral extends React.Component {
   }
 
   obtenerPuntos() {
-    fetch(`http://localhost:8090/api/obtenerPerfil/${this.state.nombre_usuario}`, {
+    fetch(Constantes.RUTA_API + `/api/obtenerPerfil/${this.state.nombre_usuario}`, {
       method: 'get',
       credentials: 'include'
     })
@@ -67,6 +60,7 @@ export default class BarraSuperiorGeneral extends React.Component {
       return response.json();
     })
     .then((response) => {
+      console.log(response.Puntos)
       this.setState({puntos: response.Puntos});
     })
     .catch ((e) => {
@@ -79,7 +73,7 @@ export default class BarraSuperiorGeneral extends React.Component {
   }
 
   obtenerNumNotificaciones() {
-    fetch(`http://localhost:8090/api/obtenerNumeroNotificaciones`, {
+    fetch(Constantes.RUTA_API + `/api/obtenerNumeroNotificaciones`, {
       method: 'get',
       credentials: 'include'
     })
@@ -91,33 +85,6 @@ export default class BarraSuperiorGeneral extends React.Component {
     })
     .then((response) => {
       this.setState({numNotificaciones: response});
-    })
-    .catch ((e) => {
-      swal.fire({
-        title: 'Se ha producido un error al obtener las notificaciones del jugador',
-        text: e,
-        icon: 'error',
-      });
-    })
-  }
-
-  obtenerNumSolicitudes() {
-    fetch(`http://localhost:8090/api/obtenerSolicitudesPendientes`, {
-      method: 'get',
-      credentials: 'include'
-    })
-    .then((response) => {
-      if (!response.ok) {
-        return response.text().then(text => {throw new Error(text)});
-      }
-      return response.json();
-    })
-    .then((response) => {
-      if (response !== null) {
-        this.setState({numSolicitudes: Object.keys(response).length});
-      } else {
-        this.setState({numSolicitudes: 0});
-      }
     })
     .catch ((e) => {
       swal.fire({
@@ -183,7 +150,6 @@ export default class BarraSuperiorGeneral extends React.Component {
                 alt="Amigos"
                 onClick={() => this.setState({irAmigos: true})}
               />
-              <span className="badge badge-danger badge-counter">{this.state.numSolicitudes}</span>
               </Navbar.Brand >
               <Navbar.Brand>
               <img

@@ -12,6 +12,7 @@ import User from "../../imagenes/user.png";
 import World from "../../imagenes/world.png";
 import Fase from "../../imagenes/fase.png";
 import Chat from "../../imagenes/chat.png";
+import Constantes from '../../constantes';
 import "./mapa.css";
 
 const territorios = ["Australia_Oriental", "Indonesia", "Nueva_Guinea", "Alaska", "Ontario", "Territorio_del_Noroeste", "Venezuela", 
@@ -184,7 +185,7 @@ export default class Mapa extends React.Component {
       reverseButtons: true,
       showLoaderOnConfirm: true,
       preConfirm: (chat) => {
-        return fetch(`http://localhost:8090/api/enviarMensaje`, {
+        return fetch(Constantes.RUTA_API + `/api/enviarMensaje`, {
           method: 'post',
           credentials: 'include',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -204,7 +205,7 @@ export default class Mapa extends React.Component {
     // Atacante
     for (var i = 0; i < accion.DadosAtacante.length; i++) {
       resultadoDadosAtacante += parseInt(accion.DadosAtacante[i]);
-      fetch(`http://localhost:8090/api/obtenerDados/${accion.JugadorAtacante}/${accion.DadosAtacante[i]}`, {
+      fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorAtacante}/${accion.DadosAtacante[i]}`, {
         method: 'get',
         credentials: 'include'
       })
@@ -319,7 +320,7 @@ export default class Mapa extends React.Component {
   };
 
   handleFase() {
-    fetch('http://localhost:8090/api/pasarDeFase', {
+    fetch(Constantes.RUTA_API + '/api/pasarDeFase', {
       method: 'post',
       credentials: 'include'
     })
@@ -424,7 +425,7 @@ export default class Mapa extends React.Component {
       this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", accion.DadosAtacante.length - accion.TropasPerdidasAtacante, numTropasAtacante - 1);
       this.interval = setInterval(() => {
         if (this.state.resultadoAlerta > 0) {
-          fetch(`http://localhost:8090/api/ocupar/${accion.Destino}/${this.state.resultadoAlerta}`, {
+          fetch(Constantes.RUTA_API + `/api/ocupar/${accion.Destino}/${this.state.resultadoAlerta}`, {
             method: 'post',
             credentials: 'include'
           })
@@ -472,7 +473,7 @@ export default class Mapa extends React.Component {
           this.mostrarAlertaRangoAsincrona("Número de tropas a reforzar", 0, this.state.numTropasReforzar);
           this.interval = setInterval(() => {
             if (this.state.resultadoAlerta > 0) {
-              fetch(`http://localhost:8090/api/reforzarTerritorio/${idTerritorio}/${this.state.resultadoAlerta}`, {
+              fetch(Constantes.RUTA_API + `/api/reforzarTerritorio/${idTerritorio}/${this.state.resultadoAlerta}`, {
                 method: 'post',
                 credentials: 'include'
               })
@@ -527,7 +528,7 @@ export default class Mapa extends React.Component {
             this.mostrarAlertaRangoAsincrona("Número de dados ataque", 1, this.min(tropasAtacar - 1, 3));
             this.interval = setInterval(() => {
               if (this.state.resultadoAlerta > 0) {
-                fetch(`http://localhost:8090/api/atacar/${this.state.territorioOrigenAtaque}/${idTerritorio}/${this.state.resultadoAlerta}`, {
+                fetch(Constantes.RUTA_API + `/api/atacar/${this.state.territorioOrigenAtaque}/${idTerritorio}/${this.state.resultadoAlerta}`, {
                 method: 'post',
                 credentials: 'include'
                 })
@@ -575,7 +576,7 @@ export default class Mapa extends React.Component {
             this.mostrarAlertaRangoAsincrona("Número de tropas a fortificar", 0, tropasFortificar - 1);
             this.interval = setInterval(() => {
               if (this.state.resultadoAlerta > 0) {
-                fetch("http://localhost:8090/api/fortificar/" + this.state.territorioOrigenFortificar + "/" + idTerritorio + "/" + this.state.resultadoAlerta, {
+                fetch(Constantes.RUTA_API + "/api/fortificar/" + this.state.territorioOrigenFortificar + "/" + idTerritorio + "/" + this.state.resultadoAlerta, {
                 method: 'post',
                 credentials: 'include'
                 })
@@ -648,7 +649,7 @@ export default class Mapa extends React.Component {
   }
 
   obtenerNombreJugadores() {
-    fetch('http://localhost:8090/api/obtenerJugadoresPartida', {
+    fetch(Constantes.RUTA_API + '/api/obtenerJugadoresPartida', {
       method: 'get',
       credentials: 'include'
     })
@@ -711,7 +712,7 @@ export default class Mapa extends React.Component {
     this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", 1, numTropasAtacante - 1);
     this.interval = setInterval(() => {
       if (this.state.resultadoAlerta > 0) {
-        fetch(`http://localhost:8090/api/ocupar/${destino}/${this.state.resultadoAlerta}`, {
+        fetch(Constantes.RUTA_API + `/api/ocupar/${destino}/${this.state.resultadoAlerta}`, {
           method: 'post',
           credentials: 'include'
         })
@@ -746,7 +747,7 @@ export default class Mapa extends React.Component {
   }
 
   obtenerEstadoActualPartida() {
-    fetch('http://localhost:8090/api/resumirPartida', {
+    fetch(Constantes.RUTA_API + '/api/resumirPartida', {
       method: 'get',
       credentials: 'include'
     })
@@ -811,7 +812,7 @@ export default class Mapa extends React.Component {
   }
 
   comprobarAcciones() {
-    fetch('http://localhost:8090/api/obtenerEstadoPartida', {
+    fetch(Constantes.RUTA_API + '/api/obtenerEstadoPartida', {
       method: 'get',
       credentials: 'include'
     })
@@ -891,7 +892,7 @@ export default class Mapa extends React.Component {
             clearInterval(this.interval);
             this.setState({turno: accion.Jugador});
 
-            fetch(`http://localhost:8090/api/obtenerFotoPerfil/${accion.Jugador}`, {
+            fetch(Constantes.RUTA_API + `/api/obtenerFotoPerfil/${accion.Jugador}`, {
               method: 'get',
               credentials: 'include'
             })

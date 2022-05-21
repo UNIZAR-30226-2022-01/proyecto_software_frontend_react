@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import swal from 'sweetalert2';
 import { Button, Form, Navbar, Container } from 'react-bootstrap';
 import "./registrar.css";
+import Constantes from '../../constantes';
 
 const emailValidoRegex = RegExp(
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -95,7 +96,7 @@ export default class Registrar extends React.Component {
 		event.preventDefault();
 
 		if (validarFormato(this.state.errores)) {
-			fetch('http://localhost:8090/registro', {
+			fetch(Constantes.RUTA_API + '/registro', {
 			  method: 'post',
 			  headers: {'Content-Type':'application/x-www-form-urlencoded'},
 			  body: queryString.stringify({

@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import swal from 'sweetalert2';
 import { Button, Navbar, Container } from 'react-bootstrap';
 import "./cartas.css";
+import Constantes from '../../constantes';
 
 export default class Cartas extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ export default class Cartas extends React.Component {
   }
 
   obtenerCartas() {
-    fetch(`http://localhost:8090/api/consultarCartas`, {
+    fetch(Constantes.RUTA_API + `/api/consultarCartas`, {
       method: 'get',
       credentials: 'include'
     })
@@ -86,7 +87,7 @@ export default class Cartas extends React.Component {
 
   cambiarCartas() {
     if (this.state.carta1 !== null && this.state.carta2 !== null && this.state.carta3 !== null) {    
-      fetch(`http://localhost:8090/api/cambiarCartas/${this.state.carta1.IdCarta}/${this.state.carta2.IdCarta}/${this.state.carta3.IdCarta}`, {
+      fetch(Constantes.RUTA_API + `/api/cambiarCartas/${this.state.carta1.IdCarta}/${this.state.carta2.IdCarta}/${this.state.carta3.IdCarta}`, {
       method: 'post',
       credentials: 'include'
       })

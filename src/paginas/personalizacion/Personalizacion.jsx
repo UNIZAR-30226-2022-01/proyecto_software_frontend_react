@@ -4,6 +4,7 @@ import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSu
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import { Button, ButtonGroup} from 'react-bootstrap';
 import "./personalizacion.css";
+import Constantes from '../../constantes';
 
 export default class Personalizacion extends React.Component {
     constructor(props) {
@@ -40,13 +41,13 @@ export default class Personalizacion extends React.Component {
     // Obtener la imagen de uno de los cosméticos de la colección del usuario por id
     obtenerImagen(id) {
         for (var i = 0; i < this.state.avatares.length; i++) {
-            if (id === this.state.avatares[i].id) {
+            if (id == this.state.avatares[i].id) {
                 return this.state.avatares[i].img;
             }
         }
 
         for (var j = 0; j < this.state.dados.length; j++) {
-            if (id === this.state.dados[j].id) {
+            if (id == this.state.dados[j].id) {
                 return this.state.dados[j].img;
             }
         }
@@ -56,7 +57,7 @@ export default class Personalizacion extends React.Component {
 
     // Obtener el dado y el avatar que tiene equipado el usuario
     consultarEquipacion(usuario) {
-        fetch(`http://localhost:8090/api/obtenerPerfil/${usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/obtenerPerfil/${usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -81,7 +82,7 @@ export default class Personalizacion extends React.Component {
     }
 
     consultarColeccion(usuario) {
-        fetch(`http://localhost:8090/api/consultarColeccion/${usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/consultarColeccion/${usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -119,7 +120,7 @@ export default class Personalizacion extends React.Component {
 
     equiparCosmetico(e, mensaje) {
         let img = this.obtenerImagen(e.currentTarget.id)
-        fetch(`http://localhost:8090/api/modificarAspecto/${e.currentTarget.id}`, {
+        fetch(Constantes.RUTA_API + `/api/modificarAspecto/${e.currentTarget.id}`, {
             method: 'post',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -178,7 +179,7 @@ export default class Personalizacion extends React.Component {
                     <Button variant="primary" id={this.state.dados[i].id} onClick={(e) => this.equiparCosmetico(e, "Dados equipados")}>Equipar dados</Button>
                 </div>}
                 {equipado && <div className="card-footer">
-                    <Button variant="success">Dados equipados</Button>
+                    <Button variant="success" disabled>Dados equipados</Button>
                 </div>}
             </div>
             )

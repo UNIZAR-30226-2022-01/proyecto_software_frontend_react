@@ -5,6 +5,7 @@ import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSu
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import InfoBuscarPartida from "../../componentes/infoBuscarPartida/InfoBuscarPartida";
 import "./buscarPartida.css";
+import Constantes from '../../constantes';
 
 export default class BuscarPartida extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class BuscarPartida extends React.Component {
   }
 
   comprobarPartidas() {
-    fetch('http://localhost:8090/api/obtenerPartidas', {
+    fetch(Constantes.RUTA_API + '/api/obtenerPartidas', {
 			method: 'get',
       credentials: 'include'
 		})

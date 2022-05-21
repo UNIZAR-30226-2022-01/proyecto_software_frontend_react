@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import swal from 'sweetalert2';
 import { Button, Form, Navbar, Container } from 'react-bootstrap';
 import "./iniciarSesion.css";
+import Constantes from '../../constantes';
 
 export default class IniciarSesion extends React.Component {
 	constructor(props) {
@@ -36,7 +37,7 @@ export default class IniciarSesion extends React.Component {
 
 		//this.setState({irInicio:true});
 
-		fetch('http://localhost:8090/login', {
+		fetch(Constantes.RUTA_API + '/login', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
 			body: queryString.stringify({
@@ -94,7 +95,7 @@ export default class IniciarSesion extends React.Component {
 	}
 
 	solicitarToken(usuario) {		 
-		fetch('http://localhost:8090/obtenerTokenResetPassword', {
+		fetch(Constantes.RUTA_API + '/obtenerTokenResetPassword', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
 			body: queryString.stringify({
@@ -128,7 +129,7 @@ export default class IniciarSesion extends React.Component {
 		let password = document.getElementById("password").value;
 		let token = document.getElementById("token").value;
 		 
-		fetch('http://localhost:8090/resetearPassword', {
+		fetch(Constantes.RUTA_API + '/resetearPassword', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
 			body: queryString.stringify({
@@ -153,7 +154,6 @@ export default class IniciarSesion extends React.Component {
 		.catch((e) => {
 			swal.fire({
 				title: 'Se ha producido un error al cambiar la contraseña, inténtalo de nuevo',
-				timer: 4000,
 				text: e,
 				icon: 'error',
 			});

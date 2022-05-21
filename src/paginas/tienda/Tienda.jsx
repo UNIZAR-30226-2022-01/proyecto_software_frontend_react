@@ -3,7 +3,9 @@ import swal from 'sweetalert2';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import { Button, ButtonGroup} from 'react-bootstrap';
+import { Navigate } from "react-router-dom";
 import "./tienda.css";
+import Constantes from '../../constantes';
 
 export default class Tienda extends React.Component {
     constructor(props) {
@@ -15,6 +17,7 @@ export default class Tienda extends React.Component {
             dadosTienda: [],
             coleccion: [], // IDs de los cosméticos que ya ha comprado
             puntos: 0,
+            recargar: false,
         };
         this.consultarColeccion = this.consultarColeccion.bind(this);
         this.getNombreUsuario = this.getNombreUsuario.bind(this);
@@ -41,13 +44,13 @@ export default class Tienda extends React.Component {
     // Obtener la imagen de uno de los cosméticos de la tienda id
     obtenerImagen(id) {
         for (var i = 0; i < this.state.avataresTienda.length; i++) {
-            if (id === this.state.avataresTienda[i].id) {
+            if (id == this.state.avataresTienda[i].id) {
                 return this.state.avataresTienda[i].img;
             }
         }
 
         for (var j = 0; j < this.state.dadosTienda.length; j++) {
-            if (id === this.state.dadosTienda[j].id) {
+            if (id == this.state.dadosTienda[j].id) {
                 return this.state.dadosTienda[j].img;
             }
         }
@@ -74,7 +77,7 @@ export default class Tienda extends React.Component {
 
     // Obtener puntos del usuario
     obtenerPuntos(usuario) {
-        fetch(`http://localhost:8090/api/obtenerPerfil/${usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/obtenerPerfil/${usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -99,7 +102,7 @@ export default class Tienda extends React.Component {
 
     // Obtener la lista de objetos ya comprados por el usuario
     consultarColeccion(usuario) {
-        fetch(`http://localhost:8090/api/consultarColeccion/${usuario}`, {
+        fetch(Constantes.RUTA_API + `/api/consultarColeccion/${usuario}`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -129,7 +132,7 @@ export default class Tienda extends React.Component {
 
     // Consultar los objetos a la venta
     consultarTienda() {
-        fetch(`http://localhost:8090/api/consultarTienda`, {
+        fetch(Constantes.RUTA_API + `/api/consultarTienda`, {
             method: 'get',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             credentials: 'include'
@@ -184,7 +187,7 @@ export default class Tienda extends React.Component {
             backdrop: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                    return fetch(`http://localhost:8090/api/comprarObjeto/${idCosmetico}`, {
+                    return fetch(Constantes.RUTA_API + `/api/comprarObjeto/${idCosmetico}`, {
                     method: 'post',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     credentials: 'include' 
@@ -206,6 +209,8 @@ export default class Tienda extends React.Component {
                     // Actualizamos los puntos del jugador y su colección de objetos
                     this.setState({coleccion: this.state.coleccion.concat(idCosmetico)})
                     this.setState({puntos: this.state.puntos - precio})
+
+                    this.setState({recargar: true})
                 })
                 .catch(error => {
                     swal.showValidationMessage(`${error}`)
@@ -215,6 +220,11 @@ export default class Tienda extends React.Component {
     }
 
     render() {
+        if (this.state.recargar) {
+            this.setState({recargar: false});
+            return <Navigate to='/tienda'/>;
+        }
+
         document.body.style.backgroundColor = "rgb(28,28,30)";
         let dadosTienda = [];
         let dadosColeccion = [];
@@ -226,13 +236,13 @@ export default class Tienda extends React.Component {
         
         // Creamos la lista de dados a mostrar
         for (var i=0; i < this.state.dadosTienda.length; i++) {
-            let comprado = false;
+            var comprado = false;
             for (var j=0; j < this.state.coleccion.length; j++) {
-                if (this.state.coleccion[j] === this.state.dadosTienda[i].id) {
+                if (this.state.coleccion[j] == this.state.dadosTienda[i].id) {
                     comprado = true;
                 }
             }
-            let dado = <div className="card mb-3 cardTienda">
+            var dado = <div className="card mb-3 cardTienda">
                 <div className="row g-0 imagenDadoTienda">
                     <div className="col-md-4">
                     <img className="imagenDadoTienda" src={`data:image;base64,${this.state.dadosTienda[i].img}`}
@@ -243,9 +253,9 @@ export default class Tienda extends React.Component {
                         <div className="card-body" >
                             <h5 className="card-title">{this.state.dadosTienda[i].nombre}</h5>
                             <p className="card-text">{this.state.dadosTienda[i].descripcion}</p>
-                            
                         </div>
                     </div>
+                    <br/>
                 </div>
                 {!comprado && <div className="card-footer">
                     <button id={this.state.dadosTienda[i].id} 
@@ -269,7 +279,7 @@ export default class Tienda extends React.Component {
         for (let i=0; i < this.state.avataresTienda.length; i++) {
             let comprado = false;
             for (let j=0; j < this.state.coleccion.length; j++) {
-                if (this.state.coleccion[j] === this.state.avataresTienda[i].id) {
+                if (this.state.coleccion[j] == this.state.avataresTienda[i].id) {
                     comprado = true;
                 }
             }
@@ -323,12 +333,11 @@ export default class Tienda extends React.Component {
                     Dados
                 </Button>
             </ButtonGroup>
-            <br/>
-            <br/>
+            <br/><br/><br/>
             {this.state.mostrarAvatares && 
                 <div>
                     <h3>Avatares disponibles</h3> 
-                    <br/>
+                    <br/><br/>
                     <div className="container">
                         <div className="row">
                             {avataresTienda} 
@@ -351,7 +360,7 @@ export default class Tienda extends React.Component {
             {this.state.mostrarDados && 
                 <div>
                     <h3>Dados disponibles</h3> 
-                    <br/>
+                    <br/><br/>
                     <div className="container">
                         <div className="row">
                             {dadosTienda} 
@@ -362,7 +371,7 @@ export default class Tienda extends React.Component {
 
                     <br/><br/>
                     <h3>Tu colección</h3> 
-                    <br/>
+                    <br/><br/>
                     <div className="container">
                         <div className="row">
                             {dadosColeccion} 

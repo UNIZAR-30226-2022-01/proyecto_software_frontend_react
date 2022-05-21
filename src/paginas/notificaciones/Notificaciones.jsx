@@ -4,6 +4,7 @@ import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSu
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./notificaciones.css";
 import InfoNotificacion from "../../componentes/infoNotificacion/infoNotificacion.jsx";
+import Constantes from '../../constantes';
 
 export default class Notificaciones extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class Notificaciones extends React.Component {
   }
     
   recuperarNotificaciones() {
-    fetch(`http://localhost:8090/api/obtenerNotificaciones`, {
+    fetch(Constantes.RUTA_API + `/api/obtenerNotificaciones`, {
       method: 'get',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
       credentials: 'include'
@@ -76,9 +77,9 @@ export default class Notificaciones extends React.Component {
       this.setState({jugadores: ["emii", "", "", ""]});
       this.setState({jugadoresPrevios: ["", "zineb helali", "", ""]});
       this.setState({puntos: [0,0,20,40]});
-      this.setState({partidasSonGanadas: [false,false,false,false]});
-      this.setState({hayNotificaciones: false});
-      this.setState({numNotificaciones: 4}); */
+      this.setState({partidasSonGanadas: [false,false,true,false]});
+      this.setState({hayNotificaciones: true});
+      this.setState({numNotificaciones: 4});*/
 
       swal.fire({
         title: 'Se ha producido un error al recuperar las notificaciones',

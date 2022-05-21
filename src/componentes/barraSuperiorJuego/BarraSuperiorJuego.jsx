@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { Navbar, Container } from 'react-bootstrap';
 import WhiteFlag from "../../imagenes/white-flag.png";
 import "./barraSuperiorJuego.css";
+import Constantes from '../../constantes';
 
 export default class BarraSuperiorJuego extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class BarraSuperiorJuego extends React.Component {
       allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch('http://localhost:8090/api/abandonarPartida', {
+        fetch(Constantes.RUTA_API + '/api/abandonarPartida', {
           method: 'post',
           credentials: 'include'
         })

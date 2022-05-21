@@ -6,6 +6,7 @@ import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import InfoJugadorEspera from "../../componentes/infoJugadorEspera/InfoJugadorEspera";
 import { Button } from 'react-bootstrap';
 import "./lobbyPartida.css";
+import Constantes from '../../constantes';
 
 export default class LobbyPartida extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export default class LobbyPartida extends React.Component {
   handleLeaveButton(event) {
     event.preventDefault();
 
-		fetch('http://localhost:8090/api/abandonarLobby', {
+		fetch(Constantes.RUTA_API + '/api/abandonarLobby', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
 			credentials: 'include'
@@ -55,7 +56,7 @@ export default class LobbyPartida extends React.Component {
   };
 
   comprobarLobby() {
-    fetch('http://localhost:8090/api/obtenerEstadoLobby', {
+    fetch(Constantes.RUTA_API + '/api/obtenerEstadoLobby', {
 			method: 'get',
       credentials: 'include'
 		})

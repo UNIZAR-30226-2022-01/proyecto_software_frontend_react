@@ -6,6 +6,7 @@ import { Button, Form } from 'react-bootstrap';
 import BarraSuperiorGeneral from "../../componentes/barraSuperiorGeneral/BarraSuperiorGeneral";
 import BarraInferior from "../../componentes/barraInferior/BarraInferior";
 import "./crearPartida.css";
+import Constantes from '../../constantes';
 
 export default class CrearPartida extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ export default class CrearPartida extends React.Component {
 
   handleInputChange(event) {
 		event.preventDefault();
+    console.log("hola")
 		const target = event.target;
 		this.setState({
 			[target.name]: target.value,
@@ -32,7 +34,7 @@ export default class CrearPartida extends React.Component {
   handleSubmit(event) {    
     event.preventDefault();
 
-    fetch('http://localhost:8090/api/crearPartida', {
+    fetch(Constantes.RUTA_API + '/api/crearPartida', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
 			body: queryString.stringify({
@@ -83,6 +85,7 @@ export default class CrearPartida extends React.Component {
         
       <div className="contenedorCrearPartida">
         <form onSubmit={this.handleSubmit}>
+          <br></br>
           <h2 className="textoCrearPartida">Número de Jugadores</h2>
           <select name="maxJugadores" className="btn btn-outline-primary" onChange={this.handleInputChange}> 
             <option value="3" selected>3</option>
@@ -91,7 +94,7 @@ export default class CrearPartida extends React.Component {
             <option value="6">6</option>
           </select>
 
-          <br></br><br></br>
+          <br/><br/>
 
           <h2 className="textoCrearPartida">Tipo de partida</h2>
           <select name="tipoPartida" className="btn btn-outline-primary" onChange={this.handleInputChange}>
@@ -99,25 +102,27 @@ export default class CrearPartida extends React.Component {
             <option value="Privada">Privada</option>
           </select>
 
-        <br></br><br></br>
+          <br/><br/>
 
           {this.state.tipoPartida === "Privada" && 
           <div>
             <h2 className="textoCrearPartida">Contraseña</h2>
             <Form.Control
-              type="password" 
-              placeholder="Introduzca su contraseña..." 
-              value={this.state.contrasegna} 
-              onChange={this.handleInputChange} 
-              required
-              className="mb-3 form-floating boxCrearPartida"/> 
+							name="contrasegna"
+							type="password"
+							placeholder="Introduzca la contraseña..."
+							value={this.state.contrasegna}
+							onChange={this.handleInputChange}
+							required
+							className="mb-3 form-floating boxIniciarSesion"/>
           </div>
           }
 
-          <br></br>
+          <br/>
           <Button variant="primary" type="submit" size="lg">
           Crear Partida
           </Button>
+          <br/><br/>
         </form>  
       </div>
 
