@@ -25,7 +25,8 @@ export default class LobbyPartida extends React.Component {
 
   handleLeaveButton(event) {
     event.preventDefault();
-
+    
+    clearInterval(this.interval);
 		fetch(Constantes.RUTA_API + '/api/abandonarLobby', {
 			method: 'post',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'},
