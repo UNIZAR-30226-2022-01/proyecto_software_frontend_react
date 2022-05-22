@@ -72,6 +72,7 @@ export default class Mapa extends React.Component {
     this.mostrarAlertaInformativaAsincrona = this.mostrarAlertaInformativaAsincrona.bind(this);
     this.mostrarAlertaRangoAsincrona = this.mostrarAlertaRangoAsincrona.bind(this);
     this.mostrarAlertaInformativaAvatar = this.mostrarAlertaInformativaAvatar.bind(this);
+    this.mostrarAlertaInformativaAccion = this.mostrarAlertaInformativaAccion.bind(this);
     this.mostrarAlertaDados = this.mostrarAlertaDados.bind(this);
     this.mostrarAlertaChat = this.mostrarAlertaChat.bind(this);
     this.mostrarAlertaFin = this.mostrarAlertaFin.bind(this);
@@ -111,6 +112,26 @@ export default class Mapa extends React.Component {
       return a;
     }
     return b;
+  }
+
+  mostrarAlertaInformativaAccion(titulo, texto) {
+    const Toast = swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', swal.stopTimer)
+        toast.addEventListener('mouseleave', swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'info',
+      title: titulo,
+      text: texto
+    })
   }
 
   mostrarAlertaInformativaAsincrona(titulo, texto) {
@@ -452,9 +473,11 @@ export default class Mapa extends React.Component {
               icon: 'error',
             });
             this.setState({resultadoAlerta: null});
+            this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", accion.DadosAtacante.length - accion.TropasPerdidasAtacante, numTropasAtacante - 1);
           })
         } else if (this.state.resultadoAlerta === 0) {
           this.setState({resultadoAlerta: null});
+          this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", accion.DadosAtacante.length - accion.TropasPerdidasAtacante, numTropasAtacante - 1);
         }
       }, 500);
     } else {
@@ -833,11 +856,14 @@ export default class Mapa extends React.Component {
             const jAux = this.state.accionesIniciales;
             jAux.push(accion);
             this.setState({accionesIniciales: jAux});
+
+            if (accion.Jugador === this.state.nombrePropioJugador) {
+              this.setState({numTropasReforzar: accion.TropasRestantes});
+            }
             
             if (accion.Region === 41) {
               clearInterval(this.interval);
-              this.interval = setInterval(() => this.rellenarTerritorios(), 50);
-              this.setState({numTropasReforzar: accion.TropasRestantes});
+              this.interval = setInterval(() => this.rellenarTerritorios(), 80);
               this.setState({accionesRestantes: response});
               this.setState({indiceAccionesRestantes: ++i});
               fin = true;
@@ -963,6 +989,9 @@ export default class Mapa extends React.Component {
               this.actualizarInfoJugadores(accion.JugadorDefensor, accion.TropasPerdidasDefensor, 0, 0, false);
               this.sumarRestarValorTerritorio(accion.Origen, accion.TropasPerdidasAtacante, false);
               this.sumarRestarValorTerritorio(accion.Destino, accion.TropasPerdidasDefensor, false);
+              this.mostrarAlertaInformativaAccion("Ataque realizado", "El jugador " + accion.JugadorAtacante + " ha perdido " 
+                + accion.TropasPerdidasAtacante + " en " + accion.Origen + " atacando a " + accion.Destino + " que ha perdido " 
+                + accion.TropasPerdidasDefensor + " tropas.");
             }
            break;
           }
