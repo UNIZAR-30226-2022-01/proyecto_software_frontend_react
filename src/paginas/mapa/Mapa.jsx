@@ -800,7 +800,7 @@ export default class Mapa extends React.Component {
           var jugador = this.state.nombreJugadores[i];
           var estadoJugador = response.EstadosJugadores[jugador];
           
-          if (jugador === this.state.nombrePropioJugador) {
+          if (jugador === response.TurnoJugador) {
             this.setState({numTropasReforzar: estadoJugador.Tropas});
           } 
           this.actualizarInfoJugadores(jugador, 0, 0, estadoJugador.NumCartas);
@@ -1122,6 +1122,10 @@ export default class Mapa extends React.Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  componentDidUnmount() {
     clearInterval(this.interval);
   }
 
