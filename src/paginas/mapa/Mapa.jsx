@@ -931,7 +931,7 @@ export default class Mapa extends React.Component {
               let objectURL = URL.createObjectURL(blob);
  
               if (this.state.nombrePropioJugador === accion.Jugador) {
-                if (accion.TropasObtenidas != 0) {
+                if (accion.TropasObtenidas !== 0) {
                   this.setState({numTropasReforzar: accion.TropasObtenidas});
                 }
                 this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
@@ -976,6 +976,8 @@ export default class Mapa extends React.Component {
               var num = parseInt(document.getElementById("t" + territorios[accion.TerritorioReforzado]).textContent);
               this.actualizarValorTerritorio(accion.TerritorioReforzado, num + accion.TropasRefuerzo);
               this.actualizarInfoJugadores(accion.Jugador, accion.TropasRefuerzo);
+              this.mostrarAlertaInformativaAccion("Región reforzada", "El jugador " + accion.Jugador + 
+              " ha reforzado " + territorios[accion.TerritorioReforzado] + " con " + accion.TropasRefuerzo + " tropas.");
             }
             break;
           
@@ -989,9 +991,9 @@ export default class Mapa extends React.Component {
               this.actualizarInfoJugadores(accion.JugadorDefensor, accion.TropasPerdidasDefensor, 0, 0, false);
               this.sumarRestarValorTerritorio(accion.Origen, accion.TropasPerdidasAtacante, false);
               this.sumarRestarValorTerritorio(accion.Destino, accion.TropasPerdidasDefensor, false);
-              this.mostrarAlertaInformativaAccion("Ataque realizado", "El jugador " + accion.JugadorAtacante + " ha perdido " 
-                + accion.TropasPerdidasAtacante + " en " + accion.Origen + " atacando a " + accion.Destino + " que ha perdido " 
-                + accion.TropasPerdidasDefensor + " tropas.");
+              this.mostrarAlertaInformativaAccion("Ataque realizado", "El jugador " + accion.JugadorAtacante + 
+                " ha perdido " + accion.TropasPerdidasAtacante + " en " + territorios[accion.Origen] + " atacando " + territorios[accion.Destino] +
+                " de " + accion.JugadorDefensor + ", que ha perdido " + accion.TropasPerdidasDefensor + " tropas");
             }
            break;
           }
@@ -1003,6 +1005,8 @@ export default class Mapa extends React.Component {
               this.actualizarTerritorio(accion.Destino, accion.TropasDestino, accion.JugadorOcupante);
               this.actualizarInfoJugadores(accion.JugadorOcupante, 0, 1, 0);
               this.actualizarInfoJugadores(accion.JugadorOcupado, 0, 1, 0, false);
+              this.mostrarAlertaInformativaAccion("Región ocupada", "El jugador " + accion.JugadorOcupante + 
+                " ha ocupado " + territorios[accion.Destino] + " desde " + territorios[accion.Origen] + ", del jugador " + accion.JugadorOcupado);
             }
             break;
           }
@@ -1012,6 +1016,8 @@ export default class Mapa extends React.Component {
             if (accion.Jugador !== this.state.nombrePropioJugador) {
               this.actualizarValorTerritorio(accion.Origen, accion.TropasOrigen);
               this.actualizarValorTerritorio(accion.Destino, accion.TropasDestino);
+              this.mostrarAlertaInformativaAccion("Región fortificada", "El jugador " + accion.Jugador + 
+              " ha fortificado " + territorios[accion.Destino] + ", sumando un total de " + accion.TropasDestino + " tropas");
             }
             break;
           }
