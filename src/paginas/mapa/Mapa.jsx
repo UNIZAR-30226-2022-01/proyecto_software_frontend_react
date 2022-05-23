@@ -60,8 +60,7 @@ export default class Mapa extends React.Component {
       obtenerInfoPartida: localStorage.getItem("volver_partida"),
       volviendoMapaPartida: false,
       imagenes: [],
-      resultadoDadosAtacante: 0,
-      resultadoDadosDefensor: 0,
+      dadosDefensor: [],
       jugadorChat: "", 
       mensajeChat: "",
       irCartas: false
@@ -72,6 +71,7 @@ export default class Mapa extends React.Component {
     this.mostrarAlertaInformativaAsincrona = this.mostrarAlertaInformativaAsincrona.bind(this);
     this.mostrarAlertaRangoAsincrona = this.mostrarAlertaRangoAsincrona.bind(this);
     this.mostrarAlertaInformativaAvatar = this.mostrarAlertaInformativaAvatar.bind(this);
+    this.mostrarAlertaInformativaAccion = this.mostrarAlertaInformativaAccion.bind(this);
     this.mostrarAlertaDados = this.mostrarAlertaDados.bind(this);
     this.mostrarAlertaChat = this.mostrarAlertaChat.bind(this);
     this.mostrarAlertaFin = this.mostrarAlertaFin.bind(this);
@@ -96,6 +96,7 @@ export default class Mapa extends React.Component {
     this.obtenerNombreFase = this.obtenerNombreFase.bind(this);
     this.jugadorEliminado = this.jugadorEliminado.bind(this);
     this.obtenerEstadoActualPartida = this.obtenerEstadoActualPartida.bind(this);
+    this.finalizarPartida = this.finalizarPartida.bind(this);
   }
 
   getNombreUsuario(nombre) {
@@ -111,6 +112,26 @@ export default class Mapa extends React.Component {
       return a;
     }
     return b;
+  }
+
+  mostrarAlertaInformativaAccion(titulo, texto) {
+    const Toast = swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', swal.stopTimer)
+        toast.addEventListener('mouseleave', swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'info',
+      title: titulo,
+      text: texto
+    })
   }
 
   mostrarAlertaInformativaAsincrona(titulo, texto) {
@@ -155,7 +176,6 @@ export default class Mapa extends React.Component {
   }
 
   mostrarAlertaInformativaAvatar(titulo, texto, imagen) {
-    clearInterval(this.interval);
     swal.fire({
       title: titulo,
       text: texto,
@@ -165,10 +185,7 @@ export default class Mapa extends React.Component {
       imageAlt: 'Avatar usuario',
       confirmButtonText: 'OK',
       confirmButtonColor: '#3085d6',
-      allowOutsideClick: false
-		}).then(() => {
-      this.interval = setInterval(() => this.comprobarAcciones(), 500);
-    })
+		})
   }
 
   mostrarAlertaChat() {
@@ -199,12 +216,9 @@ export default class Mapa extends React.Component {
 
   mostrarAlertaDados(accion) {
     clearInterval(this.interval);
-    var resultadoDadosAtacante = 0;
-    var resultadoDadosDefensor = 0;
 
     // Atacante
     for (var i = 0; i < accion.DadosAtacante.length; i++) {
-      resultadoDadosAtacante += parseInt(accion.DadosAtacante[i]);
       fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorAtacante}/${accion.DadosAtacante[i]}`, {
         method: 'get',
         credentials: 'include'
@@ -221,22 +235,42 @@ export default class Mapa extends React.Component {
       })
       .catch ((e) => {
         swal.fire({
-          title: 'Se ha producido un error al recuperar los dados',
+          title: 'Se ha producido un error al recuperar los dados del atacante',
           text: e,
           icon: 'error',
         });
       })
     }
+    
     // Defensor
     for (var j = 0; j < accion.DadosDefensor.length; j++) {
-      resultadoDadosDefensor += parseInt(accion.DadosDefensor[j]);
-    }
+      fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorDefensor}/${accion.DadosDefensor[j]}`, {
+        method: 'get',
+        credentials: 'include'
+      })
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then(text => {throw new Error(text)});
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        let objectURL = URL.createObjectURL(blob);
+        this.setState({dadosDefensor: this.state.dadosDefensor.concat(objectURL)})
+      })
+      .catch ((e) => {
+        swal.fire({
+          title: 'Se ha producido un error al recuperar los dados del defensor',
+          text: e,
+          icon: 'error',
+        });
+      })
+    } 
 
     this.setState({accionAtaque: accion})
-    this.setState({resultadoDadosAtacante: resultadoDadosAtacante})
-    this.setState({resultadoDadosDefensor: resultadoDadosDefensor})
     this.interval = setInterval(() => {
-      if (this.state.imagenes.length === this.state.accionAtaque.DadosAtacante.length) {
+      if ((this.state.imagenes.length === this.state.accionAtaque.DadosAtacante.length) && 
+          (this.state.dadosDefensor.length === this.state.accionAtaque.DadosDefensor.length)) {
         clearInterval(this.interval);
         swal.fire({
           title: 'Los dados decidirán el ataque',
@@ -244,14 +278,20 @@ export default class Mapa extends React.Component {
           allowOutsideClick: false
         })
         .then(() => {
-          let htmlText = 'Atacante: ' + this.state.resultadoDadosAtacante + ' <br>' +
-            'Defensor: ' + this.state.resultadoDadosDefensor + ' <br> <br>' +
-            '<img src=' + this.state.imagenes[0] +  ' height="70" width="70">';
+          let htmlText = '<img src=' + this.state.imagenes[0] +  ' height="110" width="110">';
           if (this.state.imagenes.length >= 2) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="70" width="70">';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="110" width="110">';
           }
           if (this.state.imagenes.length >= 3) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="70" width="70">';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="110" width="110">';
+          }
+          htmlText += ' <br> <br> ' ;
+          htmlText += '<img src=' + this.state.dadosDefensor[0] +  ' height="70" width="70">';
+          if (this.state.dadosDefensor.length >= 2) {
+            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[1] +  ' height="70" width="70">';
+          }
+          if (this.state.dadosDefensor.length >= 3) {
+            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[2] +  ' height="70" width="70">';
           }
           
           swal.fire({
@@ -264,10 +304,9 @@ export default class Mapa extends React.Component {
             this.sumarRestarValorTerritorio(this.state.accionAtaque.Origen, this.state.accionAtaque.TropasPerdidasAtacante, false);
             this.sumarRestarValorTerritorio(this.state.accionAtaque.Destino, this.state.accionAtaque.TropasPerdidasDefensor, false);
             this.comprobarOcupar(this.state.accionAtaque);
-            this.setState({imagenes: []})
-            this.setState({accionAtaque: null})
-            this.setState({resultadoDadosAtacante: 0})
-            this.setState({resultadoDadosDefensor: 0})
+            this.setState({imagenes: []});
+            this.setState({dadosDefensor: []});
+            this.setState({accionAtaque: null});
           })
         })
       }
@@ -315,7 +354,11 @@ export default class Mapa extends React.Component {
 
   handleCardButton() {
     if (this.state.habilitarCartas) {
-      this.setState({irCartas: true});
+      clearInterval(this.interval);
+      this.interval = setInterval(() => {
+        clearInterval(this.interval);
+        this.setState({irCartas: true});
+      }, 50);
     }
   };
 
@@ -417,7 +460,6 @@ export default class Mapa extends React.Component {
 
   comprobarOcupar(accion) {
     var numTropasDefensor = parseInt(document.getElementById("t" + territorios[accion.Destino]).textContent);
-    numTropasDefensor -= accion.TropasPerdidasDefensor;
     if (numTropasDefensor <= 0) {
       clearInterval(this.interval);
       var numTropasAtacante = parseInt(document.getElementById("t" + territorios[accion.Origen]).textContent);
@@ -451,9 +493,11 @@ export default class Mapa extends React.Component {
               icon: 'error',
             });
             this.setState({resultadoAlerta: null});
+            this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", accion.DadosAtacante.length - accion.TropasPerdidasAtacante, numTropasAtacante - 1);
           })
         } else if (this.state.resultadoAlerta === 0) {
           this.setState({resultadoAlerta: null});
+          this.mostrarAlertaRangoAsincrona("Número de tropas a desplazar", accion.DadosAtacante.length - accion.TropasPerdidasAtacante, numTropasAtacante - 1);
         }
       }, 500);
     } else {
@@ -634,8 +678,6 @@ export default class Mapa extends React.Component {
 
   jugadorEliminado(jugador) {
     var indexJugador = this.state.nombreJugadores.indexOf(jugador);
-    //const vCJ = this.state.coloresJugadores;
-    //vCJ[indexJugador] = "#F8DDD7";
     const vCC = this.state.coloresInfo;
     vCC[indexJugador] = "#F8DDD7";
     this.setState({coloresInfo: vCC}); 
@@ -762,7 +804,7 @@ export default class Mapa extends React.Component {
       if (response.Terminada) {
         this.mostrarAlertaFin("Fin de la partida", 
           "La partida en la que te encontrabas ha terminado.");
-        this.setState({finPartida: true});
+        this.finalizarPartida();
       } else {
         if (response.TurnoJugador === this.state.nombrePropioJugador) {
           this.habilitarSeleccionar();
@@ -778,7 +820,7 @@ export default class Mapa extends React.Component {
           var jugador = this.state.nombreJugadores[i];
           var estadoJugador = response.EstadosJugadores[jugador];
           
-          if (jugador === this.state.nombrePropioJugador) {
+          if (jugador === response.TurnoJugador) {
             this.setState({numTropasReforzar: estadoJugador.Tropas});
           } 
           this.actualizarInfoJugadores(jugador, 0, 0, estadoJugador.NumCartas);
@@ -811,6 +853,13 @@ export default class Mapa extends React.Component {
     })
   }
 
+  finalizarPartida() {
+    this.interval = setInterval(() => {
+      clearInterval(this.interval);
+      this.setState({finPartida: true});
+    }, 150);
+  }
+
   comprobarAcciones() {
     fetch(Constantes.RUTA_API + '/api/obtenerEstadoPartida', {
       method: 'get',
@@ -834,11 +883,14 @@ export default class Mapa extends React.Component {
             const jAux = this.state.accionesIniciales;
             jAux.push(accion);
             this.setState({accionesIniciales: jAux});
+
+            if (accion.Jugador === this.state.nombrePropioJugador) {
+              this.setState({numTropasReforzar: accion.TropasRestantes});
+            }
             
             if (accion.Region === 41) {
               clearInterval(this.interval);
-              this.interval = setInterval(() => this.rellenarTerritorios(), 50);
-              this.setState({numTropasReforzar: accion.TropasRestantes});
+              this.interval = setInterval(() => this.rellenarTerritorios(), 80);
               this.setState({accionesRestantes: response});
               this.setState({indiceAccionesRestantes: ++i});
               fin = true;
@@ -884,12 +936,11 @@ export default class Mapa extends React.Component {
               this.deshabilitarSeleccionar();
               this.deshabilitarCartas();
             }
-            //this.interval = setInterval(() => this.comprobarAcciones(), 500);
+            this.interval = setInterval(() => this.comprobarAcciones(), 500);
             break;
           
           // IDAccionInicioTurno----------------------------------------------------------------------------
           case 2:
-            clearInterval(this.interval);
             this.setState({turno: accion.Jugador});
 
             fetch(Constantes.RUTA_API + `/api/obtenerFotoPerfil/${accion.Jugador}`, {
@@ -902,12 +953,13 @@ export default class Mapa extends React.Component {
               }
               return response.blob();
             })
-            // eslint-disable-next-line
             .then((blob) => { 
               let objectURL = URL.createObjectURL(blob);
  
               if (this.state.nombrePropioJugador === accion.Jugador) {
-                this.setState({numTropasReforzar: accion.TropasObtenidas});
+                if (accion.TropasObtenidas !== 0) {
+                  this.setState({numTropasReforzar: accion.TropasObtenidas});
+                }
                 this.mostrarAlertaInformativaAvatar("Tu turno: Fase de refuerzo", "Has obtenido " + 
                 accion.TropasObtenidas + " tropas debido a que controlas " + accion.RazonNumeroTerritorios + 
                 " territorios y " + accion.RazonContinentesOcupados + " continentes.", objectURL);
@@ -950,6 +1002,8 @@ export default class Mapa extends React.Component {
               var num = parseInt(document.getElementById("t" + territorios[accion.TerritorioReforzado]).textContent);
               this.actualizarValorTerritorio(accion.TerritorioReforzado, num + accion.TropasRefuerzo);
               this.actualizarInfoJugadores(accion.Jugador, accion.TropasRefuerzo);
+              this.mostrarAlertaInformativaAccion("Región reforzada", "El jugador " + accion.Jugador + 
+              " ha reforzado " + territorios[accion.TerritorioReforzado] + " con " + accion.TropasRefuerzo + " tropas.");
             }
             break;
           
@@ -963,17 +1017,22 @@ export default class Mapa extends React.Component {
               this.actualizarInfoJugadores(accion.JugadorDefensor, accion.TropasPerdidasDefensor, 0, 0, false);
               this.sumarRestarValorTerritorio(accion.Origen, accion.TropasPerdidasAtacante, false);
               this.sumarRestarValorTerritorio(accion.Destino, accion.TropasPerdidasDefensor, false);
+              this.mostrarAlertaInformativaAccion("Ataque realizado", "El jugador " + accion.JugadorAtacante + 
+                " ha perdido " + accion.TropasPerdidasAtacante + " en " + territorios[accion.Origen] + " atacando " + territorios[accion.Destino] +
+                " de " + accion.JugadorDefensor + ", que ha perdido " + accion.TropasPerdidasDefensor + " tropas");
             }
            break;
           }
 
           // IDAccionOcupar----------------------------------------------------------------------------
           case 6: {
-            if (accion.JugadorAtacante !== this.state.nombrePropioJugador) {
+            if (accion.JugadorOcupante !== this.state.nombrePropioJugador) {
               this.actualizarValorTerritorio(accion.Origen, accion.TropasOrigen);
-              this.actualizarTerritorio(accion.Destino, accion.TropasDestino, accion.JugadorAtacante);
-              this.actualizarInfoJugadores(accion.JugadorAtacante, 0, 1, 0);
-              this.actualizarInfoJugadores(accion.JugadorDefensor, 0, 1, 0, false);
+              this.actualizarTerritorio(accion.Destino, accion.TropasDestino, accion.JugadorOcupante);
+              this.actualizarInfoJugadores(accion.JugadorOcupante, 0, 1, 0);
+              this.actualizarInfoJugadores(accion.JugadorOcupado, 0, 1, 0, false);
+              this.mostrarAlertaInformativaAccion("Región ocupada", "El jugador " + accion.JugadorOcupante + 
+                " ha ocupado " + territorios[accion.Destino] + " desde " + territorios[accion.Origen] + ", del jugador " + accion.JugadorOcupado);
             }
             break;
           }
@@ -983,6 +1042,8 @@ export default class Mapa extends React.Component {
             if (accion.Jugador !== this.state.nombrePropioJugador) {
               this.actualizarValorTerritorio(accion.Origen, accion.TropasOrigen);
               this.actualizarValorTerritorio(accion.Destino, accion.TropasDestino);
+              this.mostrarAlertaInformativaAccion("Región fortificada", "El jugador " + accion.Jugador + 
+              " ha fortificado " + territorios[accion.Destino] + ", sumando un total de " + accion.TropasDestino + " tropas");
             }
             break;
           }
@@ -996,9 +1057,10 @@ export default class Mapa extends React.Component {
           // IDAccionJugadorEliminado----------------------------------------------------------------------------
           case 9: { 
             if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
+              clearInterval(this.interval);
               this.mostrarAlertaFin("Fin de la partida", 
                 "El jugador " + accion.JugadorEliminador + " te ha eliminado.");
-              this.setState({finPartida: true});
+              this.finalizarPartida();
             } else if (accion.JugadorEliminador === this.state.nombrePropioJugador) {
               this.mostrarAlertaFin("Has eliminado a un jugador", 
                 "Has obtenido " + accion.CartasRecibidas + " cartas de " + accion.JugadorEliminado + ".");
@@ -1015,13 +1077,13 @@ export default class Mapa extends React.Component {
           // IDAccionJugadorExpulsado----------------------------------------------------------------------------
           case 10: { 
             if (accion.JugadorEliminado === this.state.nombrePropioJugador) {
+              clearInterval(this.interval);
               this.mostrarAlertaFin("Fin de la partida", 
-                "Has sido expulsado por inactividad");
-              this.setState({finPartida: true});
+                "Has sido expulsado.");
+              this.finalizarPartida();
             } else {
               this.mostrarAlertaFin("Jugador eliminado", 
-                "El jugador " + accion.JugadorEliminado + " ha sido desconectado de la partida por inactividad." +
-                "Sus territorios pueden ser conquistados sin restricciones.");
+                "El jugador " + accion.JugadorEliminado + " ha sido desconectado de la partida.");
             }
             this.jugadorEliminado(accion.JugadorEliminado);
             break;
@@ -1029,7 +1091,9 @@ export default class Mapa extends React.Component {
 
           // IDAccionPartidaFinalizada----------------------------------------------------------------------------
           case 11: {
+            clearInterval(this.interval);
             if (accion.JugadorGanador === this.state.nombrePropioJugador) {
+              console.log("Hola")
               swal.fire({
                 title: "Fin de la partida",
                 text: "Enhorabuena. Has ganado al resto de jugadores.",
@@ -1041,7 +1105,7 @@ export default class Mapa extends React.Component {
               this.mostrarAlertaFin("Fin de la partida", 
                 "El jugador " + accion.JugadorGanador + " es el ganador.");
             }
-            this.setState({finPartida: true});
+            this.finalizarPartida();
             break;
           }
 
@@ -1058,11 +1122,7 @@ export default class Mapa extends React.Component {
       }
     })
     .catch ((e) => {
-      swal.fire({
-        title: 'Se ha producido un error al obtener la información sobre la partida',
-        text: e,
-        icon: 'error',
-      });
+      // Error
     })
   }
 
@@ -1082,7 +1142,7 @@ export default class Mapa extends React.Component {
 
   componentDidMount() {
     this.obtenerNombreJugadores();
-    if (this.state.obtenerInfoPartida || performance.navigation.type === 1) {
+    if (this.state.obtenerInfoPartida) {
       localStorage.removeItem("volver_partida");
       this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 700);
     } else {
@@ -1094,14 +1154,20 @@ export default class Mapa extends React.Component {
     clearInterval(this.interval);
   }
 
+  componentDidUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     document.body.style.backgroundColor = "rgb(50,173,230)";
 
     if (this.state.finPartida) {
+      clearInterval(this.interval);
       return <Navigate to='/inicio'/>;
     }
 
     if (this.state.irCartas) {
+      clearInterval(this.interval);
       return <Navigate to='/cartas'/>;
     }
 

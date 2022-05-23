@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import videoID from "../../imagenes/videoInicio2.mp4";
+import videoID from "../../imagenes/VideoInicio.mp4";
 import "./identificacion.css";
 
 export default class Identificacion extends React.Component {
@@ -10,7 +10,7 @@ export default class Identificacion extends React.Component {
     <div className="cen">
 
     <div className="containerVideoInicio">
-      <video className="videoInicioInicio" loop autoPlay muted id="myVideo">
+      <video className="videoInicio" loop autoPlay muted id="myVideo">
         <source src={videoID} type="video/mp4"/>
       </video>
     </div>

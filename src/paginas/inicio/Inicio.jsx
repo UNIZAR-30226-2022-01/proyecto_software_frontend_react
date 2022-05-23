@@ -63,6 +63,7 @@ export default class Inicio extends React.Component {
   }
 
   componentDidMount() {
+    clearInterval(this.interval);
     this.jugadorEnLobby();
     this.jugadorEnPartida();
   }
