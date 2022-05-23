@@ -97,6 +97,7 @@ export default class Mapa extends React.Component {
     this.obtenerNombreFase = this.obtenerNombreFase.bind(this);
     this.jugadorEliminado = this.jugadorEliminado.bind(this);
     this.obtenerEstadoActualPartida = this.obtenerEstadoActualPartida.bind(this);
+    this.finalizarPartida = this.finalizarPartida.bind(this);
   }
 
   getNombreUsuario(nombre) {
@@ -337,7 +338,10 @@ export default class Mapa extends React.Component {
   handleCardButton() {
     if (this.state.habilitarCartas) {
       clearInterval(this.interval);
-      this.setState({irCartas: true});
+      this.interval = setInterval(() => {
+        clearInterval(this.interval);
+        this.setState({irCartas: true});
+      }, 50);
     }
   };
 
@@ -439,7 +443,6 @@ export default class Mapa extends React.Component {
 
   comprobarOcupar(accion) {
     var numTropasDefensor = parseInt(document.getElementById("t" + territorios[accion.Destino]).textContent);
-    numTropasDefensor -= accion.TropasPerdidasDefensor;
     if (numTropasDefensor <= 0) {
       clearInterval(this.interval);
       var numTropasAtacante = parseInt(document.getElementById("t" + territorios[accion.Origen]).textContent);
@@ -784,7 +787,7 @@ export default class Mapa extends React.Component {
       if (response.Terminada) {
         this.mostrarAlertaFin("Fin de la partida", 
           "La partida en la que te encontrabas ha terminado.");
-        this.setState({finPartida: true});
+        this.finalizarPartida();
       } else {
         if (response.TurnoJugador === this.state.nombrePropioJugador) {
           this.habilitarSeleccionar();
@@ -831,6 +834,13 @@ export default class Mapa extends React.Component {
         icon: 'error',
       });
     })
+  }
+
+  finalizarPartida() {
+    this.interval = setInterval(() => {
+      clearInterval(this.interval);
+      this.setState({finPartida: true});
+    }, 50);
   }
 
   comprobarAcciones() {
@@ -1034,7 +1044,7 @@ export default class Mapa extends React.Component {
               clearInterval(this.interval);
               this.mostrarAlertaFin("Fin de la partida", 
                 "El jugador " + accion.JugadorEliminador + " te ha eliminado.");
-              this.setState({finPartida: true});
+              this.finalizarPartida();
             } else if (accion.JugadorEliminador === this.state.nombrePropioJugador) {
               this.mostrarAlertaFin("Has eliminado a un jugador", 
                 "Has obtenido " + accion.CartasRecibidas + " cartas de " + accion.JugadorEliminado + ".");
@@ -1054,7 +1064,7 @@ export default class Mapa extends React.Component {
               clearInterval(this.interval);
               this.mostrarAlertaFin("Fin de la partida", 
                 "Has sido expulsado.");
-              this.setState({finPartida: true});
+              this.finalizarPartida();
             } else {
               this.mostrarAlertaFin("Jugador eliminado", 
                 "El jugador " + accion.JugadorEliminado + " ha sido desconectado de la partida.");
@@ -1078,7 +1088,7 @@ export default class Mapa extends React.Component {
               this.mostrarAlertaFin("Fin de la partida", 
                 "El jugador " + accion.JugadorGanador + " es el ganador.");
             }
-            this.setState({finPartida: true});
+            this.finalizarPartida();
             break;
           }
 
@@ -1119,7 +1129,7 @@ export default class Mapa extends React.Component {
 
   componentDidMount() {
     this.obtenerNombreJugadores();
-    if (this.state.obtenerInfoPartida || performance.navigation.type === 1) {
+    if (this.state.obtenerInfoPartida) {
       localStorage.removeItem("volver_partida");
       this.interval = setInterval(() => this.obtenerEstadoActualPartida(), 700);
     } else {
