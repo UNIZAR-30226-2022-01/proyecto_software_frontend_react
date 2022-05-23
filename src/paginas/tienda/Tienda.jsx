@@ -284,8 +284,8 @@ export default class Tienda extends React.Component {
                 }
             }
             let avatar = <div className="card mb-3 cardTienda">
-                <div className="row g-0 imagenAvatarTienda">
-                    <div className="col-md-4">
+                <div className="row g-0">
+                    <div className="col-md-4 imagenAvatarTienda">
                     <img className="imagenAvatarTienda" src={`data:image;base64,${this.state.avataresTienda[i].img}`}
                     alt={this.state.avataresTienda[i].descripcion}></img>
                     </div>

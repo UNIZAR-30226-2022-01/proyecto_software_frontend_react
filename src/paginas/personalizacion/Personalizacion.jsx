@@ -163,7 +163,7 @@ export default class Personalizacion extends React.Component {
             let dado = (<div className="card mb-3 cardPersonalizacion">
                 <div className="row g-0 imagenDadoPersonalizacion">
                     <div className="col-md-4">
-                    <img className="imagenDadoTienda" src={`data:image;base64,${this.state.dados[i].img}`}
+                    <img className="imagenDadoPersonalizacion" src={`data:image;base64,${this.state.dados[i].img}`}
                     alt={this.state.dados[i].descripcion}></img>
                     </div>
                 
@@ -190,9 +190,9 @@ export default class Personalizacion extends React.Component {
         for (var j=0; j < this.state.avatares.length; j++) {
             let equipado = this.state.avatares[j].id === this.state.avatarEquipado;
             let avatar = <div className="card mb-3 cardPersonalizacion">
-                <div className="row g-0 imagenAvatarTienda">
+                <div className="row g-0 imagenAvatarPersonalizacion">
                     <div className="col-md-4">
-                    <img className="imagenAvatarTienda" src={`data:image;base64,${this.state.avatares[j].img}`}
+                    <img className="imagenAvatarPersonalizacion" src={`data:image;base64,${this.state.avatares[j].img}`}
                     alt={this.state.avatares[j].descripcion}></img>
                     </div>
                 
