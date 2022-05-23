@@ -60,8 +60,7 @@ export default class Mapa extends React.Component {
       obtenerInfoPartida: localStorage.getItem("volver_partida"),
       volviendoMapaPartida: false,
       imagenes: [],
-      resultadoDadosAtacante: 0,
-      resultadoDadosDefensor: 0,
+      dadosDefensor: [],
       jugadorChat: "", 
       mensajeChat: "",
       irCartas: false
@@ -221,12 +220,9 @@ export default class Mapa extends React.Component {
 
   mostrarAlertaDados(accion) {
     clearInterval(this.interval);
-    var resultadoDadosAtacante = 0;
-    var resultadoDadosDefensor = 0;
 
     // Atacante
     for (var i = 0; i < accion.DadosAtacante.length; i++) {
-      resultadoDadosAtacante += parseInt(accion.DadosAtacante[i]);
       fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorAtacante}/${accion.DadosAtacante[i]}`, {
         method: 'get',
         credentials: 'include'
@@ -249,16 +245,36 @@ export default class Mapa extends React.Component {
         });
       })
     }
+    
     // Defensor
     for (var j = 0; j < accion.DadosDefensor.length; j++) {
-      resultadoDadosDefensor += parseInt(accion.DadosDefensor[j]);
-    }
+      fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorDefensor}/${accion.DadosDefensor[i]}`, {
+        method: 'get',
+        credentials: 'include'
+      })
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then(text => {throw new Error(text)});
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        let objectURL = URL.createObjectURL(blob);
+        this.setState({dadosDefensor: this.state.dadosDefensor.concat(objectURL)})
+      })
+      .catch ((e) => {
+        swal.fire({
+          title: 'Se ha producido un error al recuperar los dados',
+          text: e,
+          icon: 'error',
+        });
+      })
+    } 
 
     this.setState({accionAtaque: accion})
-    this.setState({resultadoDadosAtacante: resultadoDadosAtacante})
-    this.setState({resultadoDadosDefensor: resultadoDadosDefensor})
     this.interval = setInterval(() => {
-      if (this.state.imagenes.length === this.state.accionAtaque.DadosAtacante.length) {
+      if ((this.state.imagenes.length === this.state.accionAtaque.DadosAtacante.length) && 
+          (this.state.dadosDefensor.length === this.state.accionAtaque.DadosDefensor.length)) {
         clearInterval(this.interval);
         swal.fire({
           title: 'Los dados decidirán el ataque',
@@ -266,14 +282,20 @@ export default class Mapa extends React.Component {
           allowOutsideClick: false
         })
         .then(() => {
-          let htmlText = 'Atacante: ' + this.state.resultadoDadosAtacante + ' <br>' +
-            'Defensor: ' + this.state.resultadoDadosDefensor + ' <br> <br>' +
-            '<img src=' + this.state.imagenes[0] +  ' height="70" width="70">';
+          let htmlText = '<img src=' + this.state.imagenes[0] +  ' height="100" width="100">';
           if (this.state.imagenes.length >= 2) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="70" width="70">';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="100" width="100">';
           }
           if (this.state.imagenes.length >= 3) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="70" width="70">';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="100" width="100">';
+          }
+          htmlText += '<br> <br>';
+          htmlText += '<img src=' + this.state.dadosDefensor[0] +  ' height="80" width="80">';
+          if (this.state.dadosDefensor.length >= 2) {
+            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[1] +  ' height="80" width="80">';
+          }
+          if (this.state.dadosDefensor.length >= 3) {
+            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[2] +  ' height="80" width="80">';
           }
           
           swal.fire({
@@ -286,10 +308,9 @@ export default class Mapa extends React.Component {
             this.sumarRestarValorTerritorio(this.state.accionAtaque.Origen, this.state.accionAtaque.TropasPerdidasAtacante, false);
             this.sumarRestarValorTerritorio(this.state.accionAtaque.Destino, this.state.accionAtaque.TropasPerdidasDefensor, false);
             this.comprobarOcupar(this.state.accionAtaque);
-            this.setState({imagenes: []})
-            this.setState({accionAtaque: null})
-            this.setState({resultadoDadosAtacante: 0})
-            this.setState({resultadoDadosDefensor: 0})
+            this.setState({imagenes: []});
+            this.setState({dadosDefensor: []});
+            this.setState({accionAtaque: null});
           })
         })
       }
