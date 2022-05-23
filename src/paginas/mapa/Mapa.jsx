@@ -176,7 +176,6 @@ export default class Mapa extends React.Component {
   }
 
   mostrarAlertaInformativaAvatar(titulo, texto, imagen) {
-    clearInterval(this.interval);
     swal.fire({
       title: titulo,
       text: texto,
@@ -186,10 +185,7 @@ export default class Mapa extends React.Component {
       imageAlt: 'Avatar usuario',
       confirmButtonText: 'OK',
       confirmButtonColor: '#3085d6',
-      allowOutsideClick: false
-		}).then(() => {
-      this.interval = setInterval(() => this.comprobarAcciones(), 500);
-    })
+		})
   }
 
   mostrarAlertaChat() {
@@ -239,7 +235,7 @@ export default class Mapa extends React.Component {
       })
       .catch ((e) => {
         swal.fire({
-          title: 'Se ha producido un error al recuperar los dados',
+          title: 'Se ha producido un error al recuperar los dados del atacante',
           text: e,
           icon: 'error',
         });
@@ -248,7 +244,7 @@ export default class Mapa extends React.Component {
     
     // Defensor
     for (var j = 0; j < accion.DadosDefensor.length; j++) {
-      fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorDefensor}/${accion.DadosDefensor[i]}`, {
+      fetch(Constantes.RUTA_API + `/api/obtenerDados/${accion.JugadorDefensor}/${accion.DadosDefensor[j]}`, {
         method: 'get',
         credentials: 'include'
       })
@@ -264,7 +260,7 @@ export default class Mapa extends React.Component {
       })
       .catch ((e) => {
         swal.fire({
-          title: 'Se ha producido un error al recuperar los dados',
+          title: 'Se ha producido un error al recuperar los dados del defensor',
           text: e,
           icon: 'error',
         });
@@ -282,20 +278,20 @@ export default class Mapa extends React.Component {
           allowOutsideClick: false
         })
         .then(() => {
-          let htmlText = '<img src=' + this.state.imagenes[0] +  ' height="100" width="100">';
+          let htmlText = '<img src=' + this.state.imagenes[0] +  ' height="110" width="110">';
           if (this.state.imagenes.length >= 2) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="100" width="100">';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[1] +  ' height="110" width="110">';
           }
           if (this.state.imagenes.length >= 3) {
-            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="100" width="100">';
+            htmlText += '&nbsp; <img src=' + this.state.imagenes[2] +  ' height="110" width="110">';
           }
-          htmlText += '<br> <br>';
-          htmlText += '<img src=' + this.state.dadosDefensor[0] +  ' height="80" width="80">';
+          htmlText += ' <br> <br> ' ;
+          htmlText += '<img src=' + this.state.dadosDefensor[0] +  ' height="70" width="70">';
           if (this.state.dadosDefensor.length >= 2) {
-            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[1] +  ' height="80" width="80">';
+            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[1] +  ' height="70" width="70">';
           }
           if (this.state.dadosDefensor.length >= 3) {
-            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[2] +  ' height="80" width="80">';
+            htmlText += '&nbsp; <img src=' + this.state.dadosDefensor[2] +  ' height="70" width="70">';
           }
           
           swal.fire({
@@ -861,7 +857,7 @@ export default class Mapa extends React.Component {
     this.interval = setInterval(() => {
       clearInterval(this.interval);
       this.setState({finPartida: true});
-    }, 50);
+    }, 150);
   }
 
   comprobarAcciones() {
@@ -945,7 +941,6 @@ export default class Mapa extends React.Component {
           
           // IDAccionInicioTurno----------------------------------------------------------------------------
           case 2:
-            clearInterval(this.interval);
             this.setState({turno: accion.Jugador});
 
             fetch(Constantes.RUTA_API + `/api/obtenerFotoPerfil/${accion.Jugador}`, {
@@ -1098,6 +1093,7 @@ export default class Mapa extends React.Component {
           case 11: {
             clearInterval(this.interval);
             if (accion.JugadorGanador === this.state.nombrePropioJugador) {
+              console.log("Hola")
               swal.fire({
                 title: "Fin de la partida",
                 text: "Enhorabuena. Has ganado al resto de jugadores.",
@@ -1126,11 +1122,7 @@ export default class Mapa extends React.Component {
       }
     })
     .catch ((e) => {
-      swal.fire({
-        title: 'Se ha producido un error al obtener la información sobre la partida',
-        text: e,
-        icon: 'error',
-      });
+      // Error
     })
   }
 
