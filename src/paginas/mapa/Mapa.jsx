@@ -904,15 +904,15 @@ export default class Mapa extends React.Component {
             this.setState({indiceAccionesRestantes: 0});
             this.setState({fase: accion.Fase});
             
-            if (this.state.fase === 0 && accion.Jugador === this.state.nombrePropioJugador) {
+            if (accion.Fase === 0 && accion.Jugador === this.state.nombrePropioJugador) {
               this.habilitarSeleccionar();
             }
             // Fase de refuerzo
-            else if (this.state.fase === 1 && accion.Jugador === this.state.nombrePropioJugador) {
+            else if (accion.Fase === 1 && accion.Jugador === this.state.nombrePropioJugador) {
               this.habilitarSeleccionar();
               this.habilitarCartas();
             } // Fase de ataque
-            else if (this.state.fase === 2 && accion.Jugador === this.state.nombrePropioJugador) {
+            else if (accion.Fase === 2 && accion.Jugador === this.state.nombrePropioJugador) {
               this.deshabilitarCartas();
               if (this.state.nombrePropioJugador === accion.Jugador) {
                 this.mostrarAlertaInformativaAsincrona("Fase de ataque", 
@@ -922,7 +922,7 @@ export default class Mapa extends React.Component {
                 this.mostrarAlertaInformativaAsincrona("Fase de ataque", "Turno de " + accion.Jugador);
               }
             } // Fase de fortificar
-            else if (this.state.fase === 3 && accion.Jugador === this.state.nombrePropioJugador) {
+            else if (accion.Fase === 3 && accion.Jugador === this.state.nombrePropioJugador) {
               this.deshabilitarCartas();
               if (this.state.nombrePropioJugador === accion.Jugador) {
                 this.mostrarAlertaInformativaAsincrona("Fase de fortificación", 
