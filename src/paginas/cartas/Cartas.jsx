@@ -59,7 +59,11 @@ export default class Cartas extends React.Component {
   }
 
   cerrarCartas() {
-    this.setState({volverMapa: true});
+    localStorage.setItem('volver_partida', "true");
+    this.interval = setInterval(() => {
+      clearInterval(this.interval);
+      this.setState({volverMapa: true});
+    }, 150);
   }
 
   obtenerCartas() {
@@ -119,6 +123,7 @@ export default class Cartas extends React.Component {
   }
 
   componentDidMount() {
+    clearInterval(this.interval);
     this.obtenerCartas();
   }
 
@@ -126,7 +131,6 @@ export default class Cartas extends React.Component {
     document.body.style.backgroundColor = "rgb(50,173,230)";
 
     if (this.state.volverMapa) {
-      localStorage.setItem('volver_partida', "true");
 			return <Navigate to='/mapa'/>;
 		}
 

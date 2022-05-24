@@ -358,7 +358,7 @@ export default class Mapa extends React.Component {
       this.interval = setInterval(() => {
         clearInterval(this.interval);
         this.setState({irCartas: true});
-      }, 50);
+      }, 150);
     }
   };
 
@@ -1141,6 +1141,7 @@ export default class Mapa extends React.Component {
   }
 
   componentDidMount() {
+    clearInterval(this.interval);
     this.obtenerNombreJugadores();
     if (this.state.obtenerInfoPartida) {
       localStorage.removeItem("volver_partida");
