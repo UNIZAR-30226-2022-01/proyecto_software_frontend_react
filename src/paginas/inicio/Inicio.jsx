@@ -56,16 +56,18 @@ export default class Inicio extends React.Component {
 		.then((response) => {	
       if (!response['EnCurso']) {
         this.setState({jugadorEnLobby: true});
+      } else {
+        this.jugadorEnPartida();
       }
 		})
 		.catch((e) => {
+      this.jugadorEnPartida();
     })
   }
 
   componentDidMount() {
     clearInterval(this.interval);
     this.jugadorEnLobby();
-    this.jugadorEnPartida();
   }
 
   render() {
