@@ -995,6 +995,13 @@ export default class Mapa extends React.Component {
                 text: 'El jugador ' + accion.Jugador + " ha recibido " + accion.NumTropasObtenidas + ' tropas.',
                 icon: 'info',
               });
+
+              if (accion.BonificacionObtenida) {
+                for (var i = 0; i < Object.keys(accion.RegionesQueOtorganBonificacion).length; i++) {
+                  this.actualizarInfoJugadores(accion.Jugador, 2);
+                  this.sumarRestarValorTerritorio(accion.RegionesQueOtorganBonificacion[i], 2);
+                }
+              }
             }
             break;
           
