@@ -116,6 +116,7 @@ export default class Inicio extends React.Component {
             <Link className="btn btn-primary btn-lg textoBotonPrincipalInicio" to="/personalizacion">Personalización</Link>
         </div>
       </div> <br/>
+      <br></br><br></br>
 
       <BarraInferior></BarraInferior>
     </div>
