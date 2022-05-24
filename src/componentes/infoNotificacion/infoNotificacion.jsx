@@ -190,7 +190,7 @@ export default class InfoNotificacion extends React.Component {
           );
         }
         else {  // Perder partida
-          mensaje = "¡Has perdido! Has recibido " + this.state.puntos + " por participar.";
+          mensaje = "¡Has perdido! Has recibido " + this.state.puntos + " puntos por participar.";
           return (
             <div className="card border-primary mb-3 notificacionRecibirPuntos">
               <text className="infoNotificacion"> 
