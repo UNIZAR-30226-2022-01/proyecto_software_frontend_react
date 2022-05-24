@@ -311,7 +311,7 @@ export default class Mapa extends React.Component {
           })
         })
       }
-    }, 300)
+    }, 100)
   }
 
   mostrarAlertaFin(titulo, texto) {
