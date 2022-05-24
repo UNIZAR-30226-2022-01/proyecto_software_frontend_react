@@ -1019,7 +1019,7 @@ export default class Mapa extends React.Component {
               this.sumarRestarValorTerritorio(accion.Origen, accion.TropasPerdidasAtacante, false);
               this.sumarRestarValorTerritorio(accion.Destino, accion.TropasPerdidasDefensor, false);
               this.mostrarAlertaInformativaAccion("Ataque realizado", "El jugador " + accion.JugadorAtacante + 
-                " ha perdido " + accion.TropasPerdidasAtacante + " en " + territorios[accion.Origen] + " atacando " + territorios[accion.Destino] +
+                " ha perdido " + accion.TropasPerdidasAtacante + " tropas en " + territorios[accion.Origen] + " atacando " + territorios[accion.Destino] +
                 " de " + accion.JugadorDefensor + ", que ha perdido " + accion.TropasPerdidasDefensor + " tropas");
             }
            break;
