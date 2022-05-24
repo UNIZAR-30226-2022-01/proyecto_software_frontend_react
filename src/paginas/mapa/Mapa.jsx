@@ -790,6 +790,7 @@ export default class Mapa extends React.Component {
   }
 
   obtenerEstadoActualPartida() {
+    this.limpiarIntervalos();
     fetch(Constantes.RUTA_API + '/api/resumirPartida', {
       method: 'get',
       credentials: 'include'
