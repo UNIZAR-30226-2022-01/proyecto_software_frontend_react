@@ -97,6 +97,7 @@ export default class Mapa extends React.Component {
     this.jugadorEliminado = this.jugadorEliminado.bind(this);
     this.obtenerEstadoActualPartida = this.obtenerEstadoActualPartida.bind(this);
     this.finalizarPartida = this.finalizarPartida.bind(this);
+    this.limpiarIntervalos = this.limpiarIntervalos.bind(this);
   }
 
   getNombreUsuario(nombre) {
@@ -1140,8 +1141,18 @@ export default class Mapa extends React.Component {
     }
   }
 
+  limpiarIntervalos() {
+    // Get a reference to the last interval + 1
+    const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
+
+    // Clear any timeout/interval up to that id
+    for (let i = 1; i < interval_id; i++) {
+      window.clearInterval(i);
+    }
+  }
+
   componentDidMount() {
-    clearInterval(this.interval);
+    this.limpiarIntervalos();
     this.obtenerNombreJugadores();
     if (this.state.obtenerInfoPartida) {
       localStorage.removeItem("volver_partida");
@@ -1152,11 +1163,11 @@ export default class Mapa extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    this.limpiarIntervalos();
   }
 
   componentDidUnmount() {
-    clearInterval(this.interval);
+    this.limpiarIntervalos();
   }
 
   render() {
