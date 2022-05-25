@@ -1,4 +1,4 @@
-# Frontend de React &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]([https://github.com/facebook/react/blob/main/LICENSE](https://github.com/UNIZAR-30226-2022-01/proyecto_software_frontend_react/blob/main/LICENSE))
+# Frontend de React &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]([https://github.com/facebook/react/blob/main/LICENSE](https://github.com/UNIZAR-30226-2022-01/proyecto_software_frontend_react/blob/main/LICENSE)
 
 Este proyecto implementa un cliente web desarrollado en React.
 
