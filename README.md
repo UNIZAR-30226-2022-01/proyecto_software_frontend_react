@@ -17,4 +17,6 @@ Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
 
 #
 
-UNIZAR-30226-2022-01
+Proyecto Software 2021-2022.
+
+Universidad de Zaragoza.
