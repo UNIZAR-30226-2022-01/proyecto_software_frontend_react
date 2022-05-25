@@ -1,4 +1,4 @@
-# Frontend de React    [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+# Frontend de React &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/main/LICENSE)
 
 Este proyecto implementa un cliente web desarrollado en React.
 
