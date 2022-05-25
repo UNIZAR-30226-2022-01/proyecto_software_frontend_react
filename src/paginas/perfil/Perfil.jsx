@@ -107,7 +107,7 @@ export default class Perfil extends React.Component {
             this.setState({solicitudRecibida: response['SolicitudRecibida']});
             let winRate = 0;
             if (response['PartidasTotales'] !== 0) {
-                winRate = response['PartidasGanadas'] / response['PartidasTotales'];
+                winRate = response['PartidasGanadas'] / response['PartidasTotales'] * 100;
             }
             this.setState({winRate: winRate});
         })
