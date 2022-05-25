@@ -8,7 +8,7 @@ En el directorio del proyecto, se puede ejecutar:
 
 ### `npm install`
 
-Instala las dependencias de la aplicación
+Instala las dependencias de la aplicación.
 
 ### `npm start`
 
